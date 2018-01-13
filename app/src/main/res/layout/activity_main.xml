@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="3A417100"
         tools:layout_editor_absoluteX="63dp"
         tools:layout_editor_absoluteY="82dp" />
 
@@ -23,7 +22,6 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="zxc55004827"
         tools:layout_editor_absoluteX="63dp"
         tools:layout_editor_absoluteY="188dp" />
 
