@@ -3,6 +3,7 @@ package com.example.user.myapplication;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -34,8 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
-
+//所有chrome的title
     static final String COOKIES_HEADER = "Set-Cookie";
     static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36";
     static final String ACCEPT = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
@@ -44,20 +44,33 @@ public class MainActivity extends AppCompatActivity {
     static final String Referer ="http://msd.ncut.edu.tw/wbcmss/home.asp";
     static final String HOST = "msd.ncut.edu.tw";
 
-    class myHandler extends Handler {
-        private WeakReference<Activity> referance;
+    static class myHandler extends Handler {
+        //幫忙把東西塞在ui thread裡面
+        private WeakReference<Activity> reference;
         public myHandler(Activity activity){
-            referance = new WeakReference<Activity>(activity);
+            reference = new WeakReference<Activity>(activity);
         }
 
         public void handleMessage(Message msg) {
             switch (msg.arg1){
                 case 0:
-                    AlertDialog.Builder builder = new AlertDialog.Builder(referance.get());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(reference.get());
                     builder.setTitle(msg.getData().getString("TITLE"));
                     builder.setMessage(msg.getData().getString("MESSAGE"));
                     builder.setPositiveButton("OK", null);
                     builder.show();
+                    break;
+                case 1:
+                    Intent intent = new Intent();
+                    intent.setClass(reference.get(), ChoiceUi.class);
+
+                    //new一個Bundle物件，並將要傳遞的資料傳入
+
+                    //將Bundle物件assign給intent
+                    intent.putExtras(msg.getData());
+
+                    //切換Activity
+                    reference.get().startActivity(intent);
                     break;
             }
         }
@@ -70,20 +83,6 @@ public class MainActivity extends AppCompatActivity {
     public interface getCookieCallBack{
         void callback(String cookie);
     }
-
-    public BufferedReader getCurriculum(HttpURLConnection connect){
-        try {
-            connect = (HttpURLConnection)(new URL("http://msd.ncut.edu.tw/wbcmss/show_timetable.asp?detail=yes")).openConnection();
-            setHttpUrlConnection(connect);
-            setHttpUrlConnectionCookie(connect, cookie);
-            Log.d("ASDASDSADAS", String.valueOf(connect.getHeaderFields()));
-
-            return getReader(connect);
-        } catch (IOException e) {
-            return null;
-        }
-    }
-
     static void setHttpUrlConnection(HttpURLConnection urlConnection){
         urlConnection.setInstanceFollowRedirects( true );
         urlConnection.addRequestProperty("User-Agent", USER_AGENT);
@@ -119,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    static BufferedReader getReader(HttpURLConnection urlConnection){
+    public static BufferedReader getReader(HttpURLConnection urlConnection){
         try {
             return new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "big5"));
         } catch (IOException e) {
@@ -177,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 public void callback(final String cookie) {
                     try {
                         HttpURLConnection connect = (HttpURLConnection)url.openConnection();//
-                        setHttpUrlConnection(connect);
+                        setHttpUrlConnection(connect);//set header
                         setHttpUrlConnectionCookie(connect, cookie);//將cookie值丟入某個連線
 
                         sendData(connect, String.format(urlParameters, id.getText().toString(), pwd.getText().toString()));//丟入你的帳密
@@ -192,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         Document document = Jsoup.parse(all.toString());
-                        if(!document.title().equals("")) {
+                        if(!document.title().equals("")) {//當title是空的，代表登入成功
                             Bundle bundle = new Bundle();
                             bundle.putString("TITLE", "ID or Password ERROR");
                             bundle.putString("MESSAGE", "please check your id or password");
@@ -205,6 +204,12 @@ public class MainActivity extends AppCompatActivity {
 
                         connect.disconnect();//連線成功後中斷連線(因為不需要了)
 
+                        Message msg = new Message();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("COOKIE", cookie);
+                        msg.arg1 = 1;
+                        msg.setData(bundle);
+                        handler.sendMessage(msg);
                         MainActivity.this.cookie = cookie;//存入cookie
                     } catch (IOException e) {
                         e.printStackTrace(); //錯誤處理
