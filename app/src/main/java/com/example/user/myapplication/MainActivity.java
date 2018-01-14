@@ -34,14 +34,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
-<<<<<<< HEAD
-public class MainActivity extends AppCompatActivity {//所有chrome的標頭檔
-
-
-=======
 public class MainActivity extends AppCompatActivity {
 //所有chrome的title
->>>>>>> 507f80e3ef1dae40101dbd3f01d6d5a3b7326682
     static final String COOKIES_HEADER = "Set-Cookie";
     static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36";
     static final String ACCEPT = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
@@ -50,14 +44,9 @@ public class MainActivity extends AppCompatActivity {
     static final String Referer ="http://msd.ncut.edu.tw/wbcmss/home.asp";
     static final String HOST = "msd.ncut.edu.tw";
 
-<<<<<<< HEAD
-    class myHandler extends Handler {//
-        private WeakReference<Activity> referance;
-=======
     static class myHandler extends Handler {
         //幫忙把東西塞在ui thread裡面
         private WeakReference<Activity> reference;
->>>>>>> 507f80e3ef1dae40101dbd3f01d6d5a3b7326682
         public myHandler(Activity activity){
             reference = new WeakReference<Activity>(activity);
         }
