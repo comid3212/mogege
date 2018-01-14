@@ -33,7 +33,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {//所有chrome的標頭檔
 
 
     static final String COOKIES_HEADER = "Set-Cookie";
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     static final String Referer ="http://msd.ncut.edu.tw/wbcmss/home.asp";
     static final String HOST = "msd.ncut.edu.tw";
 
-    class myHandler extends Handler {
+    class myHandler extends Handler {//
         private WeakReference<Activity> referance;
         public myHandler(Activity activity){
             referance = new WeakReference<Activity>(activity);
