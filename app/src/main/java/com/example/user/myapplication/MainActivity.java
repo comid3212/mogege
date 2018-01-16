@@ -53,14 +53,14 @@ public class MainActivity extends AppCompatActivity {
 
         public void handleMessage(Message msg) {
             switch (msg.arg1){
-                case 0:
+                case 0://輸入錯誤，顯示msg訊息
                     AlertDialog.Builder builder = new AlertDialog.Builder(reference.get());
                     builder.setTitle(msg.getData().getString("TITLE"));
                     builder.setMessage(msg.getData().getString("MESSAGE"));
                     builder.setPositiveButton("OK", null);
                     builder.show();
                     break;
-                case 1:
+                case 1://輸入成功，切換畫面
                     Intent intent = new Intent();
                     intent.setClass(reference.get(), ChoiceUi.class);
 
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             urlConnection.setInstanceFollowRedirects( true );
             urlConnection.setRequestMethod( "POST" );
             postData = data.getBytes("big5");
-            int    postDataLength = postData.length;
+            int  postDataLength = postData.length;
             urlConnection.setRequestProperty( "Content-Length", Integer.toString( postDataLength ));
             urlConnection.getOutputStream().write(postData);
         } catch (UnsupportedEncodingException e) {
@@ -130,9 +130,9 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
+                try {//將cooke加載
                     HttpURLConnection connect = (HttpURLConnection)url.openConnection();
-                    CookieManager cookieManager = new CookieManager();
+                    CookieManager cookieManager = new CookieManager();//接收cookie和發送cookie
                     setHttpUrlConnection(connect);
 
                     Map<String, List<String>> headerFields = connect.getHeaderFields();
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void callback(final String cookie) {
                     try {
-                        HttpURLConnection connect = (HttpURLConnection)url.openConnection();//
+                        HttpURLConnection connect = (HttpURLConnection)url.openConnection();
                         setHttpUrlConnection(connect);//set header
                         setHttpUrlConnectionCookie(connect, cookie);//將cookie值丟入某個連線
 
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                             Message msg = new Message();
                             msg.arg1 = 0;
                             msg.setData(bundle);
-                            handler.sendMessage(msg);
+                            handler.sendMessage(msg);//
                             return;
                         }
 

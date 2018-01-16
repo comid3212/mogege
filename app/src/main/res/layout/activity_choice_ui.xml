@@ -12,12 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="getgetCurriculum"
-        android:text="Button" />
+        android:text="課表查詢" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="changePassword"
-        android:text="Change Password" />
+        android:text="更改密碼" />
+
 </LinearLayout>
