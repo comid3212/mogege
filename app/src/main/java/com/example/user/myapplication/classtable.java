@@ -70,19 +70,31 @@ class MyAdapter extends BaseAdapter {
 
         LinearLayout layout = (LinearLayout)view.findViewById(R.id.classLayout);
         layout.removeAllViews();
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                1.0f
-        );
         ClassInfomation classInfomation = classes.get(i);
         for(int o = 0; o < classInfomation.classLength.size(); ++o) {
             String name = classInfomation.className.get(o);
             Integer length = classInfomation.classLength.get(o);
-            TextView textView = new MyTextView(context);
+            MyTextView textView = new MyTextView(context);
             textView.setText(name);
-            param.weight = length;
-            layout.addView(textView, param);
+            textView.setGravity(TextView.TEXT_ALIGNMENT_CENTER);
+            if(length != 1) {
+                textView.down = false;
+            }
+            layout.addView(textView, new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,1.0f
+            ));
+            for(int s = 1; s < length; ++s){
+                MyTextView textView1 = new MyTextView(context);
+                textView1.setGravity(TextView.TEXT_ALIGNMENT_CENTER);
+                textView1.down = false;
+                textView1.top = false;
+                layout.addView(textView1, new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        1.0f
+                ));
+            }
         }
 
         return view;
@@ -126,6 +138,20 @@ public class classtable extends AppCompatActivity {
                     for(int i = 0; i < 8; ++i) {
                         classInfomations.add(new ClassInfomation());
                     }
+                    classInfomations.get(1).className.add("星期一");
+                    classInfomations.get(1).classLength.add(1);
+                    classInfomations.get(2).className.add("星期二");
+                    classInfomations.get(2).classLength.add(1);
+                    classInfomations.get(3).className.add("星期三");
+                    classInfomations.get(3).classLength.add(1);
+                    classInfomations.get(4).className.add("星期四");
+                    classInfomations.get(4).classLength.add(1);
+                    classInfomations.get(5).className.add("星期五");
+                    classInfomations.get(5).classLength.add(1);
+                    classInfomations.get(6).className.add("星期六");
+                    classInfomations.get(6).classLength.add(1);
+                    classInfomations.get(7).className.add("星期日");
+                    classInfomations.get(7).classLength.add(1);
                     int[] padList = new int[8];
                     int count = 0;
                     for(int i=7;i<className.size() - 1;i++) {
@@ -144,11 +170,32 @@ public class classtable extends AppCompatActivity {
                         count %= 8;
                     }
 
+                    LinearLayout timeLayout = (LinearLayout)findViewById(R.id.timeLayout);
+                    timeLayout.removeAllViews();
+
+                    MyTextView textView = new MyTextView(reference.get());
+                    timeLayout.addView(textView, new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            1.0f
+                    ));
+                    for(int i = 0; i < classInfomations.get(0).classLength.size(); ++i) {
+                        MyTextView textView1 = new MyTextView(reference.get());
+                        textView1.setText(String.valueOf(i + 1));
+                        timeLayout.addView(textView1, new LinearLayout.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                1.0f
+                        ));
+                    }
+
                     MyAdapter adapter;
+                    classInfomations.remove(0);
                     adapter = new MyAdapter(reference.get() , classInfomations);
 
                     ListView.setAdapter(adapter);
                     //將ListAdapter設定至ListView裡面
+                    break;
             }
         }
     }
