@@ -44,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
     static final String Referer ="http://msd.ncut.edu.tw/wbcmss/home.asp";
     static final String HOST = "msd.ncut.edu.tw";
 
+    public void test(View view) {
+
+        Intent intent = new Intent();
+        intent.setClass(MainActivity.this, slidermain.class);
+        this.startActivity(intent);
+    }
+
     static class myHandler extends Handler {
         //幫忙把東西塞在ui thread裡面
         private WeakReference<Activity> reference;
@@ -62,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case 1://輸入成功，切換畫面
                     Intent intent = new Intent();
-                    intent.setClass(reference.get(), ChoiceUi.class);
+                    intent.setClass(reference.get(), slidermain.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
 

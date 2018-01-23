@@ -35,4 +35,11 @@
         android:text="Button"
         tools:layout_editor_absoluteX="130dp"
         tools:layout_editor_absoluteY="325dp" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="test"
+        android:text="Button" />
 </LinearLayout>
