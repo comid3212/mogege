@@ -1,7 +1,10 @@
 package com.example.user.myapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -13,17 +16,54 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class slidermain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+    implements NavigationView.OnNavigationItemSelectedListener {
     private String cookie;
+
+
+    private slidermain.myHandler handler = new slidermain.myHandler(this);
+    class myHandler extends Handler {
+        private WeakReference<Activity> reference;
+
+        myHandler(Activity activity) {
+            reference = new WeakReference<Activity>(activity);
+        }
+
+        @Override
+
+        public void handleMessage(Message msg) {
+            switch (msg.arg1) {
+                case 0:
+                    break;
+                case 1:
+                    Bundle bundle = msg.getData();
+                    ArrayList<Integer> classDay = bundle.getIntegerArrayList("ClassDay");
+                    ArrayList<String> classMouth = bundle.getStringArrayList("ClassMouth");
+                    break;
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,4 +175,46 @@ public class slidermain extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    protected void getDateInfo(final String date) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpURLConnection connect = null;
+                try {
+                    connect = (HttpURLConnection) (new URL("http://www.ncut.edu.tw/news2/event_list_day.php?nid=" + date)).openConnection();
+                    MainActivity.setHttpUrlConnection(connect);
+                    MainActivity.getReader(connect);
+                    StringBuilder all = new StringBuilder();
+
+                    Document document = Jsoup.parse(all.toString());
+                    Element element = document.getElementsByTag("td").get(5);
+                    Elements rawinfomation = element.getElementsByTag("div");
+                    List<Element> infomation = new Elements();
+                    for(int i = 1; i < rawinfomation.size() - 1; i += 6) {
+                        infomation.add(rawinfomation.get(i));
+                    }
+
+
+                    List<String> activitys = new ArrayList<>();
+                    for(Element ele : infomation) {
+                        Elements info = ele.getElementsByTag("a");
+                        activitys.add(info.get(0).text());
+                   }
+
+                    Message msg = new Message();
+                    msg.arg1 = 1;
+                    Bundle bundle = new Bundle();
+                    bundle.putString("TITLE", date);
+                    for(String activity : activitys) {
+                        bundle.putString("MESSAGE", activity + "\n");
+                    }
+                    msg.setData(bundle);
+                    handler.sendMessage(msg);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
 }

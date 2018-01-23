@@ -32,9 +32,7 @@ public class ChoiceUi extends AppCompatActivity {
         msg.setData(bundle);
         handler.sendMessage(msg);
     }
-    public void classtable(View view) {
 
-    }
 
     class myHandler extends Handler {
         WeakReference<Activity> reference;
