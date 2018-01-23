@@ -126,6 +126,14 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     }
+    public static BufferedReader getReader(HttpURLConnection urlConnection, String type){
+        try {
+            return new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), type));
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
 
     static void getCookie(final URL url, final getCookieCallBack callback){
         new Thread(new Runnable() {

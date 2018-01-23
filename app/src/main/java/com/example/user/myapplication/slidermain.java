@@ -1,10 +1,12 @@
 package com.example.user.myapplication;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -16,9 +18,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.CalendarView;
+import android.widget.CalendarView.OnDateChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,15 @@ import java.util.List;
 public class slidermain extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
     private String cookie;
+    private String website="%d-%d-%d";
+    private CalendarView testcalendar;
+    static final String COOKIES_HEADER = "Set-Cookie";
+    static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36";
+    static final String ACCEPT = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
+    static final String ACCEPT_ENCODING = "gzip, deflate";
+    static final String Accept_Language  = "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7";
+    static final String Referer ="http://web2.ncut.edu.tw/bin/home.php";
+    static final String HOST = "www.ncut.edu.tw";
 
 
     private slidermain.myHandler handler = new slidermain.myHandler(this);
@@ -57,9 +67,11 @@ public class slidermain extends AppCompatActivity
                 case 0:
                     break;
                 case 1:
-                    Bundle bundle = msg.getData();
-                    ArrayList<Integer> classDay = bundle.getIntegerArrayList("ClassDay");
-                    ArrayList<String> classMouth = bundle.getStringArrayList("ClassMouth");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(reference.get());
+                    builder.setTitle(msg.getData().getString("TITLE"));
+                    builder.setMessage(msg.getData().getString("MESSAGE"));
+                    builder.setPositiveButton("OK", null);
+                    builder.show();
                     break;
             }
         }
@@ -70,6 +82,7 @@ public class slidermain extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slidermain);
+        testcalendar=(CalendarView) findViewById(R.id.testcalendar);
         Bundle bundle = this.getIntent().getExtras();
         cookie = this.getIntent().getExtras().getString("COOKIE");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -81,6 +94,14 @@ public class slidermain extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        testcalendar.setOnDateChangeListener(new OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView testcalendar ,int year, int month, int dayOfMonth) {
+                String date = year + "年" + (month + 1) + "月" + dayOfMonth + "日";
+                Toast.makeText(slidermain.this, date, Toast.LENGTH_LONG).show();
+                getDateInfo(String.format(website, year, month+1,dayOfMonth));
+            }
+        });
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -183,14 +204,18 @@ public class slidermain extends AppCompatActivity
                 try {
                     connect = (HttpURLConnection) (new URL("http://www.ncut.edu.tw/news2/event_list_day.php?nid=" + date)).openConnection();
                     MainActivity.setHttpUrlConnection(connect);
-                    MainActivity.getReader(connect);
+                    BufferedReader reader = MainActivity.getReader(connect, "utf-8");
                     StringBuilder all = new StringBuilder();
+                    String line;
+                    while((line = reader.readLine()) != null){
+                        all.append(line);
+                    }
 
                     Document document = Jsoup.parse(all.toString());
                     Element element = document.getElementsByTag("td").get(5);
                     Elements rawinfomation = element.getElementsByTag("div");
                     List<Element> infomation = new Elements();
-                    for(int i = 1; i < rawinfomation.size() - 1; i += 6) {
+                    for(int i = 1; i < rawinfomation.size() - 1; i += 7) {
                         infomation.add(rawinfomation.get(i));
                     }
 
@@ -198,7 +223,8 @@ public class slidermain extends AppCompatActivity
                     List<String> activitys = new ArrayList<>();
                     for(Element ele : infomation) {
                         Elements info = ele.getElementsByTag("a");
-                        activitys.add(info.get(0).text());
+                        if(!info.attr("class").equals("null"))
+                            activitys.add(info.get(0).attr("title"));
                    }
 
                     Message msg = new Message();
