@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,13 +44,6 @@ public class MainActivity extends AppCompatActivity {
     static final String Accept_Language  = "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7";
     static final String Referer ="http://msd.ncut.edu.tw/wbcmss/home.asp";
     static final String HOST = "msd.ncut.edu.tw";
-
-    public void test(View view) {
-
-        Intent intent = new Intent();
-        intent.setClass(MainActivity.this, slidermain.class);
-        this.startActivity(intent);
-    }
 
     static class myHandler extends Handler {
         //幫忙把東西塞在ui thread裡面
@@ -211,8 +205,24 @@ public class MainActivity extends AppCompatActivity {
 
                         connect.disconnect();//連線成功後中斷連線(因為不需要了)
 
+                        connect = (HttpURLConnection) (new URL("http://msd.ncut.edu.tw/wbcmss/greeting.asp")).openConnection();
+                        MainActivity.setHttpUrlConnection(connect);
+                        MainActivity.setHttpUrlConnectionCookie(connect, cookie);
+                        MainActivity.getReader(connect);
+                        BufferedReader reader = MainActivity.getReader(connect);
+                        all=new StringBuilder();
+                        while((line = reader.readLine()) != null){
+                            all.append(line);
+                        }
+
                         Message msg = new Message();
                         Bundle bundle = new Bundle();
+                        document = Jsoup.parse(all.toString());
+                        Elements information = document.getElementsByTag("span");
+                        line = information.get(0).text();
+                        int index = line.indexOf("學號:");
+                        bundle.putString("ID", line.substring(index + 3, index + 11));
+                        bundle.putString("NAME", information.get(1).text());
                         bundle.putString("COOKIE", cookie);
                         msg.arg1 = 1;
                         msg.setData(bundle);

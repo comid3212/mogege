@@ -1,5 +1,6 @@
 package com.example.user.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.BufferedReader;
+
 public class slidermain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private String cookie;
@@ -23,6 +30,7 @@ public class slidermain extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slidermain);
+        Bundle bundle = this.getIntent().getExtras();
         cookie = this.getIntent().getExtras().getString("COOKIE");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -39,7 +47,8 @@ public class slidermain extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View view = navigationView.getHeaderView(0);
-        ((TextView)view.findViewById(R.id.user_name)).setText("");
+        ((TextView)view.findViewById(R.id.user_name)).setText(bundle.getString("NAME"));
+        ((TextView)view.findViewById(R.id.id_vew)).setText(bundle.getString("ID"));
     }
 
     @Override
@@ -81,8 +90,34 @@ public class slidermain extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+
+            Intent intent = new Intent();
+            intent = new Intent();
+            intent.setClass(this, classtable.class);
+
+            //new一個Bundle物件，並將要傳遞的資料傳入
+
+            //將Bundle物件assign給intent
+            Bundle bundle = new Bundle();
+            bundle.putString("COOKIE", cookie);
+            intent.putExtras(bundle);
+
+            //切換Activity
+            this.startActivity(intent);
         } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent();
+            intent = new Intent();
+            intent.setClass(this, ChangePassword.class);
+
+            //new一個Bundle物件，並將要傳遞的資料傳入
+
+            //將Bundle物件assign給intent
+            Bundle bundle = new Bundle();
+            bundle.putString("COOKIE", cookie);
+            intent.putExtras(bundle);
+
+            //切換Activity
+            this.startActivity(intent);
 
         } else if (id == R.id.nav_slideshow) {
 
