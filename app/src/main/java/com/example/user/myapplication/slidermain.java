@@ -2,6 +2,7 @@ package com.example.user.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -13,7 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CalendarView;
+import android.widget.CalendarView.OnDateChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,12 +28,21 @@ import java.io.BufferedReader;
 public class slidermain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private String cookie;
+    private CalendarView testcalendar;
+    static final String COOKIES_HEADER = "Set-Cookie";
+    static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36";
+    static final String ACCEPT = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
+    static final String ACCEPT_ENCODING = "gzip, deflate";
+    static final String Accept_Language  = "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7";
+    static final String Referer ="http://web2.ncut.edu.tw/bin/home.php";
+    static final String HOST = "www.ncut.edu.tw";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slidermain);
+        testcalendar=(CalendarView) findViewById(R.id.testcalendar);
         Bundle bundle = this.getIntent().getExtras();
         cookie = this.getIntent().getExtras().getString("COOKIE");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -41,6 +54,13 @@ public class slidermain extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        testcalendar.setOnDateChangeListener(new OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView testcalendar ,int year, int month, int dayOfMonth) {
+                String date = year + "年" + (month + 1) + "月" + dayOfMonth + "日";
+                Toast.makeText(slidermain.this, date, Toast.LENGTH_LONG).show();
+            }
+        });
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
