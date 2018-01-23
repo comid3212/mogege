@@ -24,10 +24,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class slidermain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private String cookie;
+    private String website=" http://www.ncut.edu.tw/news2/event_list_day.php?nid=%d-%d-%d";
     private CalendarView testcalendar;
     static final String COOKIES_HEADER = "Set-Cookie";
     static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36";
@@ -59,6 +62,7 @@ public class slidermain extends AppCompatActivity
             public void onSelectedDayChange(@NonNull CalendarView testcalendar ,int year, int month, int dayOfMonth) {
                 String date = year + "年" + (month + 1) + "月" + dayOfMonth + "日";
                 Toast.makeText(slidermain.this, date, Toast.LENGTH_LONG).show();
+                String.format(website, year, month+1,dayOfMonth);
             }
         });
 
