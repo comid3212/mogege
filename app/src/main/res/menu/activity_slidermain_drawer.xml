@@ -13,7 +13,11 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="更改密碼" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_doorline"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="畢業門檻" />
+        <item
+            android:id="@+id/nav_shop"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="二手拍賣" />
         <item
