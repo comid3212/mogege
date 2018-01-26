@@ -30,7 +30,10 @@
             android:label="@string/title_activity_slidermain"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Doorline" />
-        <activity android:name=".Gradeshistory"></activity>
+        <activity android:name=".Gradeshistory" />
+        <activity android:name=".GradeList" />
+        <activity android:name=".GradesChoicelist" />
+        <activity android:name=".AddAllgrades"></activity>
     </application>
 
 </manifest>

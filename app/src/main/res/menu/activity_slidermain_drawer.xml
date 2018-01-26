@@ -23,7 +23,7 @@
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
-            android:title="課程回饋區" />
+            android:title="歷年成績" />
     </group>
 
     <item android:title="Communicate">

@@ -8,17 +8,17 @@
     tools:context="com.example.user.myapplication.ChoiceUi">
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="getgetCurriculum"
-        android:text="課表查詢" />
-
-    <Button
         android:id="@+id/button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="changePassword"
-        android:text="更改密碼" />
+        android:text="104上學期成績" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="getgetCurriculum"
+        android:text="104下學期成績" />
 
 </LinearLayout>
