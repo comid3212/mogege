@@ -3,22 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://H:\專題\mogege-master\mogege-master\app\app.iml" filepath="H:\專題\mogege-master\mogege-master\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
-      <module fileurl="file://H:\專題\mogege-master\mogege-master\lib\lib.iml" filepath="H:\專題\mogege-master\mogege-master\lib\lib.iml" />
-<<<<<<< HEAD
-      <module fileurl="file://$PROJECT_DIR$/mogege.iml" filepath="$PROJECT_DIR$/mogege.iml" />
-      <module fileurl="file://D:\mogege\mogege-master.iml" filepath="D:\mogege\mogege-master.iml" />
-      <module fileurl="file://C:\Users\user\AndroidStudioProjects\rebornpj\mogege-master.iml" filepath="C:\Users\user\AndroidStudioProjects\rebornpj\mogege-master.iml" />
-      <module fileurl="file://H:\project\mogege-master\rebornpj.iml" filepath="H:\project\mogege-master\rebornpj.iml" />
-=======
-      <module fileurl="file://H:\project\mogege-master\mogege.iml" filepath="H:\project\mogege-master\mogege.iml" />
       <module fileurl="file://$PROJECT_DIR$/mogege-master.iml" filepath="$PROJECT_DIR$/mogege-master.iml" />
-      <module fileurl="file://D:\mogege\mogege-master.iml" filepath="D:\mogege\mogege-master.iml" />
-      <module fileurl="file://C:\Users\user\AndroidStudioProjects\rebornpj\mogege-master.iml" filepath="C:\Users\user\AndroidStudioProjects\rebornpj\mogege-master.iml" />
->>>>>>> 6ac517b968b20540ebbea018eeb1e5f59e985f28
-      <module fileurl="file://H:\專題\mogege-master\mogege-master\rebornpj.iml" filepath="H:\專題\mogege-master\mogege-master\rebornpj.iml" />
-      <module fileurl="file://H:\project\mogege-master\rebornpj.iml" filepath="H:\project\mogege-master\rebornpj.iml" />
     </modules>
   </component>
 </project>

@@ -247,10 +247,6 @@ public class slidermain extends AppCompatActivity
                         if(!info.attr("class").equals("null"))
 
                                 activitys.add("\n"+info.get(0).attr("title")+"\n" );
-
-
-
-
                    }
 
                     Message msg = new Message();
