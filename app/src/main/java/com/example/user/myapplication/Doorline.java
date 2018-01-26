@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class Doorline extends AppCompatActivity {
     private String cookie;
     private TextView english_view,copysience_view,service_view,work_view;
+    private TextView textView2,textView3,textView4,textView5;
     private myHandler handler = new myHandler(this);
     class myHandler extends Handler{
         private WeakReference<Activity> reference;
@@ -40,6 +41,10 @@ public class Doorline extends AppCompatActivity {
         copysience_view = (TextView)findViewById(R.id.copysience_view);
         service_view = (TextView)findViewById(R.id.service_view );
         work_view = (TextView)findViewById(R.id.work_view);
+         textView2 = (TextView) findViewById(R.id.textView2);
+         textView3 = (TextView)findViewById(R.id.textView3);
+         textView4 = (TextView)findViewById(R.id.textView4 );
+         textView5 = (TextView)findViewById(R.id.textView5);
 
         new Thread(new Runnable() {
             @Override
@@ -58,12 +63,17 @@ public class Doorline extends AppCompatActivity {
                     }
                     Document document = Jsoup.parse(all.toString());
                     Elements information = document.getElementsByTag("span");
-                    ArrayList<String> className = new ArrayList<String>();
+                    Document document2 = Jsoup.parse(all.toString());
+                    Elements information2 = document2.getElementsByTag("td");
 
                     english_view.setText(information.get(0).text());
                     copysience_view.setText(information.get(1).text());
                     service_view.setText(information.get(2).text());
                     work_view.setText(information.get(3).text());
+                    textView2.setText(information2.get(0).text());
+                    textView3.setText(information2.get(4).text());
+                    textView4.setText(information2.get(8).text());
+                    textView5.setText(information2.get(12).text());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

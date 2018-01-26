@@ -37,6 +37,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.prefs.BackingStoreException;
 
 public class slidermain extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -70,7 +71,13 @@ public class slidermain extends AppCompatActivity
                     AlertDialog.Builder builder = new AlertDialog.Builder(reference.get());
                     builder.setTitle(msg.getData().getString("TITLE"));
                     builder.setMessage(msg.getData().getString("MESSAGE"));
+                    //builder.setIcon(android.R.drawable.ic_dialog_info);
+
+                   // builder.setItems(new String[]{String.valueOf( msg.getData().getString("MESSAGE"))},null).setPositiveButton("OK", null);
+
+
                     builder.setPositiveButton("OK", null);
+
                     builder.show();
                     break;
             }
@@ -230,20 +237,20 @@ public class slidermain extends AppCompatActivity
                 HttpURLConnection connect = null;
                 try {
                     connect = (HttpURLConnection) (new URL("http://www.ncut.edu.tw/news2/event_list_day.php?nid=" + date)).openConnection();
-                    MainActivity.setHttpUrlConnection(connect);
-                    BufferedReader reader = MainActivity.getReader(connect, "utf-8");
+                    MainActivity.setHttpUrlConnection(connect);//連結到抓資訊的網址
+                    BufferedReader reader = MainActivity.getReader(connect, "utf-8");//轉換顯示格式
                     StringBuilder all = new StringBuilder();
                     String line;
                     while((line = reader.readLine()) != null){
-                        all.append(line);
+                        all.append(line);//一行一行讀取網頁資訊
                     }
 
-                    Document document = Jsoup.parse(all.toString());
-                    Element element = document.getElementsByTag("td").get(5);
-                    Elements rawinfomation = element.getElementsByTag("div");
-                    List<Element> infomation = new Elements();
+                    Document document = Jsoup.parse(all.toString());//抓取
+                    Element element = document.getElementsByTag("td").get(5);//抓取網頁中td資訊中的5
+                    Elements rawinfomation = element.getElementsByTag("div");//td抓div資訊
+                    List<Element> infomation = new Elements();//清空資訊
                     for(int i = 1; i < rawinfomation.size() - 1; i += 7) {
-                        infomation.add(rawinfomation.get(i));
+                        infomation.add(rawinfomation.get(i));//重新抓取資訊
                     }
 
 
@@ -251,16 +258,17 @@ public class slidermain extends AppCompatActivity
                     for(Element ele : infomation) {
                         Elements info = ele.getElementsByTag("a");
                         if(!info.attr("class").equals("null"))
-                            activitys.add(info.get(0).attr("title"));
+
+                                activitys.add("\n"+info.get(0).attr("title")+"\n" );
                    }
 
                     Message msg = new Message();
                     msg.arg1 = 1;
                     Bundle bundle = new Bundle();
                     bundle.putString("TITLE", date);
-                    for(String activity : activitys) {
-                        bundle.putString("MESSAGE", activity + "\n");
-                    }
+                    bundle.putString("MESSAGE", activitys +"" );
+
+
                     msg.setData(bundle);
                     handler.sendMessage(msg);
                 } catch (IOException e) {
