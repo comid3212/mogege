@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">勤益APP</string>
-    <string name="title_activity_slidermain">slidermain</string>
-
+    <string name="title_activity_slidermain">日曆</string>
+    <string name="title_activity_classtable">課表</string>
+    <string name="title_activity_doorline">畢業門檻</string>
+    <string name="title_activity_change_password">更改密碼</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

@@ -5,41 +5,29 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="課表" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="更改密碼" />
-        <item
-            android:id="@+id/nav_doorline"
+            android:id="@+id/nav_student"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="畢業門檻" />
+            android:title="學生篇" />
         <item
-            android:id="@+id/nav_shop"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:id="@+id/nav_twohard"
+            android:icon="@drawable/ic_menu_send"
             android:title="二手拍賣" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_class"
             android:icon="@drawable/ic_menu_manage"
-            android:title="歷年成績" />
+            android:title="課程回報區" />
+        <item
+            android:id="@+id/nav_shop"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="無" />
     </group>
 
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="電子學生證" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-            <item
                 android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="Logout" />
+                android:icon="@drawable/ic_menu_share"
+                android:title="登出" />
         </menu>
     </item>
 

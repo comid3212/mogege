@@ -157,11 +157,11 @@ public class slidermain extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_student) {
 
             Intent intent = new Intent();
             intent = new Intent();
-            intent.setClass(this, classtable.class);
+            intent.setClass(this, ChoiceUi.class);
 
             //new一個Bundle物件，並將要傳遞的資料傳入
 
@@ -172,42 +172,18 @@ public class slidermain extends AppCompatActivity
 
             //切換Activity
             this.startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-            Intent intent = new Intent();
-            intent = new Intent();
-            intent.setClass(this, ChangePassword.class);
+        } else if (id == R.id.nav_twohard) {
 
-            //new一個Bundle物件，並將要傳遞的資料傳入
 
-            //將Bundle物件assign給intent
-            Bundle bundle = new Bundle();
-            bundle.putString("COOKIE", cookie);
-            intent.putExtras(bundle);
 
-            //切換Activity
-            this.startActivity(intent);
+        } else if (id == R.id.nav_class) {
 
-        } else if (id == R.id.nav_doorline) {
-            Intent intent = new Intent();
-            intent = new Intent();
-            intent.setClass(this, Doorline.class);
-
-            //new一個Bundle物件，並將要傳遞的資料傳入
-
-            //將Bundle物件assign給intent
-            Bundle bundle = new Bundle();
-            bundle.putString("COOKIE", cookie);
-            intent.putExtras(bundle);
-
-            //切換Activity
-            this.startActivity(intent);
         } else if (id == R.id.nav_shop) {
 
-
-        } else if (id == R.id.nav_manage) {
+        }else if (id == R.id.nav_logout){
             Intent intent = new Intent();
             intent = new Intent();
-            intent.setClass(this, GradesChoicelist.class);
+            intent.setClass(this, MainActivity.class);
 
             //new一個Bundle物件，並將要傳遞的資料傳入
 
@@ -218,12 +194,6 @@ public class slidermain extends AppCompatActivity
 
             //切換Activity
             this.startActivity(intent);
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        } else if (id == R.id.nav_logout){
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

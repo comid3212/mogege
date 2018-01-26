@@ -8,17 +8,38 @@
     tools:context="com.example.user.myapplication.ChoiceUi">
 
     <Button
-        android:id="@+id/button3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="changePassword"
-        android:text="104上學期成績" />
-
-    <Button
         android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="getgetCurriculum"
-        android:text="104下學期成績" />
+        android:onClick="classtable"
+        android:text="課表" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="changePassword"
+        android:text="更改密碼" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="Doorline"
+        android:text="畢業門檻" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="GradesChoicelist"
+        android:text="歷年成績" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="back"
+        android:text="登出" />
 
 </LinearLayout>

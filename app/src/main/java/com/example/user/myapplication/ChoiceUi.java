@@ -24,9 +24,41 @@ public class ChoiceUi extends AppCompatActivity {
     private myHandler handler = new myHandler(this);
 
 
-    public void changePassword(View view) {
+    public void classtable(View view) {
         Message msg = new Message();
         msg.arg1 = 1;
+        Bundle bundle = new Bundle();
+        bundle.putString("COOKIE", cookie);
+        msg.setData(bundle);
+        handler.sendMessage(msg);
+    }
+    public void changePassword(View view) {
+        Message msg = new Message();
+        msg.arg1 = 2;
+        Bundle bundle = new Bundle();
+        bundle.putString("COOKIE", cookie);
+        msg.setData(bundle);
+        handler.sendMessage(msg);
+    }
+    public void Doorline(View view) {
+        Message msg = new Message();
+        msg.arg1 = 3;
+        Bundle bundle = new Bundle();
+        bundle.putString("COOKIE", cookie);
+        msg.setData(bundle);
+        handler.sendMessage(msg);
+    }
+    public void GradesChoicelist(View view) {
+        Message msg = new Message();
+        msg.arg1 = 4;
+        Bundle bundle = new Bundle();
+        bundle.putString("COOKIE", cookie);
+        msg.setData(bundle);
+        handler.sendMessage(msg);
+    }
+    public void back(View view) {
+        Message msg = new Message();
+        msg.arg1 = 5;
         Bundle bundle = new Bundle();
         bundle.putString("COOKIE", cookie);
         msg.setData(bundle);
@@ -47,7 +79,7 @@ public class ChoiceUi extends AppCompatActivity {
                     break;
                 case 1:
                     intent = new Intent();
-                    intent.setClass(reference.get(), GradeList.class);
+                    intent.setClass(reference.get(), classtable.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
 
@@ -59,7 +91,7 @@ public class ChoiceUi extends AppCompatActivity {
                     break;
                 case 2:
                     intent = new Intent();
-                    intent.setClass(reference.get(), GradeList.class);
+                    intent.setClass(reference.get(), ChangePassword.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
 
@@ -71,7 +103,7 @@ public class ChoiceUi extends AppCompatActivity {
                     break;
                 case 3:
                     intent = new Intent();
-                    intent.setClass(reference.get(), GradeList.class);
+                    intent.setClass(reference.get(), Doorline.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
 
@@ -83,7 +115,7 @@ public class ChoiceUi extends AppCompatActivity {
                     break;
                 case 4:
                     intent = new Intent();
-                    intent.setClass(reference.get(), GradeList.class);
+                    intent.setClass(reference.get(), GradesChoicelist.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
 
@@ -95,7 +127,7 @@ public class ChoiceUi extends AppCompatActivity {
                     break;
                 case 5:
                     intent = new Intent();
-                    intent.setClass(reference.get(), GradeList.class);
+                    intent.setClass(reference.get(), MainActivity.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
 
@@ -115,13 +147,6 @@ public class ChoiceUi extends AppCompatActivity {
         setContentView(R.layout.activity_choice_ui);
         cookie = this.getIntent().getExtras().getString("COOKIE");
     }
-    public void getgetCurriculum(View view) {
-        Message msg = new Message();
-        msg.arg1 = 1;
-        Bundle bundle = new Bundle();
-        bundle.putString("COOKIE", cookie);
-        msg.setData(bundle);
-        handler.sendMessage(msg);
-    }
+
 
 }
