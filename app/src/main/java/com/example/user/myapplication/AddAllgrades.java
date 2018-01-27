@@ -29,6 +29,21 @@ public class AddAllgrades extends AppCompatActivity {
         myHandler(Activity activity) {
             reference = new WeakReference<Activity>(activity);
         }
+        public void handleMessage(Message msg) {
+            switch (msg.arg1) {
+                case 0:
+                    break;
+                case 1:
+                    Bundle bundle = msg.getData();
+                    ArrayList<String> Message = bundle.getStringArrayList("Inner");
+                    credit_view.setText(Message.get(0));
+                    grades_view.setText(Message.get(1));
+                    rank_view.setText(Message.get(2));
+
+
+                    break;
+            }
+        }
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +73,22 @@ public class AddAllgrades extends AppCompatActivity {
                     Elements information = document.getElementsByTag("td");
 
 
-                    credit_view.setText(information.get(4).text());
-                    grades_view.setText(information.get(5).text());
-                    rank_view.setText(information.get(6).text());
+                    ArrayList<String> Message = new ArrayList<String>();
+                    for(int i=4;i<=6;i++)
+                    {
+                        if(!information.get(i).text().equals("")){
+                            Message.add(information.get(i).text());
+                        } else {
+                            Message.add("");
+                        }
+                    }
+
+                    Message msg = new Message();
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArrayList("Inner", Message);
+                    msg.arg1 = 1;
+                    msg.setData(bundle);
+                    handler.sendMessage(msg);
 
 
                 } catch (IOException e) {

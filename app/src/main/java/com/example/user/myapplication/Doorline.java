@@ -29,6 +29,31 @@ public class Doorline extends AppCompatActivity {
         myHandler(Activity activity){
             reference = new WeakReference<Activity>(activity);
         }
+
+        public void handleMessage(Message msg) {
+            switch (msg.arg1) {
+                case 0:
+                    break;
+                case 1:
+                    Bundle bundle = msg.getData();
+                    ArrayList<String> Tagg = bundle.getStringArrayList("Tag");
+                    ArrayList<String> Message = bundle.getStringArrayList("Inner");
+                    english_view.setText(Message.get(0));
+                    copysience_view.setText(Message.get(1));
+                    service_view.setText(Message.get(2));
+                    work_view.setText(Message.get(3));
+                    textView2.setText(Tagg.get(0));
+                    textView3.setText(Tagg.get(1));
+                    textView4.setText(Tagg.get(2));
+                    textView5.setText(Tagg.get(3));
+
+                    break;
+            }
+        }
+
+
+
+
         }
 
     @Override
@@ -65,15 +90,34 @@ public class Doorline extends AppCompatActivity {
                     Elements information = document.getElementsByTag("span");
                     Document document2 = Jsoup.parse(all.toString());
                     Elements information2 = document2.getElementsByTag("td");
+                    ArrayList<String> Message = new ArrayList<String>();
+                    ArrayList<String> Tagg = new ArrayList<String>();
+                    for(int i=0;i<4;i++)
+                    {
+                        if(!information.get(i).text().equals("")){
+                            Message.add(information.get(i).text());
+                        } else {
+                            Message.add("");
+                        }
+                    }
+                    for(int i=0;i<=12;i+=4)
+                    {
+                        if(!information2.get(i).text().equals("")){
+                            Tagg.add(information2.get(i).text());
+                        } else {
+                            Tagg.add("");
+                        }
+                    }
+                    Message msg = new Message();
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArrayList("Tag", Tagg);
+                    bundle.putStringArrayList("Inner", Message);
+                    msg.arg1 = 1;
+                    msg.setData(bundle);
+                    handler.sendMessage(msg);
 
-                    english_view.setText(information.get(0).text());
-                    copysience_view.setText(information.get(1).text());
-                    service_view.setText(information.get(2).text());
-                    work_view.setText(information.get(3).text());
-                    textView2.setText(information2.get(0).text());
-                    textView3.setText(information2.get(4).text());
-                    textView4.setText(information2.get(8).text());
-                    textView5.setText(information2.get(12).text());
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

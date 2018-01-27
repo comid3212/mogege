@@ -4,7 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mogege.iml" filepath="$PROJECT_DIR$/mogege.iml" />
+      <module fileurl="file://H:\project\mogege-master\mogege.iml" filepath="H:\project\mogege-master\mogege.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mogege-master.iml" filepath="$PROJECT_DIR$/mogege-master.iml" />
     </modules>
   </component>
 </project>
