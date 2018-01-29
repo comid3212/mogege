@@ -32,6 +32,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     static final String Accept_Language  = "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7";
     static final String Referer ="http://msd.ncut.edu.tw/wbcmss/home.asp";
     static final String HOST = "msd.ncut.edu.tw";
+
 
     static class myHandler extends Handler {
         //幫忙把東西塞在ui thread裡面
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     //切換Activity
                     reference.get().startActivity(intent);
                     break;
+                    //( (MainActivity)reference.get()). textView8.setText(Message.get(6));
             }
         }
     }
@@ -171,8 +174,10 @@ public class MainActivity extends AppCompatActivity {
       protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         id = (TextView)findViewById(R.id.editText);
         pwd = (TextView)findViewById(R.id.editText2);
+
     }
 
     public void login(View view) {//登入流程
@@ -188,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
                         setHttpUrlConnection(connect);//set header
                         setHttpUrlConnectionCookie(connect, cookie);//將cookie值丟入某個連線
 
+
                         sendData(connect, String.format(urlParameters, id.getText().toString(), pwd.getText().toString()));//丟入你的帳密
                         if(connect.getResponseCode() != 200)//如果錯誤
                             return;
@@ -200,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         Document document = Jsoup.parse(all.toString());
+
                         if(!document.title().equals("")) {//當title是空的，代表登入成功
                             Bundle bundle = new Bundle();
                             bundle.putString("TITLE", "ID or Password ERROR");
@@ -209,7 +216,11 @@ public class MainActivity extends AppCompatActivity {
                             msg.setData(bundle);
                             handler.sendMessage(msg);//
                             return;
+
                         }
+
+
+
 
                         connect.disconnect();//連線成功後中斷連線(因為不需要了)
 

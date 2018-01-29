@@ -33,7 +33,8 @@
         <activity android:name=".Gradeshistory" />
         <activity android:name=".GradeList" />
         <activity android:name=".GradesChoicelist" />
-        <activity android:name=".AddAllgrades"></activity>
+        <activity android:name=".AddAllgrades" />
+        <activity android:name=".News"></activity>
     </application>
 
 </manifest>
