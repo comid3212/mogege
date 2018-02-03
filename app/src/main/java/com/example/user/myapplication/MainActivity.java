@@ -3,6 +3,7 @@ package com.example.user.myapplication;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telecom.Call;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -33,6 +35,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +48,34 @@ public class MainActivity extends AppCompatActivity {
     static final String Accept_Language  = "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7";
     static final String Referer ="http://msd.ncut.edu.tw/wbcmss/home.asp";
     static final String HOST = "msd.ncut.edu.tw";
+    
+
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) { // 攔截返回鍵
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("確認視窗")
+                    .setMessage("確定要結束應用程式嗎?")
+                    .setPositiveButton("確定",
+                            new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    finish();
+                                }
+                            })
+                    .setNegativeButton("取消",
+                            new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    // TODO Auto-generated method stub
+
+                                }
+                            }).show();
+        }
+        return true;
+    }
 
 
     static class myHandler extends Handler {

@@ -64,6 +64,14 @@ public class ChoiceUi extends AppCompatActivity {
         msg.setData(bundle);
         handler.sendMessage(msg);
     }
+    public void test(View view) {
+        Message msg = new Message();
+        msg.arg1 = 5;
+        Bundle bundle = new Bundle();
+        bundle.putString("COOKIE", cookie);
+        msg.setData(bundle);
+        handler.sendMessage(msg);
+    }
 
 
     class myHandler extends Handler {
@@ -126,17 +134,11 @@ public class ChoiceUi extends AppCompatActivity {
                     reference.get().startActivity(intent);
                     break;
                 case 5:
-                    intent = new Intent();
-                    intent.setClass(reference.get(), MainActivity.class);
-
-                    //new一個Bundle物件，並將要傳遞的資料傳入
-
-                    //將Bundle物件assign給intent
-                    intent.putExtras(msg.getData());
-
-                    //切換Activity
-                    reference.get().startActivity(intent);
+                    intent = new Intent(reference.get(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                     break;
+
             }
         }
     }
@@ -146,6 +148,7 @@ public class ChoiceUi extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice_ui);
         cookie = this.getIntent().getExtras().getString("COOKIE");
+
     }
 
 

@@ -34,7 +34,8 @@
         <activity android:name=".GradeList" />
         <activity android:name=".GradesChoicelist" />
         <activity android:name=".AddAllgrades" />
-        <activity android:name=".News"></activity>
+        <activity android:name=".News" />
+        <activity android:name=".test"></activity>
     </application>
 
 </manifest>
