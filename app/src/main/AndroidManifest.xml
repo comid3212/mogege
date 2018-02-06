@@ -30,14 +30,13 @@
             android:label="@string/title_activity_slidermain"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Doorline" />
-        <activity android:name=".Gradeshistory" />
         <activity android:name=".GradeList" />
         <activity android:name=".GradesChoicelist" />
         <activity android:name=".AddAllgrades" />
         <activity android:name=".News" />
-        <activity android:name=".Copysience" />
         <activity android:name=".CopyScience" />
         <activity android:name=".CsieNews"></activity>
+
     </application>
 
 </manifest>

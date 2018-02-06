@@ -68,7 +68,6 @@ public class ChangePassword extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
-
         cookie = this.getIntent().getExtras().getString("COOKIE");
         textView1 = (TextView)findViewById(R.id.editText3);
         textView2 = (TextView)findViewById(R.id.editText4);

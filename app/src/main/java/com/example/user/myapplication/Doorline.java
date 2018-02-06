@@ -60,7 +60,6 @@ public class Doorline extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doorline);
-
         cookie = this.getIntent().getExtras().getString("COOKIE");
         english_view = (TextView)findViewById(R.id. english_view);
         copysience_view = (TextView)findViewById(R.id.copysience_view);

@@ -208,19 +208,9 @@ public class slidermain extends AppCompatActivity
         } else if (id == R.id.nav_shop) {
 
         }else if (id == R.id.nav_logout){
-            Intent intent = new Intent();
-            intent = new Intent();
-            intent.setClass(this, MainActivity.class);
-
-            //new一個Bundle物件，並將要傳遞的資料傳入
-
-            //將Bundle物件assign給intent
-            Bundle bundle = new Bundle();
-            bundle.putString("COOKIE", cookie);
-            intent.putExtras(bundle);
-
-            //切換Activity
-            this.startActivity(intent);
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
