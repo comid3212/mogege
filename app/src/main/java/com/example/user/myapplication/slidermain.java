@@ -191,6 +191,19 @@ public class slidermain extends AppCompatActivity
 
 
         } else if (id == R.id.nav_class) {
+            Intent intent = new Intent();
+            intent = new Intent();
+            intent.setClass(this, CopyScience.class);
+
+            //new一個Bundle物件，並將要傳遞的資料傳入
+
+            //將Bundle物件assign給intent
+            Bundle bundle = new Bundle();
+            bundle.putString("COOKIE", cookie);
+            intent.putExtras(bundle);
+
+            //切換Activity
+            this.startActivity(intent);
 
         } else if (id == R.id.nav_shop) {
 
