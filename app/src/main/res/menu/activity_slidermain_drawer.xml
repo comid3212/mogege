@@ -11,11 +11,11 @@
         <item
             android:id="@+id/nav_twohard"
             android:icon="@drawable/ic_menu_send"
-            android:title="最新公告" />
+            android:title="校內公告" />
         <item
             android:id="@+id/nav_class"
             android:icon="@drawable/ic_menu_manage"
-            android:title="課程回報區" />
+            android:title="各系資訊" />
         <item
             android:id="@+id/nav_shop"
             android:icon="@drawable/ic_menu_gallery"

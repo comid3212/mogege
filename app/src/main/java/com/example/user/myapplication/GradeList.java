@@ -143,8 +143,8 @@ public class GradeList extends AppCompatActivity {
                     classInfomations.get(4).classLength.add(1);
                     classInfomations.get(5).className.add("成績");
                     classInfomations.get(5).classLength.add(1);
-                    classInfomations.get(6).className.add("排名");
-                    classInfomations.get(6).classLength.add(1);
+                    //classInfomations.get(6).className.add("排名");
+                    //classInfomations.get(6).classLength.add(1);
                     int[] padList = new int[8];
                     int count = 0;
                     for(int i=7;i<className.size() - 1;i++) {

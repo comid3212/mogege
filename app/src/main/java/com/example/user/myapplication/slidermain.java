@@ -176,7 +176,7 @@ public class slidermain extends AppCompatActivity
         } else if (id == R.id.nav_twohard) {
             Intent intent = new Intent();
             intent = new Intent();
-            intent.setClass(this, News.class);
+            intent.setClass(this, NewsWeb.class);
 
             //new一個Bundle物件，並將要傳遞的資料傳入
 
@@ -193,7 +193,7 @@ public class slidermain extends AppCompatActivity
         } else if (id == R.id.nav_class) {
             Intent intent = new Intent();
             intent = new Intent();
-            intent.setClass(this, CopyScience.class);
+            intent.setClass(this, AllDepartmentNews.class);
 
             //new一個Bundle物件，並將要傳遞的資料傳入
 

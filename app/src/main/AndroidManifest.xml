@@ -35,8 +35,10 @@
         <activity android:name=".AddAllgrades" />
         <activity android:name=".News" />
         <activity android:name=".CopyScience" />
-        <activity android:name=".CsieNews"></activity>
-
+        <activity android:name=".CsieNews" />
+        <activity android:name=".NewsWeb" />
+        <activity android:name=".AllDepartmentNews" />
+        <activity android:name=".AllDepartmentView"></activity>
     </application>
 
 </manifest>
