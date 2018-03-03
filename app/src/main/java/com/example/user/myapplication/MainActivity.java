@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +13,12 @@ import android.os.Bundle;
 import android.telecom.Call;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,34 +53,6 @@ public class MainActivity extends AppCompatActivity {
     static final String Accept_Language  = "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7";
     static final String Referer ="http://msd.ncut.edu.tw/wbcmss/home.asp";
     static final String HOST = "msd.ncut.edu.tw";
-    
-
-
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) { // 攔截返回鍵
-            new AlertDialog.Builder(MainActivity.this)
-                    .setTitle("確認視窗")
-                    .setMessage("確定要結束應用程式嗎?")
-                    .setPositiveButton("確定",
-                            new DialogInterface.OnClickListener() {
-
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    finish();
-                                }
-                            })
-                    .setNegativeButton("取消",
-                            new DialogInterface.OnClickListener() {
-
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    // TODO Auto-generated method stub
-
-                                }
-                            }).show();
-        }
-        return true;
-    }
 
 
     static class myHandler extends Handler {
@@ -88,13 +65,6 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.arg1){
                 case 0://輸入錯誤，顯示msg訊息
-                    AlertDialog.Builder builder = new AlertDialog.Builder(reference.get());
-                    builder.setTitle(msg.getData().getString("TITLE"));
-                    builder.setMessage(msg.getData().getString("MESSAGE"));
-                    builder.setPositiveButton("OK", null);
-                    builder.show();
-                    break;
-                case 1://輸入成功，切換畫面
                     Intent intent = new Intent();
                     intent.setClass(reference.get(), slidermain.class);
 
@@ -106,13 +76,13 @@ public class MainActivity extends AppCompatActivity {
                     //切換Activity
                     reference.get().startActivity(intent);
                     break;
+                case 1://輸入成功，切換畫面
+
+                    break;
                     //( (MainActivity)reference.get()). textView8.setText(Message.get(6));
             }
         }
     }
-
-    private String cookie;
-
     private myHandler handler = new myHandler(this);
 
     public interface getCookieCallBack{
@@ -212,79 +182,72 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login(View view) {//登入流程
-        final String urlParameters  = "stagex=pre&sid=%s&pass=%s&code=mnm4&code1=MNM4&action1=%%BDT%%A9w";
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View loginWebView = inflater.inflate(R.layout.activity_new_login,null);
+        WebView webView = loginWebView.findViewById(R.id.Webviewtest);
+        webView.getSettings().setJavaScriptEnabled(true);
 
-        try {
-            final URL url = new URL("http://msd.ncut.edu.tw/wbcmss/home.asp");
-            getCookie(url, new getCookieCallBack() {
-                @Override
-                public void callback(final String cookie) {
-                    try {
-                        HttpURLConnection connect = (HttpURLConnection)url.openConnection();
-                        setHttpUrlConnection(connect);//set header
-                        setHttpUrlConnectionCookie(connect, cookie);//將cookie值丟入某個連線
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setView(loginWebView);
 
+        final AlertDialog webViewDialog = alertBuilder.create();
 
-                        sendData(connect, String.format(urlParameters, id.getText().toString(), pwd.getText().toString()));//丟入你的帳密
-                        if(connect.getResponseCode() != 200)//如果錯誤
-                            return;
-                        BufferedReader r = getReader(connect);
+        webView.setWebViewClient(new WebViewClient(){
 
-                        StringBuilder all = new StringBuilder();
-                        String line;
-                        while((line = r.readLine()) != null) {
-                            all.append(line).append("\n");
-                        }
+            boolean firstGoing = true;
 
-                        Document document = Jsoup.parse(all.toString());
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+            }
 
-                        if(!document.title().equals("")) {//當title是空的，代表登入成功
-                            Bundle bundle = new Bundle();
-                            bundle.putString("TITLE", "ID or Password ERROR");
-                            bundle.putString("MESSAGE", "please check your id or password");
-                            Message msg = new Message();
-                            msg.arg1 = 0;
-                            msg.setData(bundle);
-                            handler.sendMessage(msg);//
-                            return;
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                if(request.getUrl().toString().equals("http://nmsd.ncut.edu.tw/wbcmss/")){
+                    String cookies = android.webkit.CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/");
+                    if(cookies.split("WBCMSSAUTH=").length == 2){
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                HttpURLConnection connect = null;
+                                try {
+                                    connect = (HttpURLConnection) (new URL("http://nmsd.ncut.edu.tw/wbcmss/Query/Schedule")).openConnection();
+                                    Document document = Util.getDocumentFromUrlConnection(connect, android.webkit.CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/"));
 
-                        }
-
-
-
-
-                        connect.disconnect();//連線成功後中斷連線(因為不需要了)
-
-                        connect = (HttpURLConnection) (new URL("http://msd.ncut.edu.tw/wbcmss/greeting.asp")).openConnection();
-                        MainActivity.setHttpUrlConnection(connect);
-                        MainActivity.setHttpUrlConnectionCookie(connect, cookie);
-                        MainActivity.getReader(connect);
-                        BufferedReader reader = MainActivity.getReader(connect);
-                        all=new StringBuilder();
-                        while((line = reader.readLine()) != null){
-                            all.append(line);
-                        }
-
-                        Message msg = new Message();
-                        Bundle bundle = new Bundle();
-                        document = Jsoup.parse(all.toString());
-                        Elements information = document.getElementsByTag("span");
-                        line = information.get(0).text();
-                        int index = line.indexOf("學號:");
-                        bundle.putString("ID", line.substring(index + 3, index + 11));
-                        bundle.putString("NAME", information.get(1).text());
-                        bundle.putString("COOKIE", cookie);
-                        msg.arg1 = 1;
-                        msg.setData(bundle);
-                        handler.sendMessage(msg);
-                        MainActivity.this.cookie = cookie;//存入cookie
-                    } catch (IOException e) {
-                        e.printStackTrace(); //錯誤處理
+                                    Elements information = document.getElementsByTag("th");
+                                    String id,name,_class ;
+                                    id = information.get(0).text();
+                                    name = information.get(1).text();
+                                    _class = information.get(2).text();
+                                    Message msg = new Message();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("NAME", name);
+                                    bundle.putString("ID", id);
+                                    bundle.putString("CLASS", _class);
+                                    webViewDialog.cancel();
+                                    msg.setData(bundle);
+                                    handler.sendMessage(msg);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).start();
                     }
                 }
-            });
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+                webViewDialog.show();
+                return super.shouldOverrideUrlLoading(view, request);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                if(firstGoing) {
+                    view.loadUrl("javascript:Account.value='3A417104';Password.value='asd860219';btn = document.getElementsByClassName('btn btn-primary g-recaptcha')[0]; btn.click()");
+                    firstGoing = false;
+                }
+                super.onPageFinished(view, url);
+            }
+        });
+        webView.loadUrl("http://nmsd.ncut.edu.tw/wbcmss/Auth/Login");
+
     }
 }

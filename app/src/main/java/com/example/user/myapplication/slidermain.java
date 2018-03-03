@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.CookieManager;
 import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
 import android.widget.TextView;
@@ -91,7 +92,7 @@ public class slidermain extends AppCompatActivity
         setContentView(R.layout.activity_slidermain);
         testcalendar=(CalendarView) findViewById(R.id.testcalendar);
         Bundle bundle = this.getIntent().getExtras();
-        cookie = this.getIntent().getExtras().getString("COOKIE");
+         cookie = CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -225,6 +226,7 @@ public class slidermain extends AppCompatActivity
                 try {
                     connect = (HttpURLConnection) (new URL("http://www.ncut.edu.tw/news2/event_list_day.php?nid=" + date)).openConnection();
                     MainActivity.setHttpUrlConnection(connect);//連結到抓資訊的網址
+                    Util.getDocumentFromUrlConnection(connect, cookie);
                     BufferedReader reader = MainActivity.getReader(connect, "utf-8");//轉換顯示格式
                     StringBuilder all = new StringBuilder();
                     String line;
