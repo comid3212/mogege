@@ -22,6 +22,7 @@ public class Util {
 
     public static Document getDocumentFromUrlConnection(HttpURLConnection connect) throws IOException {
         BufferedReader reader = MainActivity.getReader(connect, "utf-8");//轉換顯示格式
+        if(reader == null) return null;
         StringBuilder all = new StringBuilder();
         String line;
         while((line = reader.readLine()) != null){

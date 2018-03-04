@@ -2,6 +2,7 @@ package com.example.user.myapplication;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,7 +35,7 @@ import java.util.List;
 public class ChangePassword extends AppCompatActivity {
 
     private String cookie;
-    private String password="oldpass=%s&PASS=%s&CONFIRM=%s&ACTION=%%BDT%%A9w";
+    private String password="__RequestVerificationToken=%s&Password=%s&NewPassword=%s&ConfirmPassword=%s";
     private TextView textView1, textView2, textView3;
     private myHandler handler = new myHandler(this);
 
@@ -57,7 +59,11 @@ public class ChangePassword extends AppCompatActivity {
                     break;
                 case 2:
                     Toast.makeText(reference.get(), msg.getData().getString("MESSAGE"), Toast.LENGTH_LONG).show();
-                    reference.get().finish();
+
+                    android.webkit.CookieManager.getInstance().removeAllCookies(null);
+                    Intent intent = new Intent(reference.get(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                     break;
             }
         }
@@ -68,7 +74,7 @@ public class ChangePassword extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
-        cookie = this.getIntent().getExtras().getString("COOKIE");
+        cookie = CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/");
         textView1 = (TextView)findViewById(R.id.editText3);
         textView2 = (TextView)findViewById(R.id.editText4);
         textView3 = (TextView)findViewById(R.id.editText5);
@@ -86,36 +92,33 @@ public class ChangePassword extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    HttpURLConnection connection = (HttpURLConnection)(new URL("http://msd.ncut.edu.tw/wbcmss/passwd_change.asp")).openConnection();
+                    HttpURLConnection connection = (HttpURLConnection)(new URL("http://nmsd.ncut.edu.tw/wbcmss/Profile/ChangePassword")).openConnection();
+                    Document document1 = Util.getDocumentFromUrlConnection(connection, cookie);
+                    String a = document1.getElementsByTag("input").get(0).val();
+                    connection = (HttpURLConnection)(new URL("http://nmsd.ncut.edu.tw/wbcmss/Profile/ChangePassword")).openConnection();
                     MainActivity.setHttpUrlConnection(connection);
                     MainActivity.setHttpUrlConnectionCookie(connection, cookie);
-                    MainActivity.sendData(connection, String.format(password, textView1.getText().toString(), textView2.getText().toString(), textView2.getText().toString()));
+                    MainActivity.sendData(connection, String.format(password, a, textView1.getText().toString(), textView2.getText().toString(), textView2.getText().toString()));
                     BufferedReader reader = MainActivity.getReader(connection);
-                    StringBuilder all = new StringBuilder();
-                    String line;
-                    while((line = reader.readLine()) != null){
-                        all.append(line);
-                    }
-                    Document document = Jsoup.parse(all.toString());
-                    Element information = document.getElementsByTag("th").get(2);
+                    reader.read();
+                    String url = connection.getURL().toString();
+
                     Message msg = new Message();
-                    if(information.text().replaceAll("\\s+","").equals("密碼已變更成功")) {
+                    if(url.equals("http://nmsd.ncut.edu.tw/wbcmss/")){
                         msg.arg1 = 2;
                         Bundle bundle = new Bundle();
-                        bundle.putString("MESSAGE", information.text());
+                        bundle.putString("MESSAGE", "密碼已變更成功，請重新登入");
                         msg.setData(bundle);
                         handler.sendMessage(msg);
                     } else {
                         msg.arg1 = 0;
                         Bundle bundle = new Bundle();
                         bundle.putString("TITLE", "ERROR");
-                        bundle.putString("MESSAGE", information.text());
+                        bundle.putString("MESSAGE", "密碼更新失敗！");
                         msg.setData(bundle);
                         handler.sendMessage(msg);
                     }
                     connection.disconnect();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

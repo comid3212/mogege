@@ -111,7 +111,7 @@ public class NewLogin extends AppCompatActivity {
                         Message msg = new Message();
                         msg.arg1 = 0;
                         msg.setData(bundle);
-                        handler.sendMessage(msg);//
+                        handler.sendMessage(msg);
                     }
 
                 }

@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.webkit.CookieManager;
 import android.widget.TextView;
 
 import org.jsoup.Jsoup;
@@ -49,7 +50,7 @@ public class AddAllgrades extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_allgrades);
-        cookie = this.getIntent().getExtras().getString("COOKIE");
+        cookie = CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/");
         credit_view = (TextView)findViewById(R.id.credit_view);
         grades_view = (TextView)findViewById(R.id.grades_view );
         rank_view = (TextView)findViewById(R.id.rank_view);
@@ -59,11 +60,11 @@ public class AddAllgrades extends AppCompatActivity {
             public void run() {
                 HttpURLConnection connect = null;
                 try {
-                    connect = (HttpURLConnection) (new URL("http://msd.ncut.edu.tw/wbcmss/score_browse.asp?table=V05")).openConnection();
+                    connect = (HttpURLConnection) (new URL("http://nmsd.ncut.edu.tw/wbcmss/Query/History")).openConnection();
                     MainActivity.setHttpUrlConnection(connect);
                     MainActivity.setHttpUrlConnectionCookie(connect, cookie);
                     MainActivity.getReader(connect);
-                    BufferedReader reader = MainActivity.getReader(connect);
+                    BufferedReader reader = MainActivity.getReader(connect, "utf-8");
                     StringBuilder all = new StringBuilder();
                     String line;
                     while((line = reader.readLine()) != null){

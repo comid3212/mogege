@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -185,7 +186,7 @@ public class GradeList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_grade_list);
         ListView = (HorizontalListView) findViewById(R.id.testlist);
-        cookie = this.getIntent().getExtras().getString("COOKIE");
+        cookie = CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/");
         final String a = this.getIntent().getExtras().getString("學年");
         final String b = this.getIntent().getExtras().getString("學期");
         super.onCreate(savedInstanceState);
@@ -194,7 +195,7 @@ public class GradeList extends AppCompatActivity {
             public void run() {
                 HttpURLConnection connect = null;
                 try {
-                    connect = (HttpURLConnection) (new URL("http://msd.ncut.edu.tw/wbcmss/score_browse.asp?table=V05")).openConnection();
+                    connect = (HttpURLConnection) (new URL("http://nmsd.ncut.edu.tw/wbcmss/Query/History")).openConnection();
                     MainActivity.setHttpUrlConnection(connect);
                     MainActivity.setHttpUrlConnectionCookie(connect, cookie);
                     MainActivity.getReader(connect);
@@ -210,7 +211,7 @@ public class GradeList extends AppCompatActivity {
                     ArrayList<Integer> classLength = new ArrayList<>();
                     for(int i=0;i<information.size() - 1;)
                     {
-                        if( information.get(i).text().equals(a) && information.get(i+1).text().equals(b)){
+                        if( information.get(i).text().equals("104") && information.get(i+1).text().equals("上學期")){
                             for(int a=0;a<8;a++) {
                                 className.add(information.get(i).text());
                                 classLength.add(1);

@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.widget.TextView;
 
 import org.jsoup.Jsoup;
@@ -29,7 +30,7 @@ public class GradesChoicelist extends AppCompatActivity {
         Message msg = new Message();
         msg.arg1 = 0;
         Bundle bundle = new Bundle();
-        bundle.putString("COOKIE", cookie);
+        //bundle.putString("COOKIE", cookie);
         String a = "104";
         String b = "上學期";
         bundle.putString("學年", a);
@@ -208,7 +209,7 @@ public class GradesChoicelist extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grades_choicelist);
-        cookie = this.getIntent().getExtras().getString("COOKIE");
+        cookie = CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/");
     }
 
 

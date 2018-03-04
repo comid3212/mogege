@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -72,10 +73,6 @@ public class slidermain extends AppCompatActivity
                     AlertDialog.Builder builder = new AlertDialog.Builder(reference.get());
                     builder.setTitle(msg.getData().getString("TITLE"));
                     builder.setMessage(msg.getData().getString("MESSAGE"));
-                    //builder.setIcon(android.R.drawable.ic_dialog_info);
-
-                   // builder.setItems(new String[]{String.valueOf( msg.getData().getString("MESSAGE"))},null).setPositiveButton("OK", null);
-
 
                     builder.setPositiveButton("OK", null);
 
@@ -200,7 +197,6 @@ public class slidermain extends AppCompatActivity
 
             //將Bundle物件assign給intent
             Bundle bundle = new Bundle();
-            bundle.putString("COOKIE", cookie);
             intent.putExtras(bundle);
 
             //切換Activity
@@ -209,6 +205,7 @@ public class slidermain extends AppCompatActivity
         } else if (id == R.id.nav_shop) {
 
         }else if (id == R.id.nav_logout){
+            android.webkit.CookieManager.getInstance().removeAllCookies(null);
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -226,7 +223,6 @@ public class slidermain extends AppCompatActivity
                 try {
                     connect = (HttpURLConnection) (new URL("http://www.ncut.edu.tw/news2/event_list_day.php?nid=" + date)).openConnection();
                     MainActivity.setHttpUrlConnection(connect);//連結到抓資訊的網址
-                    Util.getDocumentFromUrlConnection(connect, cookie);
                     BufferedReader reader = MainActivity.getReader(connect, "utf-8");//轉換顯示格式
                     StringBuilder all = new StringBuilder();
                     String line;
@@ -267,4 +263,15 @@ public class slidermain extends AppCompatActivity
         }).start();
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            android.webkit.CookieManager.getInstance().removeAllCookies(null);
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }
