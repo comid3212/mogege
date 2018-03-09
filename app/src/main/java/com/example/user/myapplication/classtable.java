@@ -27,15 +27,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-class ClassInfomation{
+class ClassInformation{
     public List<String> className = new LinkedList<>();
     public List<Integer> classLength = new LinkedList<>();
 }
 class MyAdapter extends BaseAdapter {
     private Context context;
-    private List<ClassInfomation> classes;
+    private List<ClassInformation> classes;
 
-    public MyAdapter(Context context, List<ClassInfomation> classes) {
+    public MyAdapter(Context context, List<ClassInformation> classes) {
         this.context = context;
         this.classes = classes;
     }
@@ -59,17 +59,24 @@ class MyAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.class_form, null);
-        } else {
         }
 
-        LinearLayout layout = (LinearLayout)view.findViewById(R.id.classLayout);
+        if(view.getTag() != null && Integer.parseInt(view.getTag().toString()) == i) {
+            return view;
+        }
+
+        LinearLayout layout = view.findViewById(R.id.classLayout);
         layout.removeAllViews();
-        ClassInfomation classInfomation = classes.get(i);
-        for(int o = 0; o < classInfomation.classLength.size(); ++o) {
-            String name = classInfomation.className.get(o);
-            Integer length = classInfomation.classLength.get(o);
+        ClassInformation classInformation = classes.get(i);
+        for(int o = 0; o < classInformation.classLength.size(); ++o) {
+            String name = classInformation.className.get(o);
+            Integer length = classInformation.classLength.get(o);
             MyTextView textView = new MyTextView(context);
-            textView.setText(name);
+            textView.setSingleLine(true);
+            if(name.length() > 24)
+                textView.setText(name.substring(0, 24));
+            else
+                textView.setText(name);
             textView.setGravity(TextView.TEXT_ALIGNMENT_CENTER);
             if(length != 1) {
                 textView.down = false;
@@ -78,11 +85,20 @@ class MyAdapter extends BaseAdapter {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT,1.0f
             ));
-            for(int s = 1; s < length; ++s){
+            int index = 1;
+            for(int s = 1; s < length; ++s) {
                 MyTextView textView1 = new MyTextView(context);
                 textView1.setGravity(TextView.TEXT_ALIGNMENT_CENTER);
                 textView1.down = false;
                 textView1.top = false;
+                int f = index * 24, e = index * 24 + 24;
+                if(e > name.length()) {
+                    e = name.length();
+                }
+                if(f < name.length()) {
+                    textView1.setText(name.substring(f, e));
+                    index += 1;
+                }
                 layout.addView(textView1, new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -90,6 +106,7 @@ class MyAdapter extends BaseAdapter {
                 ));
             }
         }
+        view.setTag(i);
 
         return view;
     }
@@ -126,43 +143,27 @@ public class classtable extends AppCompatActivity {
 
                 case 3:
                     Bundle bundle = msg.getData();
+                    int classPerDay = bundle.getInt("ClassPerDay");
                     ArrayList<String> className = bundle.getStringArrayList("ClassName");
                     ArrayList<Integer> classLength = bundle.getIntegerArrayList("ClassLength");
-                    List<ClassInfomation> classInfomations = new LinkedList<>();
+                    List<ClassInformation> classInformations = new LinkedList<>();
                     for(int i = 0; i < 8; ++i) {
-                        classInfomations.add(new ClassInfomation());
+                        classInformations.add(new ClassInformation());
                     }
-                    classInfomations.get(1).className.add("星期一");
-                    classInfomations.get(1).classLength.add(1);
-                    classInfomations.get(2).className.add("星期二");
-                    classInfomations.get(2).classLength.add(1);
-                    classInfomations.get(3).className.add("星期三");
-                    classInfomations.get(3).classLength.add(1);
-                    classInfomations.get(4).className.add("星期四");
-                    classInfomations.get(4).classLength.add(1);
-                    classInfomations.get(5).className.add("星期五");
-                    classInfomations.get(5).classLength.add(1);
-                    classInfomations.get(6).className.add("星期六");
-                    classInfomations.get(6).classLength.add(1);
-                    classInfomations.get(7).className.add("星期日");
-                    classInfomations.get(7).classLength.add(1);
-                    int[] padList = new int[8];
-                    int count = 0;
-                    for(int i=7;i<className.size() - 1;i++) {
-                        while(padList[count] > 1) {
-                            padList[count] -= 1;
-                            count += 1;
-                            count %= 8;
-                        }
-                        int length = classLength.get(i - 7);
-                        classInfomations.get(count).className.add(className.get(i - 7));
-                        classInfomations.get(count).classLength.add(length);
-                        if(length != 1) {
-                            padList[count] = length;
-                        }
-                        count += 1;
-                        count %= 8;
-                    }
+                    classInformations.get(1).className.add("星期一");
+                    classInformations.get(1).classLength.add(1);
+                    classInformations.get(2).className.add("星期二");
+                    classInformations.get(2).classLength.add(1);
+                    classInformations.get(3).className.add("星期三");
+                    classInformations.get(3).classLength.add(1);
+                    classInformations.get(4).className.add("星期四");
+                    classInformations.get(4).classLength.add(1);
+                    classInformations.get(5).className.add("星期五");
+                    classInformations.get(5).classLength.add(1);
+                    classInformations.get(6).className.add("星期六");
+                    classInformations.get(6).classLength.add(1);
+                    classInformations.get(7).className.add("星期日");
+                    classInformations.get(7).classLength.add(1);
 
                     LinearLayout timeLayout = (LinearLayout)findViewById(R.id.timeLayout);
                     timeLayout.removeAllViews();
@@ -173,7 +174,8 @@ public class classtable extends AppCompatActivity {
                             ViewGroup.LayoutParams.WRAP_CONTENT,
                             1.0f
                     ));
-                    for(int i = 0; i < classInfomations.get(0).classLength.size(); ++i) {
+
+                    for(int i = 0; i < classPerDay; ++i) {
                         MyTextView textView1 = new MyTextView(reference.get());
                         textView1.setText(String.valueOf(i + 1));
                         timeLayout.addView(textView1, new LinearLayout.LayoutParams(
@@ -183,9 +185,19 @@ public class classtable extends AppCompatActivity {
                         ));
                     }
 
+                    int index = 0;
+                    for(int i = 1; i < 8; ++i) {
+                        ClassInformation info = classInformations.get(i);
+                        for(int nowTime = 0; nowTime < classPerDay; ++index) {
+                            info.className.add(className.get(index));
+                            info.classLength.add(classLength.get(index));
+                            nowTime += classLength.get(index);
+                        }
+                    }
+
                     MyAdapter adapter;
-                    classInfomations.remove(0);
-                    adapter = new MyAdapter(reference.get() , classInfomations);
+                    classInformations.remove(0);
+                    adapter = new MyAdapter(reference.get() , classInformations);
 
                     ListView.setAdapter(adapter);
                     //將ListAdapter設定至ListView裡面
@@ -205,36 +217,60 @@ public class classtable extends AppCompatActivity {
             public void run() {
                 HttpURLConnection connect = null;
                 try {
-                    connect = (HttpURLConnection) (new URL("http://msd.ncut.edu.tw/wbcmss/show_timetable.asp?detail=yes")).openConnection();
-                    MainActivity.setHttpUrlConnection(connect);
-                    MainActivity.setHttpUrlConnectionCookie(connect, cookie);
-                    MainActivity.getReader(connect);
-                    BufferedReader reader = MainActivity.getReader(connect);
+                    connect = (HttpURLConnection) (new URL("http://nmsd.ncut.edu.tw/wbcmss/Query/Schedule")).openConnection();
+                    Util.setHttpUrlConnection(connect);
+                    Util.setHttpUrlConnectionCookie(connect, cookie);
+                    Util.getReader(connect);
+                    BufferedReader reader = Util.getReader(connect, "utf-8");
                     StringBuilder all = new StringBuilder();
                     String line;
                     while((line = reader.readLine()) != null){
                         all.append(line);
                     }
                     Document document = Jsoup.parse(all.toString());
-                    Elements information = document.getElementsByTag("td");
-                    ArrayList<String> className = new ArrayList<String>();
+                    Elements timeLine = document.getElementsByClass("time-line");
+
+                    int classPerDay = 16;
+                    ArrayList<String> className = new ArrayList<>();
                     ArrayList<Integer> classLength = new ArrayList<>();
-                    for(int i=7;i<information.size() - 1;i++)
-                    {
-                        if(!information.get(i).text().equals("") &&
-                                !information.get(i).attr("bgcolor").equals("yellow")){
-                            className.add(information.get(i).text());
-                            classLength.add(Integer.valueOf(information.get(i).attr("rowSpan")));
-                        } else {
+
+                    for(int week = 0; week < timeLine.size(); ++week) {
+                        Elements classSet = timeLine.get(week).getElementsByClass("time-line-span col-xs-12");
+                        int nowTime = 0;
+                        for(int timeIndex = 0; timeIndex < classSet.size(); ++timeIndex) {
+                            String top = classSet.get(timeIndex).attr("style").split(":")[1];
+                            top = top.split(";")[0];
+                            top = top.substring(1, top.length()-2);
+                            int time = (int)Double.parseDouble(top);
+                            time = (time - 23) / 80;
+                            if(nowTime < time) {
+                                for(int i  = nowTime; i < time; ++i){
+                                    className.add("");
+                                    classLength.add(1);
+                                }
+                            }
+                            nowTime = time + 1;
+                            String name = classSet.get(timeIndex).attr("title");
+                            String stimespan = classSet.get(timeIndex).getElementsByClass("line-span").get(0).attr("style").split(":")[1];
+                            stimespan = stimespan.split(";")[0];
+                            stimespan = stimespan.substring(1, stimespan.length() - 2);
+                            int timespan = (int)Double.parseDouble(stimespan);
+                            timespan = (timespan - 19) / 80;
+                            className.add(name);
+                            classLength.add(timespan + 1);
+                        }
+                        for(int i = nowTime; i < classPerDay; ++i) {
                             className.add("");
                             classLength.add(1);
                         }
                     }
+
                     Message msg = new Message();
                     msg.arg1 = 3;
                     Bundle bundle = new Bundle();
                     bundle.putStringArrayList("ClassName", className);
                     bundle.putIntegerArrayList("ClassLength", classLength);
+                    bundle.putInt("ClassPerDay", classPerDay);
                     msg.setData(bundle);
                     handler.sendMessage(msg);
                 } catch (IOException e) {

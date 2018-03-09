@@ -64,10 +64,10 @@ public class CsieNews extends AppCompatActivity {
                 try {
                     String a = bundle.getString("Inn1");
                     connect = (HttpURLConnection) (new URL(web+a)).openConnection();
-                    MainActivity.setHttpUrlConnection(connect);
-                    MainActivity.setHttpUrlConnectionCookie(connect, cookie);
-                    MainActivity.getReader(connect);
-                    BufferedReader reader = MainActivity.getReader(connect, "utf-8");//轉換顯示格式
+                    Util.setHttpUrlConnection(connect);
+                    Util.setHttpUrlConnectionCookie(connect, cookie);
+                    Util.getReader(connect);
+                    BufferedReader reader = Util.getReader(connect, "utf-8");//轉換顯示格式
                     StringBuilder all = new StringBuilder();
                     String line;
                     while((line = reader.readLine()) != null){

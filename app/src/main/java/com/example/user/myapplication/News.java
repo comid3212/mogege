@@ -63,10 +63,10 @@ public class News extends AppCompatActivity {
                     HttpURLConnection connect = null;
                     try {
                         connect = (HttpURLConnection) (new URL("http://msd.ncut.edu.tw/wbcmss/")).openConnection();
-                        MainActivity.setHttpUrlConnection(connect);
-                        MainActivity.setHttpUrlConnectionCookie(connect, cookie);
-                        MainActivity.getReader(connect);
-                        BufferedReader reader = MainActivity.getReader(connect);
+                        Util.setHttpUrlConnection(connect);
+                        Util.setHttpUrlConnectionCookie(connect, cookie);
+                        Util.getReader(connect);
+                        BufferedReader reader = Util.getReader(connect);
                         StringBuilder all = new StringBuilder();
                         String line;
                         while((line = reader.readLine()) != null){

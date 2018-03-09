@@ -101,10 +101,10 @@ public class CopyScience extends AppCompatActivity {
                 HttpURLConnection connect = null;
                 try {
                     connect = (HttpURLConnection) (new URL("http://csie.ncut.edu.tw/news.php?content=1")).openConnection();
-                    MainActivity.setHttpUrlConnection(connect);
-                    MainActivity.setHttpUrlConnectionCookie(connect, cookie);
-                    MainActivity.getReader(connect);
-                    BufferedReader reader = MainActivity.getReader(connect, "utf-8");//轉換顯示格式
+                    Util.setHttpUrlConnection(connect);
+                    Util.setHttpUrlConnectionCookie(connect, cookie);
+                    Util.getReader(connect);
+                    BufferedReader reader = Util.getReader(connect, "utf-8");//轉換顯示格式
                     StringBuilder all = new StringBuilder();
                     String line;
                     while((line = reader.readLine()) != null){

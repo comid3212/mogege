@@ -28,15 +28,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-class ClassInfomations{
+class ClassInformations{
     public List<String> className = new LinkedList<>();
     public List<Integer> classLength = new LinkedList<>();
 }
 class MyAdapters extends BaseAdapter {
     private Context context;
-    private List<ClassInfomation> classes;
+    private List<ClassInformation> classes;
 
-    public MyAdapters(Context context, List<ClassInfomation> classes) {
+    public MyAdapters(Context context, List<ClassInformation> classes) {
         this.context = context;
         this.classes = classes;
     }
@@ -65,10 +65,10 @@ class MyAdapters extends BaseAdapter {
 
         LinearLayout layout = (LinearLayout)view.findViewById(R.id.classLayout);
         layout.removeAllViews();
-        ClassInfomation classInfomation = classes.get(i);
-        for(int o = 0; o < classInfomation.classLength.size(); ++o) {
-            String name = classInfomation.className.get(o);
-            Integer length = classInfomation.classLength.get(o);
+        ClassInformation classInformation = classes.get(i);
+        for(int o = 0; o < classInformation.classLength.size(); ++o) {
+            String name = classInformation.className.get(o);
+            Integer length = classInformation.classLength.get(o);
             MyTextView textView = new MyTextView(context);
             textView.setText(name);
             textView.setGravity(TextView.TEXT_ALIGNMENT_CENTER);
@@ -128,24 +128,24 @@ public class GradeList extends AppCompatActivity {
                     Bundle bundle = msg.getData();
                     ArrayList<String> className = bundle.getStringArrayList("ClassName");
                     ArrayList<Integer> classLength = bundle.getIntegerArrayList("ClassLength");
-                    List<ClassInfomation> classInfomations = new LinkedList<>();
+                    List<ClassInformation> classInformations = new LinkedList<>();
                     for(int i = 0; i < 8; ++i) {
-                        classInfomations.add(new ClassInfomation());
+                        classInformations.add(new ClassInformation());
                     }
-                    //classInfomations.get(1).className.add("學年");
-                    //classInfomations.get(1).classLength.add(1);
-                    classInfomations.get(1).className.add("學期");
-                    classInfomations.get(1).classLength.add(1);
-                    classInfomations.get(2).className.add("科目名稱");
-                    classInfomations.get(2).classLength.add(1);
-                    classInfomations.get(3).className.add("修別");
-                    classInfomations.get(3).classLength.add(1);
-                    classInfomations.get(4).className.add("學分");
-                    classInfomations.get(4).classLength.add(1);
-                    classInfomations.get(5).className.add("成績");
-                    classInfomations.get(5).classLength.add(1);
-                    //classInfomations.get(6).className.add("排名");
-                    //classInfomations.get(6).classLength.add(1);
+                    //classInformations.get(1).className.add("學年");
+                    //classInformations.get(1).classLength.add(1);
+                    classInformations.get(1).className.add("學期");
+                    classInformations.get(1).classLength.add(1);
+                    classInformations.get(2).className.add("科目名稱");
+                    classInformations.get(2).classLength.add(1);
+                    classInformations.get(3).className.add("修別");
+                    classInformations.get(3).classLength.add(1);
+                    classInformations.get(4).className.add("學分");
+                    classInformations.get(4).classLength.add(1);
+                    classInformations.get(5).className.add("成績");
+                    classInformations.get(5).classLength.add(1);
+                    //classInformations.get(6).className.add("排名");
+                    //classInformations.get(6).classLength.add(1);
                     int[] padList = new int[8];
                     int count = 0;
                     for(int i=7;i<className.size() - 1;i++) {
@@ -155,8 +155,8 @@ public class GradeList extends AppCompatActivity {
                             count %= 8;
                         }
                         int length = classLength.get(i - 7);
-                        classInfomations.get(count).className.add(className.get(i - 7));
-                        classInfomations.get(count).classLength.add(length);
+                        classInformations.get(count).className.add(className.get(i - 7));
+                        classInformations.get(count).classLength.add(length);
                         if(length != 1) {
                             padList[count] = length;
                         }
@@ -165,15 +165,15 @@ public class GradeList extends AppCompatActivity {
                     }
 
 
-                    for(int i = 0; i < classInfomations.get(0).classLength.size(); ++i) {
+                    for(int i = 0; i < classInformations.get(0).classLength.size(); ++i) {
                         MyTextView textView1 = new MyTextView(reference.get());
                         textView1.setText(String.valueOf(i + 1));
                         ;
                     }
 
                     MyAdapter adapter;
-                    classInfomations.remove(0);
-                    adapter = new MyAdapter(reference.get() , classInfomations);
+                    classInformations.remove(0);
+                    adapter = new MyAdapter(reference.get() , classInformations);
 
                     ListView.setAdapter(adapter);
                     //將ListAdapter設定至ListView裡面
@@ -196,10 +196,10 @@ public class GradeList extends AppCompatActivity {
                 HttpURLConnection connect = null;
                 try {
                     connect = (HttpURLConnection) (new URL("http://nmsd.ncut.edu.tw/wbcmss/Query/History")).openConnection();
-                    MainActivity.setHttpUrlConnection(connect);
-                    MainActivity.setHttpUrlConnectionCookie(connect, cookie);
-                    MainActivity.getReader(connect);
-                    BufferedReader reader = MainActivity.getReader(connect);
+                    Util.setHttpUrlConnection(connect);
+                    Util.setHttpUrlConnectionCookie(connect, cookie);
+                    Util.getReader(connect);
+                    BufferedReader reader = Util.getReader(connect);
                     StringBuilder all = new StringBuilder();
                     String line;
                     while((line = reader.readLine()) != null){

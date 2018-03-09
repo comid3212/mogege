@@ -222,8 +222,8 @@ public class slidermain extends AppCompatActivity
                 HttpURLConnection connect = null;
                 try {
                     connect = (HttpURLConnection) (new URL("http://www.ncut.edu.tw/news2/event_list_day.php?nid=" + date)).openConnection();
-                    MainActivity.setHttpUrlConnection(connect);//連結到抓資訊的網址
-                    BufferedReader reader = MainActivity.getReader(connect, "utf-8");//轉換顯示格式
+                    Util.setHttpUrlConnection(connect);//連結到抓資訊的網址
+                    BufferedReader reader = Util.getReader(connect, "utf-8");//轉換顯示格式
                     StringBuilder all = new StringBuilder();
                     String line;
                     while((line = reader.readLine()) != null){

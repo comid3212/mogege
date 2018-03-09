@@ -96,10 +96,10 @@ public class ChangePassword extends AppCompatActivity {
                     Document document1 = Util.getDocumentFromUrlConnection(connection, cookie);
                     String a = document1.getElementsByTag("input").get(0).val();
                     connection = (HttpURLConnection)(new URL("http://nmsd.ncut.edu.tw/wbcmss/Profile/ChangePassword")).openConnection();
-                    MainActivity.setHttpUrlConnection(connection);
-                    MainActivity.setHttpUrlConnectionCookie(connection, cookie);
-                    MainActivity.sendData(connection, String.format(password, a, textView1.getText().toString(), textView2.getText().toString(), textView2.getText().toString()));
-                    BufferedReader reader = MainActivity.getReader(connection);
+                    Util.setHttpUrlConnection(connection);
+                    Util.setHttpUrlConnectionCookie(connection, cookie);
+                    Util.sendData(connection, String.format(password, a, textView1.getText().toString(), textView2.getText().toString(), textView2.getText().toString()));
+                    BufferedReader reader = Util.getReader(connection);
                     reader.read();
                     String url = connection.getURL().toString();
 

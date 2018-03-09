@@ -74,7 +74,6 @@ public class LoginWebView extends WebView {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                checkLogin(request.getUrl().toString());
                 return super.shouldOverrideUrlLoading(view, request);
             }
 
