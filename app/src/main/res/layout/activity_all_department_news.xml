@@ -7,184 +7,144 @@
     android:onClick="News"
     tools:context="com.example.user.myapplication.AllDepartmentNews">
 
-    <Button
-        android:id="@+id/button35"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="264dp"
-        android:layout_marginTop="396dp"
-        android:onClick="News15"
-        android:tag="14"
-        android:text="文化創意事業系"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button34"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="404dp"
-        android:onClick="News14"
-        android:tag="13"
-        android:text="電機工程系"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button33"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="400dp"
-        android:onClick="News13"
-        android:tag="12"
-        android:text="休閒產業管理系"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button32"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="264dp"
-        android:layout_marginTop="304dp"
-        android:onClick="News12"
-        android:tag="11"
-        android:text="流通管理系"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button31"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="144dp"
-        android:layout_marginTop="304dp"
-        android:onClick="News11"
-        android:tag="10"
-        android:text="資訊管理系"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button30"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="304dp"
-        android:onClick="News10"
-        android:tag="9"
-        android:text="企業管理系"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button29"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="264dp"
-        android:layout_marginTop="204dp"
-        android:onClick="News9"
-        android:tag="8"
-        android:text="工業工程與管理系"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button28"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="144dp"
-        android:layout_marginTop="208dp"
-        android:onClick="News8"
-        android:tag="7"
-        android:text="應用英語系"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button27"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="204dp"
-        android:onClick="News7"
-        android:tag="6"
-        android:text="景觀系"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button26"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="264dp"
-        android:layout_marginTop="108dp"
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="198dp"
+        android:layout_height="66dp"
         android:onClick="News6"
-        android:tag="5"
-        android:text="資訊工程系"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/imageButton9"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton18"
+        app:srcCompat="@drawable/csie" />
 
-    <Button
-        android:id="@+id/button25"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="144dp"
-        android:layout_marginTop="108dp"
-        android:onClick="News5"
-        android:tag="4"
-        android:text="電子工程系"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button24"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="108dp"
-        android:onClick="News4"
-        android:tag="3"
-        android:text="精密製造科技研究所"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button23"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="268dp"
-        android:layout_marginTop="4dp"
-        android:onClick="News3"
-        android:tag="2"
-        android:text="冷凍空調與能源系"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button12"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="144dp"
-        android:layout_marginTop="4dp"
-        android:onClick="News2"
-        android:tag="1"
-        android:text="機械工程系"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button22"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+    <ImageButton
+        android:id="@+id/imageButton5"
+        android:layout_width="185dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
         android:onClick="News1"
-        android:tag="0"
-        android:text="化工與材料工程系"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/a01" />
+
+    <ImageButton
+        android:id="@+id/imageButton6"
+        android:layout_width="197dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="16dp"
+        android:onClick="News2"
+        app:layout_constraintStart_toEndOf="@+id/imageButton5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/a02" />
+
+    <ImageButton
+        android:id="@+id/imageButton7"
+        android:layout_width="185dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="4dp"
+        android:onClick="News3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton5"
+        app:srcCompat="@drawable/a03" />
+
+    <ImageButton
+        android:id="@+id/imageButton8"
+        android:layout_width="191dp"
+        android:layout_height="60dp"
+        android:onClick="News4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton16"
+        app:srcCompat="@drawable/a04" />
+
+    <ImageButton
+        android:id="@+id/imageButton9"
+        android:layout_width="188dp"
+        android:layout_height="66dp"
+        android:onClick="News5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton7"
+        app:srcCompat="@drawable/a05" />
+
+    <ImageButton
+        android:id="@+id/imageButton10"
+        android:layout_width="192dp"
+        android:layout_height="67dp"
+        android:onClick="News7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton9"
+        app:srcCompat="@drawable/a07" />
+
+    <ImageButton
+        android:id="@+id/imageButton11"
+        android:layout_width="191dp"
+        android:layout_height="70dp"
+        android:onClick="News8"
+        app:layout_constraintStart_toEndOf="@+id/imageButton10"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton4"
+        app:srcCompat="@drawable/a08" />
+
+    <ImageButton
+        android:id="@+id/imageButton12"
+        android:layout_width="191dp"
+        android:layout_height="62dp"
+        android:onClick="News9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton10"
+        app:srcCompat="@drawable/a09" />
+
+    <ImageButton
+        android:id="@+id/imageButton13"
+        android:layout_width="192dp"
+        android:layout_height="64dp"
+        android:onClick="News10"
+        app:layout_constraintStart_toEndOf="@+id/imageButton12"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton11"
+        app:srcCompat="@drawable/a10" />
+
+    <ImageButton
+        android:id="@+id/imageButton14"
+        android:layout_width="191dp"
+        android:layout_height="wrap_content"
+        android:onClick="News11"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton12"
+        app:srcCompat="@drawable/a11" />
+
+    <ImageButton
+        android:id="@+id/imageButton15"
+        android:layout_width="193dp"
+        android:layout_height="wrap_content"
+        android:onClick="News12"
+        app:layout_constraintStart_toEndOf="@+id/imageButton14"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton13"
+        app:srcCompat="@drawable/a12" />
+
+    <ImageButton
+        android:id="@+id/imageButton16"
+        android:layout_width="192dp"
+        android:layout_height="64dp"
+        android:onClick="News13"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton14"
+        app:srcCompat="@drawable/a13" />
+
+    <ImageButton
+        android:id="@+id/imageButton17"
+        android:layout_width="195dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="192dp"
+        android:onClick="News15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton15"
+        app:srcCompat="@drawable/a15" />
+
+    <ImageButton
+        android:id="@+id/imageButton18"
+        android:layout_width="208dp"
+        android:layout_height="61dp"
+        android:onClick="News14"
+        app:layout_constraintStart_toEndOf="@+id/imageButton7"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton6"
+        app:srcCompat="@drawable/a14" />
 
 </android.support.constraint.ConstraintLayout>

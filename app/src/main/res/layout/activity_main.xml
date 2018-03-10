@@ -105,7 +105,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/doge" />
+        app:srcCompat="@drawable/a16" />
 
     <TextView
         android:id="@+id/textView8"
