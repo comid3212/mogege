@@ -2,6 +2,7 @@ package com.example.user.myapplication;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-class ClassInformation{
+class ClassInformation {
     public List<String> className = new LinkedList<>();
     public List<Integer> classLength = new LinkedList<>();
 }
@@ -80,6 +81,7 @@ class MyAdapter extends BaseAdapter {
             textView.setGravity(TextView.TEXT_ALIGNMENT_CENTER);
             if(length != 1) {
                 textView.down = false;
+                textView.setBackgroundColor(Color.GREEN);
             }
             layout.addView(textView, new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -91,6 +93,7 @@ class MyAdapter extends BaseAdapter {
                 textView1.setGravity(TextView.TEXT_ALIGNMENT_CENTER);
                 textView1.down = false;
                 textView1.top = false;
+                textView1.setBackgroundColor(Color.GREEN);
                 int f = index * 24, e = index * 24 + 24;
                 if(e > name.length()) {
                     e = name.length();
@@ -114,10 +117,6 @@ class MyAdapter extends BaseAdapter {
 
 public class classtable extends AppCompatActivity {
     private String cookie;
-    private int gridHeight, gridWidth;
-    private RelativeLayout layout;
-    private RelativeLayout tmpLayout;
-    private static boolean isFirst = true;
     private myHandler handler = new myHandler(this);
     private HorizontalListView ListView;
 
@@ -249,7 +248,7 @@ public class classtable extends AppCompatActivity {
                                     classLength.add(1);
                                 }
                             }
-                            nowTime = time + 1;
+
                             String name = classSet.get(timeIndex).attr("title");
                             String stimespan = classSet.get(timeIndex).getElementsByClass("line-span").get(0).attr("style").split(":")[1];
                             stimespan = stimespan.split(";")[0];
@@ -258,6 +257,7 @@ public class classtable extends AppCompatActivity {
                             timespan = (timespan - 19) / 80;
                             className.add(name);
                             classLength.add(timespan + 1);
+                            nowTime = time + timespan + 1;
                         }
                         for(int i = nowTime; i < classPerDay; ++i) {
                             className.add("");

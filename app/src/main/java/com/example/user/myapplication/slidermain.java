@@ -29,6 +29,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,10 +43,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.prefs.BackingStoreException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.sax.SAXTransformerFactory;
+
 public class slidermain extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
     private String cookie;
     private String website="%d-%d-%d";
+    private  TextView Tianchiview,chineseview;
     private CalendarView testcalendar;
     static final String COOKIES_HEADER = "Set-Cookie";
     static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36";
@@ -68,6 +78,12 @@ public class slidermain extends AppCompatActivity
         public void handleMessage(Message msg) {
             switch (msg.arg1) {
                 case 0:
+                    Bundle bundle = msg.getData();
+                    String moge2 = bundle.getString("Chinesetmp");
+                    String moge = bundle.getString("Tianchi");
+                    Tianchiview.setText(moge+"℃");
+                    chineseview.setText("~~今日天氣為"+moge2+"~~");
+
                     break;
                 case 1:
                     AlertDialog.Builder builder = new AlertDialog.Builder(reference.get());
@@ -88,7 +104,9 @@ public class slidermain extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slidermain);
         testcalendar=(CalendarView) findViewById(R.id.testcalendar);
-        Bundle bundle = this.getIntent().getExtras();
+        Tianchiview=(TextView) findViewById(R.id.textView21);
+        chineseview=(TextView) findViewById(R.id.textView22);
+        final Bundle bundle = this.getIntent().getExtras();
          cookie = CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -115,6 +133,35 @@ public class slidermain extends AppCompatActivity
         View view = navigationView.getHeaderView(0);
         ((TextView)view.findViewById(R.id.user_name)).setText(bundle.getString("NAME"));
         ((TextView)view.findViewById(R.id.id_vew)).setText(bundle.getString("ID"));
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpURLConnection connect= null;
+                try {
+                    connect = (HttpURLConnection)(new URL("http://opendata.cwb.gov.tw/opendataapi?dataid=F-C0032-021&authorizationkey=CWB-BC8B7AC3-2075-4464-9099-2B3F500F8910")).openConnection();
+
+                    BufferedReader reader = Util.getReader(connect, "utf-8");
+                    DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                    org.w3c.dom.Document doc = dBuilder.parse(connect.getInputStream());
+                    NodeList nodeList = doc.getElementsByTagName("parameterValue");
+                    String west = nodeList.item(3).getTextContent();
+                    String temperature = west.split("太平區")[1].split("氣溫")[1].split("℃")[0];
+                    String chinesetmp = west.split("太平區")[1].split("為")[1].split("的天氣")[0];
+
+                    Bundle bundle = new Bundle();
+                    Message msg = new Message();
+                    bundle.putString("Tianchi",temperature);
+                    bundle.putString("Chinesetmp",chinesetmp);
+                    msg.arg1=0;
+                    msg.setData(bundle);
+                    handler.sendMessage(msg);
+                } catch (IOException | SAXException | ParserConfigurationException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
     }
 
@@ -243,7 +290,6 @@ public class slidermain extends AppCompatActivity
                     for(Element ele : infomation) {
                         Elements info = ele.getElementsByTag("a");
                         if(!info.attr("class").equals("null"))
-
                                 activitys.add("\n"+info.get(0).attr("title")+"\n" );
                    }
 
