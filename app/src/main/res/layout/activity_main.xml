@@ -72,8 +72,8 @@
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="89dp"
-        android:layout_height="0dp"
+        android:layout_width="99dp"
+        android:layout_height="27dp"
         android:layout_marginBottom="258dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -81,12 +81,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.028"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView7"
-        android:layout_width="89dp"
-        android:layout_height="33dp"
+        android:layout_width="99dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -97,12 +97,10 @@
         app:layout_constraintHorizontal_bias="0.028"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-<<<<<<< HEAD
-        app:layout_constraintVertical_bias="0.0"
+
+        app:layout_constraintVertical_bias="0.606"
         app:srcCompat="@drawable/a16" />
-=======
-        app:layout_constraintVertical_bias="0.632" />
->>>>>>> a511aca82115ad35c03d24e649c88d2561885221
+
 
     <TextView
         android:id="@+id/textView8"
@@ -123,11 +121,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/a12345"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:id="@+id/imageView2"
+        android:layout_width="332dp"
+        android:layout_height="129dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo0506" />
+
 
 </android.support.constraint.ConstraintLayout>
