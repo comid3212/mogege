@@ -24,9 +24,10 @@ import java.util.ArrayList;
 
 public class Doorline extends AppCompatActivity {
     private String cookie;
-    private TextView english_view,copysience_view,service_view,work_view,result_view;
+
+    private TextView result_view;
     private  ImageView resultView;
-    private TextView textView2,textView3,textView4,textView5;
+    private TextView english_view,copysience_view,service_view,work_view;
     private myHandler handler = new myHandler(this);
     class myHandler extends Handler{
         private WeakReference<Activity> reference;
@@ -75,11 +76,9 @@ public class Doorline extends AppCompatActivity {
         service_view = (TextView)findViewById(R.id.service_view );
         result_view = (TextView)findViewById(R.id.textView24 );
         work_view = (TextView)findViewById(R.id.work_view);
-        textView2 = (TextView) findViewById(R.id.textView2);
-        textView3 = (TextView)findViewById(R.id.textView3);
-        textView4 = (TextView)findViewById(R.id.textView4 );
-        textView5 = (TextView)findViewById(R.id.textView5);
+
         resultView = (ImageView) findViewById( R.id.imageView4);
+
 
         new Thread(new Runnable() {
             @Override
@@ -91,6 +90,7 @@ public class Doorline extends AppCompatActivity {
 
                     Elements information = document.getElementsByTag("li");
                     ArrayList<String> Message = new ArrayList<String>();
+
                     String pass="";
                     String pass2="";
                     for(int i=48;i<52;i++)
@@ -110,9 +110,11 @@ public class Doorline extends AppCompatActivity {
                         pass2 ="有點成就唷";
                     }
 
+
                     Message msg = new Message();
                     Bundle bundle = new Bundle();
                     bundle.putStringArrayList("Mesg", Message);
+
                     bundle.putString("PASS", pass);
                     bundle.putString("PASS2", pass2);
                     msg.arg1 = 1;
@@ -126,3 +128,4 @@ public class Doorline extends AppCompatActivity {
         }).start();
     }
 }
+

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.myapplication.Doorline">
+    tools:context="com.example.user.myapplication.Doorline"
+    android:background="@drawable/b123">
+
 
     <TextView
         android:id="@+id/textView2"
@@ -52,6 +54,7 @@
         android:layout_marginTop="244dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/english_view"

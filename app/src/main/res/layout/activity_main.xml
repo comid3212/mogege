@@ -19,8 +19,9 @@
         android:background="@drawable/textview_circle"
         android:ems="10"
         android:gravity="center"
-        android:inputType="textPersonName"
         android:text="3A417104"
+        android:hint="請輸入帳號"
+        android:inputType="textPersonName"
         android:textColor="#fefefe"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +41,7 @@
         android:background="@drawable/textview_circle"
         android:ems="10"
         android:gravity="center"
+        android:hint="請輸入密碼"
         android:inputType="textPassword"
         android:text="1234"
         android:textColor="#fefefe"
@@ -63,61 +65,11 @@
         android:text="登入"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.778"
-        />
+        app:layout_constraintVertical_bias="0.858" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="99dp"
-        android:layout_height="27dp"
-        android:layout_marginBottom="258dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="帳號"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.028"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="99dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="密碼"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.028"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.606"
-        app:srcCompat="@drawable/a16" />
-
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="295dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="252dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="303dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="316dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView2"
