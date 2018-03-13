@@ -23,7 +23,6 @@ import java.util.ArrayList;
 public class Doorline extends AppCompatActivity {
     private String cookie;
     private TextView english_view,copysience_view,service_view,work_view;
-    private TextView textView2,textView3,textView4,textView5;
     private myHandler handler = new myHandler(this);
     class myHandler extends Handler{
         private WeakReference<Activity> reference;
@@ -37,9 +36,12 @@ public class Doorline extends AppCompatActivity {
                     break;
                 case 1:
                     Bundle bundle = msg.getData();
-                    String Tagg = bundle.getString("ID");
+                    ArrayList<String> Message = bundle.getStringArrayList("Mesg");
 
-                    english_view.setText(Tagg);
+                    english_view.setText(Message.get(0));
+                    copysience_view.setText(Message.get(1));
+                    service_view.setText(Message.get(2));
+                    work_view.setText(Message.get(3));
 
 
                     break;
@@ -49,42 +51,38 @@ public class Doorline extends AppCompatActivity {
 
 
 
-        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doorline);
+        setTitle("畢業門檻");
         //cookie = this.getIntent().getExtras().getString("COOKIE");
-         cookie = CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/");
+        cookie = CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/");
         english_view = (TextView)findViewById(R.id. english_view);
         copysience_view = (TextView)findViewById(R.id.copysience_view);
         service_view = (TextView)findViewById(R.id.service_view );
         work_view = (TextView)findViewById(R.id.work_view);
-         textView2 = (TextView) findViewById(R.id.textView2);
-         textView3 = (TextView)findViewById(R.id.textView3);
-         textView4 = (TextView)findViewById(R.id.textView4 );
-         textView5 = (TextView)findViewById(R.id.textView5);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 HttpURLConnection connect = null;
                 try {
-                    connect = (HttpURLConnection) (new URL("http://nmsd.ncut.edu.tw/wbcmss/Query/Schedule")).openConnection();
+                    connect = (HttpURLConnection) (new URL("http://nmsd.ncut.edu.tw/wbcmss/Graduate/GradPass")).openConnection();
                     Document document = Util.getDocumentFromUrlConnection(connect, cookie);
 
-                    Elements information = document.getElementsByTag("th");
-                    String id,name,classss ;
-                    id = information.get(0).text();
-                    name = information.get(1).text();
-                    classss = information.get(2).text();
+                    Elements information = document.getElementsByTag("li");
+                    ArrayList<String> Message = new ArrayList<String>();
+                    for(int i=60;i<64;i++)
+                    {
+                        Message.add(information.get(i).text());
+                    }
 
                     Message msg = new Message();
                     Bundle bundle = new Bundle();
-                    bundle.putString("ID",id);
-                    bundle.putString("NAME",name);
-                    bundle.putString("CLASS",classss);
+                    bundle.putStringArrayList("Mesg", Message);
                     msg.arg1 = 1;
                     msg.setData(bundle);
                     handler.sendMessage(msg);
@@ -96,3 +94,4 @@ public class Doorline extends AppCompatActivity {
         }).start();
     }
 }
+
