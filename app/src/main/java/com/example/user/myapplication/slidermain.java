@@ -3,6 +3,7 @@ package com.example.user.myapplication;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +23,7 @@ import android.view.MenuItem;
 import android.webkit.CookieManager;
 import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +57,7 @@ public class slidermain extends AppCompatActivity
     private String cookie;
     private String website="%d-%d-%d";
     private  TextView Tianchiview,chineseview;
+    private ImageView TianView;
     private CalendarView testcalendar;
     static final String COOKIES_HEADER = "Set-Cookie";
     static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36";
@@ -81,8 +84,13 @@ public class slidermain extends AppCompatActivity
                     Bundle bundle = msg.getData();
                     String moge2 = bundle.getString("Chinesetmp");
                     String moge = bundle.getString("Tianchi");
+                    String moge3 = bundle.getString("TODAYVIEW");
                     Tianchiview.setText(moge+"℃");
-                    chineseview.setText("~~今日天氣為"+moge2+"~~");
+                    chineseview.setText(moge2);
+                    String uri = "@drawable/" + moge3;
+                    int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+                    Drawable image = getResources().getDrawable(imageResource);
+                    TianView.setImageDrawable(image);
 
                     break;
                 case 1:
@@ -106,6 +114,7 @@ public class slidermain extends AppCompatActivity
         testcalendar=(CalendarView) findViewById(R.id.testcalendar);
         Tianchiview=(TextView) findViewById(R.id.textView21);
         chineseview=(TextView) findViewById(R.id.textView22);
+        TianView = (ImageView) findViewById( R.id.imageView3);
         final Bundle bundle = this.getIntent().getExtras();
          cookie = CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -149,11 +158,44 @@ public class slidermain extends AppCompatActivity
                     String west = nodeList.item(3).getTextContent();
                     String temperature = west.split("太平區")[1].split("氣溫")[1].split("℃")[0];
                     String chinesetmp = west.split("太平區")[1].split("為")[1].split("的天氣")[0];
+                    String imagetian="";
+                    if(chinesetmp.equals("晴時多雨")){
+                         imagetian ="c02";
+                    }
+                    else if (chinesetmp.equals("多雨時晴")){
+                        imagetian="c05";
+                    }
+                    else if (chinesetmp.equals("多雲時陰")){
+                        imagetian="c05";
+                    }
+                    else if (chinesetmp.equals("陰時多雲")){
+                        imagetian="c05";
+                    }
+                    else if (chinesetmp.equals("多雲時晴")){
+                        imagetian="c03";
+                    }
+                    else if (chinesetmp.equals("晴時多雲")){
+                        imagetian="c03";
+                    }
+                    else if (chinesetmp.equals("多雲短暫雨")){
+                        imagetian="c14";
+                    }
+                    else if (chinesetmp.equals("多雲短暫陣雨或雷雨")){
+                        imagetian="c10";
+                    }
+                    else if (chinesetmp.equals("多雲短暫陣雨或雷雨")){
+                        imagetian="c10";
+                    }
+                    else {
+                        imagetian="doge";
+                    }
 
                     Bundle bundle = new Bundle();
                     Message msg = new Message();
                     bundle.putString("Tianchi",temperature);
                     bundle.putString("Chinesetmp",chinesetmp);
+                    bundle.putString("TODAYVIEW",imagetian);
+
                     msg.arg1=0;
                     msg.setData(bundle);
                     handler.sendMessage(msg);

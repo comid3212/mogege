@@ -19,31 +19,62 @@
 
     <TextView
         android:id="@+id/textView10"
-        android:layout_width="91dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="72dp"
-        android:text="台中市台平區 今日氣溫"
+        android:layout_width="265dp"
+        android:layout_height="79dp"
+        android:layout_marginTop="148dp"
+        android:text="太平區今日氣溫"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textColorLink="@android:color/holo_blue_dark"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView21"
-        android:layout_width="60dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="116dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="120dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="148dp"
+        android:textColor="@android:color/holo_orange_light"
+        android:textColorHighlight="@android:color/holo_red_light"
+        android:textColorLink="@color/colorPrimaryDark"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView22"
-        android:layout_width="171dp"
-        android:layout_height="46dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="72dp"
+        android:layout_width="172dp"
+        android:layout_height="94dp"
+        android:layout_marginTop="64dp"
         android:text="TextView"
+        android:textColor="@android:color/holo_orange_light"
+        android:textColorHint="@android:color/holo_blue_light"
+        android:textColorLink="@android:color/holo_blue_light"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:textColorHighlight="@android:color/holo_blue_dark" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="208dp"
+        android:layout_height="76dp"
+        android:layout_marginTop="64dp"
+        android:text="本日天氣概況"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="100dp"
+        android:layout_height="103dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="172dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/doge" />
 
 </android.support.constraint.ConstraintLayout>
