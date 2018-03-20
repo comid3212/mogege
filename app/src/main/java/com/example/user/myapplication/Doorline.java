@@ -1,10 +1,12 @@
 package com.example.user.myapplication;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.CookieManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.os.Handler;
 import android.widget.Toast;
@@ -22,6 +24,9 @@ import java.util.ArrayList;
 
 public class Doorline extends AppCompatActivity {
     private String cookie;
+
+    private TextView result_view;
+    private  ImageView resultView;
     private TextView english_view,copysience_view,service_view,work_view;
     private myHandler handler = new myHandler(this);
     class myHandler extends Handler{
@@ -37,7 +42,13 @@ public class Doorline extends AppCompatActivity {
                 case 1:
                     Bundle bundle = msg.getData();
                     ArrayList<String> Message = bundle.getStringArrayList("Mesg");
-
+                    String moge = bundle.getString("PASS");
+                    String moge2 = bundle.getString("PASS2");
+                    result_view.setText(moge2);
+                    String uri = "@drawable/" + moge;
+                    int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+                    Drawable image = getResources().getDrawable(imageResource);
+                    resultView.setImageDrawable(image);
                     english_view.setText(Message.get(0));
                     copysience_view.setText(Message.get(1));
                     service_view.setText(Message.get(2));
@@ -63,7 +74,11 @@ public class Doorline extends AppCompatActivity {
         english_view = (TextView)findViewById(R.id. english_view);
         copysience_view = (TextView)findViewById(R.id.copysience_view);
         service_view = (TextView)findViewById(R.id.service_view );
+        result_view = (TextView)findViewById(R.id.textView24 );
         work_view = (TextView)findViewById(R.id.work_view);
+
+        resultView = (ImageView) findViewById( R.id.imageView4);
+
 
         new Thread(new Runnable() {
             @Override
@@ -75,14 +90,33 @@ public class Doorline extends AppCompatActivity {
 
                     Elements information = document.getElementsByTag("li");
                     ArrayList<String> Message = new ArrayList<String>();
-                    for(int i=60;i<64;i++)
+
+                    String pass="";
+                    String pass2="";
+                    for(int i=48;i<52;i++)
                     {
                         Message.add(information.get(i).text());
                     }
+                    if(Message.get(0).equals("【英文能力】 未通過")&&Message.get(1).equals("【資訊能力】 未通過")&&Message.get(2).equals("【服務學習】 未通過")&&Message.get(3).equals("【校外實習門檻】 未通過")){
+                        pass ="ao1";
+                        pass2="請再加油";
+                    }
+                    else if(Message.get(0).equals("【英文能力】 通過")&&Message.get(1).equals("【資訊能力】 通過")&&Message.get(2).equals("【服務學習】 通過")&&Message.get(3).equals("【校外實習門檻】 通過")){
+                        pass ="ao2";
+                        pass2="全部通過，太猛了吧";
+                    }
+                    else{
+                        pass ="ao3";
+                        pass2 ="有點成就唷";
+                    }
+
 
                     Message msg = new Message();
                     Bundle bundle = new Bundle();
                     bundle.putStringArrayList("Mesg", Message);
+
+                    bundle.putString("PASS", pass);
+                    bundle.putString("PASS2", pass2);
                     msg.arg1 = 1;
                     msg.setData(bundle);
                     handler.sendMessage(msg);
