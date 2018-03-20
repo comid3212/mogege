@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:onClick="News"
+    android:background="@drawable/b123"
     tools:context="com.example.user.myapplication.AllDepartmentNews">
+
 
     <ImageButton
         android:id="@+id/imageButton4"

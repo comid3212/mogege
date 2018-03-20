@@ -142,6 +142,7 @@ public class slidermain extends AppCompatActivity
         View view = navigationView.getHeaderView(0);
         ((TextView)view.findViewById(R.id.user_name)).setText(bundle.getString("NAME"));
         ((TextView)view.findViewById(R.id.id_vew)).setText(bundle.getString("ID"));
+        ((TextView)view.findViewById(R.id.id_vew2)).setText(bundle.getString("CLASS"));
 
         new Thread(new Runnable() {
             @Override
@@ -183,8 +184,11 @@ public class slidermain extends AppCompatActivity
                     else if (chinesetmp.equals("多雲短暫陣雨或雷雨")){
                         imagetian="c10";
                     }
-                    else if (chinesetmp.equals("多雲短暫陣雨或雷雨")){
+                    else if (chinesetmp.equals("陰短暫陣雨或雷雨")){
                         imagetian="c10";
+                    }
+                    else if (chinesetmp.equals("多雲")){
+                        imagetian="c15";
                     }
                     else {
                         imagetian="doge";

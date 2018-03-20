@@ -144,8 +144,8 @@ public class GradeList extends AppCompatActivity {
                     classInformations.get(4).classLength.add(1);
                     classInformations.get(5).className.add("成績");
                     classInformations.get(5).classLength.add(1);
-                    //classInformations.get(6).className.add("排名");
-                    //classInformations.get(6).classLength.add(1);
+                    classInformations.get(6).className.add("備註");
+                    classInformations.get(6).classLength.add(1);
                     int[] padList = new int[8];
                     int count = 0;
                     for(int i=7;i<className.size() - 1;i++) {
@@ -187,8 +187,8 @@ public class GradeList extends AppCompatActivity {
         setContentView(R.layout.activity_grade_list);
         ListView = (HorizontalListView) findViewById(R.id.testlist);
         cookie = CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/");
-        final String a = this.getIntent().getExtras().getString("學年");
-        final String b = this.getIntent().getExtras().getString("學期");
+        final Bundle bundle = this.getIntent().getExtras();
+        final String year = bundle.getString("Choice");
         super.onCreate(savedInstanceState);
         new Thread(new Runnable() {
             @Override
@@ -199,7 +199,7 @@ public class GradeList extends AppCompatActivity {
                     Util.setHttpUrlConnection(connect);
                     Util.setHttpUrlConnectionCookie(connect, cookie);
                     Util.getReader(connect);
-                    BufferedReader reader = Util.getReader(connect);
+                    BufferedReader reader = Util.getReader(connect, "utf-8");
                     StringBuilder all = new StringBuilder();
                     String line;
                     while((line = reader.readLine()) != null){
@@ -211,7 +211,7 @@ public class GradeList extends AppCompatActivity {
                     ArrayList<Integer> classLength = new ArrayList<>();
                     for(int i=0;i<information.size() - 1;)
                     {
-                        if( information.get(i).text().equals("104") && information.get(i+1).text().equals("上學期")){
+                        if( information.get(i).text().equals(year)){
                             for(int a=0;a<8;a++) {
                                 className.add(information.get(i).text());
                                 classLength.add(1);

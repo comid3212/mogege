@@ -82,14 +82,13 @@ class MyAdapter extends BaseAdapter {
                 textView.setText(name);
             textView.setGravity(TextView.TEXT_ALIGNMENT_CENTER);
             if(length != 1) {
-                textView.top = false;
                 textView.down = false;
-                textView.setBackgroundColor(Color.CYAN);
+                textView.setBackgroundColor(-268383028);
             }
-            else if(name != ""){
+           /* else if(!name.equals("")){
                 textView.down = false;
-                textView.setBackgroundColor(Color.LTGRAY);
-            }
+                textView.setBackgroundColor(-268383028);
+            }*/
             layout.addView(textView, new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT,1.0f
@@ -100,7 +99,7 @@ class MyAdapter extends BaseAdapter {
                 textView1.setGravity(TextView.TEXT_ALIGNMENT_CENTER);
                 textView1.down = false;
                 textView1.top = false;
-                textView1.setBackgroundColor(Color.CYAN);
+                textView1.setBackgroundColor(-268383028);
                 int f = index * 24, e = index * 24 + 24;
                 if(e > name.length()) {
                     e = name.length();
@@ -184,7 +183,7 @@ public class classtable extends AppCompatActivity {
                     for(int i = 0; i < classPerDay; ++i) {
                         MyTextView textView1 = new MyTextView(reference.get());
                         textView1.setText(String.valueOf(i + 1));
-                        textView1.setBackgroundColor(Color.MAGENTA);
+                        textView1.setBackgroundColor(Color.argb(150, 238, 236, 166));
                         timeLayout.addView(textView1, new LinearLayout.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT,

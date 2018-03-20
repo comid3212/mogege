@@ -8,7 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,83 +29,21 @@ public class GradesChoicelist extends AppCompatActivity {
     private String cookie;
     private String years;
     private myHandler handler = new myHandler(this);
+    private  TextView testtest;
 
 
-    public void button104up(View view) {
-        Message msg = new Message();
-        msg.arg1 = 0;
-        Bundle bundle = new Bundle();
-        //bundle.putString("COOKIE", cookie);
-        String a = "104";
-        String b = "上學期";
-        bundle.putString("學年", a);
-        bundle.putString("學期", b);
-        msg.setData(bundle);
-        handler.sendMessage(msg);
-    }
-    public void button104down(View view) {
+
+    public void allgrades(View view) {
         Message msg = new Message();
         msg.arg1 = 1;
         Bundle bundle = new Bundle();
         bundle.putString("COOKIE", cookie);
-        String a = "104";
-        String b = "下學期";
-        bundle.putString("學年", a);
-        bundle.putString("學期", b);
         msg.setData(bundle);
         handler.sendMessage(msg);
     }
-    public void button105up(View view) {
+    public void search(View view) {
         Message msg = new Message();
-        msg.arg1 = 2;
-        Bundle bundle = new Bundle();
-        bundle.putString("COOKIE", cookie);
-        String a = "105";
-        String b = "上學期";
-        bundle.putString("學年", a);
-        bundle.putString("學期", b);
-        msg.setData(bundle);
-        handler.sendMessage(msg);
-    }
-    public void button105down(View view) {
-        Message msg = new Message();
-        msg.arg1 = 3;
-        Bundle bundle = new Bundle();
-        bundle.putString("COOKIE", cookie);
-        String a = "105";
-        String b = "下學期";
-        bundle.putString("學年", a);
-        bundle.putString("學期", b);
-        msg.setData(bundle);
-        handler.sendMessage(msg);
-    }
-    public void button106up(View view) {
-        Message msg = new Message();
-        msg.arg1 = 4;
-        Bundle bundle = new Bundle();
-        bundle.putString("COOKIE", cookie);
-        String a = "106";
-        String b = "上學期";
-        bundle.putString("學年", a);
-        bundle.putString("學期", b);
-        msg.setData(bundle);
-        handler.sendMessage(msg);
-    }
-    public void button106down(View view) {
-        Message msg = new Message();
-        msg.arg1 = 5;
-        Bundle bundle = new Bundle();
-        bundle.putString("COOKIE", cookie);
-        String a = "106";
-        String b = "下學期";
-        bundle.putString("學年", a);
-        bundle.putString("學期", b);
-        msg.setData(bundle);
-        handler.sendMessage(msg);
-    }
-    public void allgrades(View view) {
-        Message msg = new Message();
-        msg.arg1 = 6;
+        msg.arg1 = 0;
         Bundle bundle = new Bundle();
         bundle.putString("COOKIE", cookie);
         msg.setData(bundle);
@@ -128,68 +71,9 @@ public class GradesChoicelist extends AppCompatActivity {
 
                     //切換Activity
                     reference.get().startActivity(intent);
-                    break;
+
+                break;
                 case 1:
-                    intent = new Intent();
-                    intent.setClass(reference.get(), GradeList.class);
-
-                    //new一個Bundle物件，並將要傳遞的資料傳入
-
-                    //將Bundle物件assign給intent
-                    intent.putExtras(msg.getData());
-
-                    //切換Activity
-                    reference.get().startActivity(intent);
-                    break;
-                case 2:
-                    intent = new Intent();
-                    intent.setClass(reference.get(), GradeList.class);
-
-                    //new一個Bundle物件，並將要傳遞的資料傳入
-
-                    //將Bundle物件assign給intent
-                    intent.putExtras(msg.getData());
-
-                    //切換Activity
-                    reference.get().startActivity(intent);
-                    break;
-                case 3:
-                    intent = new Intent();
-                    intent.setClass(reference.get(), GradeList.class);
-
-                    //new一個Bundle物件，並將要傳遞的資料傳入
-
-                    //將Bundle物件assign給intent
-                    intent.putExtras(msg.getData());
-
-                    //切換Activity
-                    reference.get().startActivity(intent);
-                    break;
-                case 4:
-                    intent = new Intent();
-                    intent.setClass(reference.get(), GradeList.class);
-
-                    //new一個Bundle物件，並將要傳遞的資料傳入
-
-                    //將Bundle物件assign給intent
-                    intent.putExtras(msg.getData());
-
-                    //切換Activity
-                    reference.get().startActivity(intent);
-                    break;
-                case 5:
-                    intent = new Intent();
-                    intent.setClass(reference.get(), GradeList.class);
-
-                    //new一個Bundle物件，並將要傳遞的資料傳入
-
-                    //將Bundle物件assign給intent
-                    intent.putExtras(msg.getData());
-
-                    //切換Activity
-                    reference.get().startActivity(intent);
-                    break;
-                case 6:
                     intent = new Intent();
                     intent.setClass(reference.get(), AddAllgrades.class);
 
@@ -210,6 +94,30 @@ public class GradesChoicelist extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grades_choicelist);
         cookie = CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/");
+        Spinner spinner = (Spinner)findViewById(R.id.spinner);
+
+        final String[] lunch = {"102", "103", "104", "105", "106"};
+        ArrayAdapter<String> lunchList = new ArrayAdapter<>(GradesChoicelist.this,
+                android.R.layout.simple_spinner_dropdown_item,
+                lunch);
+        spinner.setAdapter(lunchList);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(GradesChoicelist.this, "你選的是" + lunch[position], Toast.LENGTH_SHORT).show();
+
+                Bundle bundle = new Bundle();
+                Message msg = new Message();
+                bundle.putString("Choice",lunch[position]);
+                msg.setData(bundle);
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
 
