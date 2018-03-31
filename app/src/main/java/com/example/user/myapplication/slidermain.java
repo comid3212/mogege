@@ -186,6 +186,9 @@ public class slidermain extends AppCompatActivity
                     else if (chinesetmp.equals("多雲短暫陣雨或雷雨")){
                         imagetian="c10";
                     }
+                    else if (chinesetmp.equals("陰短暫陣雨或雷雨")){
+                        imagetian="c10";
+                    }
                     else {
                         imagetian="doge";
                     }
