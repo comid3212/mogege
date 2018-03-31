@@ -1,5 +1,8 @@
 package com.example.user.myapplication;
 
+import android.support.annotation.NonNull;
+import android.webkit.CookieManager;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -8,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by USER on 2018/2/28.
@@ -54,14 +59,17 @@ public class Util {
     static void setHttpUrlConnectionCookie(HttpURLConnection urlConnection, String cookie) {
         urlConnection.setRequestProperty("Cookie", cookie);
     }
+    static void sendData(HttpURLConnection urlConnection, String data) {
+        sendData(urlConnection, data, "big5");
+    }
 
-    static void sendData(HttpURLConnection urlConnection, String data){
+    static void sendData(HttpURLConnection urlConnection, String data, String encode){
         byte[] postData;
         try {
             urlConnection.setDoOutput( true );
             urlConnection.setInstanceFollowRedirects( true );
             urlConnection.setRequestMethod( "POST" );
-            postData = data.getBytes("big5");
+            postData = data.getBytes(encode);
             int  postDataLength = postData.length;
             urlConnection.setRequestProperty( "Content-Length", Integer.toString( postDataLength ));
             urlConnection.getOutputStream().write(postData);
@@ -70,7 +78,7 @@ public class Util {
         }
     }
 
-    public static BufferedReader getReader(HttpURLConnection urlConnection){
+    public static BufferedReader getReader(HttpURLConnection urlConnection ){
         try {
             return new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "big5"));
         } catch (IOException e) {
@@ -84,4 +92,32 @@ public class Util {
             return null;
         }
     }
+
+    interface GetCookieCallBack {
+        void callback(CookieManager manager);
+    }
+    static void getCookie(@NonNull final URL  url, @NonNull final CookieManager cookieManager, final GetCookieCallBack callback){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {//將cooke加載
+                    HttpURLConnection connect = (HttpURLConnection)url.openConnection();
+                    setHttpUrlConnection(connect);
+
+                    Map<String, List<String>> headerFields = connect.getHeaderFields();
+                    List<String> cookiesHeader = headerFields.get(COOKIES_HEADER);
+
+                    for(String cookie : cookiesHeader) {
+                        cookieManager.setCookie(url.getHost(), cookie);
+                    }
+
+                    connect.disconnect();
+                    callback.callback(cookieManager);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
 }

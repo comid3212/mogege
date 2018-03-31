@@ -56,7 +56,7 @@ public class NewLogin extends AppCompatActivity {
                     break;
             }
         }
-        }
+    }
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +107,7 @@ public class NewLogin extends AppCompatActivity {
                                 }
                             }
                         }).start();
-                                Bundle bundle = new Bundle();
+                        Bundle bundle = new Bundle();
                         Message msg = new Message();
                         msg.arg1 = 0;
                         msg.setData(bundle);
@@ -131,38 +131,5 @@ public class NewLogin extends AppCompatActivity {
         webView.loadUrl("http://nmsd.ncut.edu.tw/wbcmss/Auth/Login");
         setContentView(webView);
 
-       /* new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HttpURLConnection connect = null;
-                try {
-                    connect = (HttpURLConnection) (new URL("http://nmsd.ncut.edu.tw/wbcmss/Query/Schedule")).openConnection();
-                    MainActivity.setHttpUrlConnection(connect);
-                    MainActivity.setHttpUrlConnectionCookie(connect, cookie);
-                    MainActivity.getReader(connect);
-                    BufferedReader reader = MainActivity.getReader(connect);
-                    StringBuilder all = new StringBuilder();
-                    String line;
-                    while((line = reader.readLine()) != null){
-                        all.append(line);
-                    }
-                    Document document = Jsoup.parse(all.toString());
-                    Elements information = document.getElementsByTag("th");
-                    String id ;
-                    id = information.get(0).text();
-                    Message msg = new Message();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("ID",id);
-                    msg.arg1 = 0;
-                    msg.setData(bundle);
-                    handler.sendMessage(msg);
-
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();*/
     }
 }

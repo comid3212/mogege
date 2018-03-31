@@ -72,6 +72,14 @@ public class ChoiceUi extends AppCompatActivity {
         msg.setData(bundle);
         handler.sendMessage(msg);
     }
+    public void sick(View view) {
+        Message msg = new Message();
+        msg.arg1 = 6;
+        Bundle bundle = new Bundle();
+        bundle.putString("COOKIE", cookie);
+        msg.setData(bundle);
+        handler.sendMessage(msg);
+    }
 
 
     class myHandler extends Handler {
@@ -137,6 +145,18 @@ public class ChoiceUi extends AppCompatActivity {
                     intent = new Intent(reference.get(), MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
+                    break;
+                case 6:
+                    intent = new Intent();
+                    intent.setClass(reference.get(), Malingering.class);
+
+                    //new一個Bundle物件，並將要傳遞的資料傳入
+
+                    //將Bundle物件assign給intent
+                    intent.putExtras(msg.getData());
+
+                    //切換Activity
+                    reference.get().startActivity(intent);
                     break;
 
             }

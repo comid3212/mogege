@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             reference.get().loginButton.setVisibility(View.VISIBLE);
             switch (msg.arg1){
-                case 0://輸入錯誤，顯示msg訊息
+                case 0:
                     Intent intent = new Intent();
                     intent.setClass(reference.get(), slidermain.class);
 
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
-                        HttpURLConnection  connect = (HttpURLConnection) (new URL("http://nmsd.ncut.edu.tw/wbcmss/Query/Schedule")).openConnection();
+                        HttpURLConnection  connect = (HttpURLConnection) (new URL("http://nmsd.ncut.edu.tw/wbcmss/Query/Schedule")).openConnection();//檢查是否登入
                         Document document = Util.getDocumentFromUrlConnection(connect, android.webkit.CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/"));
 
 

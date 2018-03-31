@@ -39,7 +39,8 @@
         <activity android:name=".NewsWeb" />
         <activity android:name=".AllDepartmentNews" />
         <activity android:name=".AllDepartmentView" />
-        <activity android:name=".NewLogin"></activity>
+        <activity android:name=".NewLogin" />
+        <activity android:name=".Malingering"></activity>
     </application>
 
 </manifest>
