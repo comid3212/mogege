@@ -89,8 +89,6 @@ public class Malingering extends AppCompatActivity {
         setContentView(R.layout.activity_malingering);
         id = (EditText) findViewById(R.id.editText7);
         pwd = (EditText) findViewById(R.id.editText8);
-        vcode = (EditText) findViewById(R.id.editText6);
-        Vcodeshow = (ImageView) findViewById(R.id.imageView5);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -145,8 +143,6 @@ public class Malingering extends AppCompatActivity {
 
                     Map<String, List<String>> headerFields = connect.getHeaderFields();
                     List<String> cookiesHeader = headerFields.get(COOKIES_HEADER);
-                    BufferedReader reader = Util.getReader(connect);
-                    String rgloijrhoijregoirejg = reader.readLine();
                     if(connect.getResponseCode() == 500)
                     {
                         Bundle bundle = new Bundle();
@@ -163,18 +159,20 @@ public class Malingering extends AppCompatActivity {
                         android.webkit.CookieManager.getInstance().setCookie("http://140.128.78.77/", cookiesHeader.get(0));
                         Bundle bundle = new Bundle();
                         Message msg = new Message();
+
+
+                        BufferedReader reader = Util.getReader(connect);
+                        String rgloijrhoijregoirejg = reader.readLine();
+                        bundle.putString("apple",rgloijrhoijregoirejg);
                         msg.arg1 = 2;
                         msg.setData(bundle);
                         handler.sendMessage(msg);
 
-
                     }
-                    Util.getCookie(new URL("http://140.128.78.77/stdl/WebApi/NcitnfData/Authorized"), android.webkit.CookieManager.getInstance(), new Util.GetCookieCallBack() {
-                        @Override
-                        public void callback(CookieManager manager) {
 
-                        }
-                    });
+
+
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
