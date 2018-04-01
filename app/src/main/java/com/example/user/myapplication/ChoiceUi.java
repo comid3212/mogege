@@ -72,7 +72,7 @@ public class ChoiceUi extends AppCompatActivity {
         msg.setData(bundle);
         handler.sendMessage(msg);
     }
-    public void leave(View view) {
+    public void sick(View view) {
         Message msg = new Message();
         msg.arg1 = 6;
         Bundle bundle = new Bundle();
@@ -148,7 +148,7 @@ public class ChoiceUi extends AppCompatActivity {
                     break;
                 case 6:
                     intent = new Intent();
-                    intent.setClass(reference.get(), leave.class);
+                    intent.setClass(reference.get(), Malingering.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
 

@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -84,14 +85,11 @@ public class slidermain extends AppCompatActivity
                     Bundle bundle = msg.getData();
                     String moge2 = bundle.getString("Chinesetmp");
                     String moge = bundle.getString("Tianchi");
-                    String moge3 = bundle.getString("TODAYVIEW");
+                    int moge3 = bundle.getInt("TODAYVIEW");
                     Tianchiview.setText(moge+"℃");
                     chineseview.setText(moge2);
-                    String uri = "@drawable/" + moge3;
-                    int imageResource = getResources().getIdentifier(uri, null, getPackageName());
-                    Drawable image = getResources().getDrawable(imageResource);
-                    TianView.setImageDrawable(image);
-
+                    Drawable drawable = getResources().getDrawable(moge3, slidermain.this.getTheme());
+                    TianView.setImageDrawable(drawable);
                     break;
                 case 1:
                     AlertDialog.Builder builder = new AlertDialog.Builder(reference.get());
@@ -142,6 +140,7 @@ public class slidermain extends AppCompatActivity
         View view = navigationView.getHeaderView(0);
         ((TextView)view.findViewById(R.id.user_name)).setText(bundle.getString("NAME"));
         ((TextView)view.findViewById(R.id.id_vew)).setText(bundle.getString("ID"));
+        ((TextView)view.findViewById(R.id.id_vew2)).setText(bundle.getString("CLASS"));
 
         new Thread(new Runnable() {
             @Override
@@ -158,46 +157,46 @@ public class slidermain extends AppCompatActivity
                     String west = nodeList.item(3).getTextContent();
                     String temperature = west.split("太平區")[1].split("氣溫")[1].split("℃")[0];
                     String chinesetmp = west.split("太平區")[1].split("為")[1].split("的天氣")[0];
-                    String imagetian="";
+                    int imagetian=0;
                     if(chinesetmp.equals("晴時多雨")){
-                         imagetian ="c02";
+                         imagetian =R.drawable.c02;
                     }
                     else if (chinesetmp.equals("多雨時晴")){
-                        imagetian="c05";
+                        imagetian=R.drawable.c05;
                     }
                     else if (chinesetmp.equals("多雲時陰")){
-                        imagetian="c05";
+                        imagetian=R.drawable.c05;
                     }
                     else if (chinesetmp.equals("陰時多雲")){
-                        imagetian="c05";
+                        imagetian=R.drawable.c05;
                     }
                     else if (chinesetmp.equals("多雲時晴")){
-                        imagetian="c03";
+                        imagetian=R.drawable.c03;
                     }
                     else if (chinesetmp.equals("晴時多雲")){
-                        imagetian="c03";
+                        imagetian=R.drawable.c03;
                     }
                     else if (chinesetmp.equals("多雲短暫雨")){
-                        imagetian="c14";
+                        imagetian=R.drawable.c14;
                     }
                     else if (chinesetmp.equals("多雲短暫陣雨或雷雨")){
-                        imagetian="c10";
-                    }
-                    else if (chinesetmp.equals("多雲短暫陣雨或雷雨")){
-                        imagetian="c10";
+                        imagetian=R.drawable.c10;
                     }
                     else if (chinesetmp.equals("陰短暫陣雨或雷雨")){
-                        imagetian="c10";
+                        imagetian=R.drawable.c10;
+                    }
+                    else if (chinesetmp.equals("多雲")){
+                        imagetian=R.drawable.c15;
                     }
                     else {
-                        imagetian="doge";
+                        imagetian=R.drawable.doge;
                     }
 
                     Bundle bundle = new Bundle();
                     Message msg = new Message();
                     bundle.putString("Tianchi",temperature);
                     bundle.putString("Chinesetmp",chinesetmp);
-                    bundle.putString("TODAYVIEW",imagetian);
+                    bundle.putInt("TODAYVIEW",imagetian);
 
                     msg.arg1=0;
                     msg.setData(bundle);

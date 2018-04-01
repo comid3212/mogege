@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/b123"
     tools:context="com.example.user.myapplication.AddAllgrades">
 
     <TextView
@@ -14,6 +15,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="104dp"
         android:text="TextView"
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,6 +29,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="196dp"
         android:text="TextView"
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,12 +39,15 @@
         android:id="@+id/rank_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="456dp"
+        android:layout_marginBottom="436dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="TextView"
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -49,6 +57,8 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="104dp"
         android:text="學分:"
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,6 +69,8 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="196dp"
         android:text="成績:"
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,6 +82,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="至目前總學習學分，總平均及排名"
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

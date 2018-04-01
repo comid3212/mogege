@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             reference.get().loginButton.setVisibility(View.VISIBLE);
             switch (msg.arg1){
-                case 0://輸入錯誤，顯示msg訊息
+                case 0:
                     Intent intent = new Intent();
                     intent.setClass(reference.get(), slidermain.class);
 
@@ -121,13 +121,23 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
-                        HttpURLConnection  connect = (HttpURLConnection) (new URL("http://nmsd.ncut.edu.tw/wbcmss/Query/Schedule")).openConnection();
+                        HttpURLConnection  connect = (HttpURLConnection) (new URL("http://nmsd.ncut.edu.tw/wbcmss/Query/Schedule")).openConnection();//檢查是否登入
                         Document document = Util.getDocumentFromUrlConnection(connect, android.webkit.CookieManager.getInstance().getCookie("http://nmsd.ncut.edu.tw/"));
 
-
+                        if(document == null) {
+                            android.webkit.CookieManager.getInstance().removeAllCookies(null);
+                            Message msg = new Message();
+                            Bundle bundle = new Bundle();
+                            msg.arg1 = 2;
+                            bundle.putString("TITLE", "ERROR");
+                            bundle.putString("MESSAGE", "連線逾時，請重新登入");
+                            msg.setData(bundle);
+                            handler.sendMessage(msg);
+                            return;
+                        }
                         Elements information = document.getElementsByTag("th");
 
-                        if(document == null || information.size() < 3) {
+                        if(information.size() < 3) {
                             android.webkit.CookieManager.getInstance().removeAllCookies(null);
                             Message msg = new Message();
                             Bundle bundle = new Bundle();

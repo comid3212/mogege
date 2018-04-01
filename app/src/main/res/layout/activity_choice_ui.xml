@@ -49,6 +49,18 @@
         android:id="@+id/button6"
         android:layout_width="136dp"
         android:layout_height="62dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="248dp"
+        android:background="@drawable/drawable"
+        android:onClick="sick"
+        android:text="請假系統"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button12"
+        android:layout_width="136dp"
+        android:layout_height="62dp"
         android:layout_marginEnd="36dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/drawable"
@@ -66,18 +78,6 @@
         android:background="@drawable/drawable"
         android:onClick="back"
         android:text="登出"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button12"
-        android:layout_width="136dp"
-        android:layout_height="62dp"
-        android:layout_marginStart="212dp"
-        android:layout_marginTop="248dp"
-        android:background="@drawable/drawable"
-        android:onClick="leave"
-        android:text="請假系統"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
