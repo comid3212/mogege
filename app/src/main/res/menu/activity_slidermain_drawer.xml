@@ -6,19 +6,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_student"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@android:drawable/ic_menu_myplaces"
             android:title="學生篇" />
         <item
             android:id="@+id/nav_twohard"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@android:drawable/stat_notify_chat"
             android:title="校內公告" />
         <item
             android:id="@+id/nav_class"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@android:drawable/stat_notify_chat"
             android:title="各系資訊" />
         <item
             android:id="@+id/nav_shop"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@android:drawable/ic_secure"
             android:title="無" />
     </group>
 
@@ -26,7 +26,7 @@
         <menu>
             <item
                 android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@android:drawable/ic_menu_revert"
                 android:title="登出" />
         </menu>
     </item>

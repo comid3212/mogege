@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back12"
     tools:context="com.example.user.myapplication.Malingering">
 
     <EditText
@@ -15,6 +16,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="3a417100"
+        android:textColor="@android:color/background_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,17 +29,21 @@
         android:ems="10"
         android:inputType="textPassword"
         android:text="123"
+        android:textColor="@android:color/background_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText7" />
 
     <Button
         android:id="@+id/btn12"
-        android:layout_width="wrap_content"
+        android:layout_width="102dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="92dp"
-        android:layout_marginStart="148dp"
+        android:layout_marginBottom="72dp"
+        android:layout_marginStart="144dp"
+        android:background="@android:drawable/checkbox_off_background"
         android:onClick="login"
         android:text="登入"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -48,8 +54,9 @@
         android:layout_marginStart="84dp"
         android:layout_marginTop="40dp"
         android:text="勤益請假系統"
-        android:textColor="@android:color/background_dark"
+        android:textColor="@android:color/background_light"
         android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
