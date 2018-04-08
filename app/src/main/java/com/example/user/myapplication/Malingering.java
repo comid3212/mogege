@@ -161,9 +161,10 @@ public class Malingering extends AppCompatActivity {
                         Message msg = new Message();
 
 
-                        BufferedReader reader = Util.getReader(connect);
+                        BufferedReader reader = Util.getReader(connect,"utf-8");
                         String rgloijrhoijregoirejg = reader.readLine();
-                        bundle.putString("apple",rgloijrhoijregoirejg);
+                        String IDNAME = rgloijrhoijregoirejg.split("id")[1].split("type")[0];
+                        bundle.putString("apple",IDNAME);
                         msg.arg1 = 2;
                         msg.setData(bundle);
                         handler.sendMessage(msg);

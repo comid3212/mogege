@@ -2,24 +2,32 @@ package com.example.user.myapplication;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.icu.util.Calendar;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.CookieManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,6 +36,8 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 class JSONDatas implements Serializable {
     JSONArray array;
@@ -36,9 +46,75 @@ class JSONDatas implements Serializable {
 
 public class Malingering_Detail extends AppCompatActivity {
     private  String cookie;
-    private TextView test100;
-
+    private TextView test100,test101;
+    ListView listview100;
     private myHandler handler = new myHandler(this);
+    private ListAdapter listAdapter;
+
+    static class MyAdapter extends BaseAdapter {
+
+        Context context;
+        List<RequestInfo> infoList;
+
+        static class RequestInfo {
+            String punnm, createTime, endDate, mainContent;
+            int tranStatus;
+        }
+
+        public MyAdapter(Context context, List<RequestInfo> infoList){
+            this.context = context;
+            this.infoList = infoList;
+        }
+
+        @Override
+        public int getCount() {
+            return infoList.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return infoList.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            if(view == null) {
+                view = LayoutInflater.from(context).inflate(R.layout.sick_table, null);
+            }
+
+            if(view.getTag() != null && Integer.parseInt(view.getTag().toString()) == i) {
+                return view;
+            }
+
+            TextView
+                name = view.findViewById(R.id.name),
+                startTime = view.findViewById(R.id.startTime),
+                endDate = view.findViewById(R.id.endDate),
+                cause = view.findViewById(R.id.cause);
+
+            RequestInfo info = infoList.get(i);
+
+            if(info.tranStatus == 70){ //pass
+                view.setBackgroundColor(-6232416);
+            } else if (info.tranStatus == 10) { //wait
+                view.setBackgroundColor(-1319524);
+            } else {
+                view.setBackgroundColor(-1268002);
+            }
+            name.setText(info.punnm);
+            startTime.setText(info.createTime);
+            endDate.setText(info.endDate);
+            cause.setText(info.mainContent);
+
+            return view;
+        }
+    }
+
     class myHandler extends Handler {
         private WeakReference<Activity> reference;
 
@@ -56,20 +132,36 @@ public class Malingering_Detail extends AppCompatActivity {
                     //test100.setText("");
                     JSONDatas jsonDatas = (JSONDatas)bundle.getSerializable("JSON");
                     JSONArray array = jsonDatas.array;
+                    List<MyAdapter.RequestInfo> infoList = new ArrayList<>();
                     for(int i = 0; i < array.length(); ++i) {
                         try {
+                            MyAdapter.RequestInfo info = new MyAdapter.RequestInfo();
                             JSONObject object   = (JSONObject) array.get(i);
-                            String createTime   = object.getString("createTime").split("T")[0];
-                            String endDate      = object.getString("endDate").split("T")[0];
-                            String mainContent  = object.getString("mainContent");
-                            String punnm        = object.getString("punnm");
-                            int tranStatus      = object.getInt("tranStatus");
-                           // test100.append(punnm + "\t" + createTime + "\t" + endDate + "\t" + mainContent + "\t" + ((tranStatus == 80) ? "莓過" : "過") + '\n');
-
+                            info.createTime   = object.getString("createTime").split("T")[0];
+                            info.endDate      = object.getString("endDate").split("T")[0];
+                            info.mainContent  = object.getString("mainContent");
+                            info.punnm        = object.getString("punnm");
+                            info.tranStatus      = object.getInt("tranStatus");
+                            infoList.add(info);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
+
+                    MyAdapter adapter;
+                    adapter = new MyAdapter(reference.get() , infoList);
+                    listview100.setAdapter(adapter);
+                    listview100.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            MyAdapter.RequestInfo info = ((MyAdapter.RequestInfo)listview100.getAdapter().getItem(i));
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Malingering_Detail.this);
+                            builder.setTitle(info.punnm);
+                            builder.setMessage(info.mainContent);
+                            builder.show();
+                        }
+                    });
 
 
                     break;
@@ -105,8 +197,11 @@ public class Malingering_Detail extends AppCompatActivity {
         setContentView(R.layout.activity_malingering__detail);
         cookie = CookieManager.getInstance().getCookie("http://140.128.78.77/");
         test100 =(TextView)findViewById(R.id.textView100) ;
+        test101 =(TextView)findViewById(R.id.textView101) ;
         final Bundle bundle = this.getIntent().getExtras();
-        test100.setText(bundle.getString("apple"));
+        final String info = bundle.getString("apple");
+        test100.setText(info);
+        listview100 =(ListView) findViewById(R.id.listview100) ;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -126,7 +221,10 @@ public class Malingering_Detail extends AppCompatActivity {
                     connect.setDoOutput(true);
                     connect.setRequestMethod("PUT");
 
-                    connect.getOutputStream().write("{\"leaveType\":0,\"studentID\":\"3A417100\",\"startDate\":\"2012-02-25T16:00:00.000Z\",\"endDate\":\"2018/06/24\",\"approveType\":0}".getBytes());
+                    Date currentTime = Calendar.getInstance().getTime();
+                    CharSequence today = DateFormat.format("yyyy/MM/dd", currentTime);
+
+                    connect.getOutputStream().write(("{\"leaveType\":0,\"studentID\":\"" + info.split("\"")[2] + "\",\"startDate\":\"2012-02-25T16:00:00.000Z\",\"endDate\":\"" + today.toString() + "\",\"approveType\":0}").getBytes());
 
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
                     byte a[] = new byte[1000];
@@ -138,7 +236,6 @@ public class Malingering_Detail extends AppCompatActivity {
                     JSONArray jsonArray = new JSONArray(json);
 
                     JSONDatas datas = new JSONDatas(jsonArray);
-
                     Message msg = new Message();
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("JSON", datas);
