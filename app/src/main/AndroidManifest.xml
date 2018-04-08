@@ -40,9 +40,9 @@
         <activity android:name=".AllDepartmentNews" />
         <activity android:name=".AllDepartmentView" />
         <activity android:name=".NewLogin" />
-        <activity android:name=".leave" />
         <activity android:name=".Malingering" />
-        <activity android:name=".Malingering_Detail"></activity>
+        <activity android:name=".Malingering_Detail" />
+        <activity android:name=".GradeListN" />
     </application>
 
 </manifest>

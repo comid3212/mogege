@@ -82,9 +82,9 @@ public class Malingering_Detail extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
+        public View getView(int i, View view, ViewGroup viewGroup) {//畫面要顯示什麼
             if(view == null) {
-                view = LayoutInflater.from(context).inflate(R.layout.sick_table, null);
+                view = LayoutInflater.from(context).inflate(R.layout.sick_table, null);//引用 sick_table的格式
             }
 
             if(view.getTag() != null && Integer.parseInt(view.getTag().toString()) == i) {
@@ -130,7 +130,7 @@ public class Malingering_Detail extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle = msg.getData();
                     //test100.setText("");
-                    JSONDatas jsonDatas = (JSONDatas)bundle.getSerializable("JSON");
+                    JSONDatas jsonDatas = (JSONDatas)bundle.getSerializable("JSON");//網頁提供JSON格式
                     JSONArray array = jsonDatas.array;
                     List<MyAdapter.RequestInfo> infoList = new ArrayList<>();
                     for(int i = 0; i < array.length(); ++i) {
@@ -152,7 +152,7 @@ public class Malingering_Detail extends AppCompatActivity {
                     MyAdapter adapter;
                     adapter = new MyAdapter(reference.get() , infoList);
                     listview100.setAdapter(adapter);
-                    listview100.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    listview100.setOnItemClickListener(new AdapterView.OnItemClickListener() {//點擊LISTVIEW跳出視窗顯示詳細資訊
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             MyAdapter.RequestInfo info = ((MyAdapter.RequestInfo)listview100.getAdapter().getItem(i));
@@ -197,7 +197,6 @@ public class Malingering_Detail extends AppCompatActivity {
         setContentView(R.layout.activity_malingering__detail);
         cookie = CookieManager.getInstance().getCookie("http://140.128.78.77/");
         test100 =(TextView)findViewById(R.id.textView100) ;
-        test101 =(TextView)findViewById(R.id.textView101) ;
         final Bundle bundle = this.getIntent().getExtras();
         final String info = bundle.getString("apple");
         test100.setText(info);
@@ -222,7 +221,7 @@ public class Malingering_Detail extends AppCompatActivity {
                     connect.setRequestMethod("PUT");
 
                     Date currentTime = Calendar.getInstance().getTime();
-                    CharSequence today = DateFormat.format("yyyy/MM/dd", currentTime);
+                    CharSequence today = DateFormat.format("yyyy/MM/dd", currentTime);//取得目前時間
 
                     connect.getOutputStream().write(("{\"leaveType\":0,\"studentID\":\"" + info.split("\"")[2] + "\",\"startDate\":\"2012-02-25T16:00:00.000Z\",\"endDate\":\"" + today.toString() + "\",\"approveType\":0}").getBytes());
 

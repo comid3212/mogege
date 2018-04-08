@@ -131,7 +131,7 @@ public class ChoiceUi extends AppCompatActivity {
                     break;
                 case 4:
                     intent = new Intent();
-                    intent.setClass(reference.get(), GradesChoicelist.class);
+                    intent.setClass(reference.get(), GradeListN.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
 
