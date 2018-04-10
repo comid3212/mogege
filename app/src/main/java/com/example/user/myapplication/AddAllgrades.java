@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.webkit.CookieManager;
 import android.widget.TextView;
 
@@ -37,14 +38,22 @@ public class AddAllgrades extends AppCompatActivity {
                 case 1:
                     Bundle bundle = msg.getData();
                     ArrayList<String> Message = bundle.getStringArrayList("Inner");
-                    credit_view.setText(Message.get(0));
-                    grades_view.setText(Message.get(1));
+                    credit_view.setText(" "+Message.get(0));
+                    grades_view.setText(" "+Message.get(1));
                     rank_view.setText(Message.get(2));
 
 
                     break;
             }
         }
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +63,13 @@ public class AddAllgrades extends AppCompatActivity {
         credit_view = (TextView)findViewById(R.id.credit_view);
         grades_view = (TextView)findViewById(R.id.grades_view );
         rank_view = (TextView)findViewById(R.id.rank_view);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        }
 
         new Thread(new Runnable() {
             @Override

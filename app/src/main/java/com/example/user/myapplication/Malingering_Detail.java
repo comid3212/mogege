@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
@@ -51,6 +52,14 @@ public class Malingering_Detail extends AppCompatActivity {
     private myHandler handler = new myHandler(this);
     private ListAdapter listAdapter;
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     static class MyAdapter extends BaseAdapter {
 
         Context context;
@@ -201,6 +210,12 @@ public class Malingering_Detail extends AppCompatActivity {
         final String info = bundle.getString("apple");
         test100.setText(info);
         listview100 =(ListView) findViewById(R.id.listview100) ;
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {

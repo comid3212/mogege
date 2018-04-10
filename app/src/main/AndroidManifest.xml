@@ -43,6 +43,7 @@
         <activity android:name=".Malingering" />
         <activity android:name=".Malingering_Detail" />
         <activity android:name=".GradeListN" />
+        <activity android:name=".Malingering_Application"></activity>
     </application>
 
 </manifest>

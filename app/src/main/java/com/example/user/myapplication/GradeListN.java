@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
@@ -61,13 +62,21 @@ public class GradeListN extends AppCompatActivity {
         msg.setData(bundle);
         handler.sendMessage(msg);
     }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     static class MyAdapter extends BaseAdapter {
 
         Context context;
         List<RequestInfo> infoList;
 
         static class RequestInfo {
-            String Classes, Must, Grades,Years;
+            String Classes, Must, Grades,Years,Point;
         }
 
         public MyAdapter(Context context, List<RequestInfo> infoList){
@@ -140,6 +149,7 @@ public class GradeListN extends AppCompatActivity {
                     ArrayList<String> ClassMust = bundle.getStringArrayList("ClassMust");
                     ArrayList<String> ClassGrades = bundle.getStringArrayList("ClassGrades");
                     ArrayList<String> ClassYears = bundle.getStringArrayList("ClassYears");
+                    ArrayList<String> ClassPoint = bundle.getStringArrayList("ClassPoint");
                     List<MyAdapter.RequestInfo> infoList = new ArrayList<>();
                     for(int i = 0; i < ClassName.size()-1; ++i) {
                             MyAdapter.RequestInfo info = new MyAdapter.RequestInfo();
@@ -147,6 +157,7 @@ public class GradeListN extends AppCompatActivity {
                             info.Must = ClassMust.get(i);
                             info.Grades = ClassGrades.get(i);
                             info.Years = ClassYears.get(i);
+                            info.Point = ClassPoint.get(i);
                             infoList.add(info);
 
                    }
@@ -160,8 +171,8 @@ public class GradeListN extends AppCompatActivity {
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             MyAdapter.RequestInfo info = ((MyAdapter.RequestInfo)listview1000.getAdapter().getItem(i));
                             AlertDialog.Builder builder = new AlertDialog.Builder(GradeListN.this);
-                            builder.setTitle("Detail");
-                            builder.setMessage(info.Classes);
+                            builder.setTitle(info.Classes);
+                            builder.setMessage("該科為:"+info.Must+"   學分"+info.Point+"   成績"+info.Grades);
                             builder.show();
                         }
                     });
@@ -202,6 +213,13 @@ public class GradeListN extends AppCompatActivity {
 
         final Bundle bundle = this.getIntent().getExtras();
         listview1000 =(ListView) findViewById(R.id.Lisrview_1000) ;
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -223,6 +241,7 @@ public class GradeListN extends AppCompatActivity {
                     ArrayList<String> classMust = new ArrayList<String>();
                     ArrayList<String> classGrades = new ArrayList<String>();
                     ArrayList<String> classYears = new ArrayList<String>();
+                    ArrayList<String> classPoint = new ArrayList<String>();
                     for (int i = 10; i < information.size() - 1;i+=8 ) {
                        className.add(information.get(i).text());
                         }
@@ -235,6 +254,9 @@ public class GradeListN extends AppCompatActivity {
                     for (int i = 8; i < information.size() - 1;i+=8 ) {
                         classYears.add(information.get(i).text());
                     }
+                    for (int i = 12; i < information.size() - 1;i+=8 ) {
+                        classPoint.add(information.get(i).text());
+                    }
 
                     Message msg = new Message();
                     msg.arg1 = 0;
@@ -243,6 +265,7 @@ public class GradeListN extends AppCompatActivity {
                     bundle.putStringArrayList("ClassMust", classMust);
                     bundle.putStringArrayList("ClassGrades", classGrades);
                     bundle.putStringArrayList("ClassYears", classYears);
+                    bundle.putStringArrayList("ClassPoint", classPoint);
                     msg.setData(bundle);
                     handler.sendMessage(msg);
                 } catch (IOException e) {

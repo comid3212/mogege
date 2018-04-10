@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.widget.EditText;
@@ -42,6 +43,14 @@ public class Malingering extends AppCompatActivity {
     private String cookie;
     private ImageView Vcodeshow;
     private myHandler handler = new myHandler(this);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     class myHandler extends Handler {
         private WeakReference<Activity> reference;
 
@@ -89,6 +98,12 @@ public class Malingering extends AppCompatActivity {
         setContentView(R.layout.activity_malingering);
         id = (EditText) findViewById(R.id.editText7);
         pwd = (EditText) findViewById(R.id.editText8);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {

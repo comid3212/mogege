@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.user.myapplication.slidermain"
-    android:background="@drawable/b123">
+    android:background="@drawable/back01">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ public class ChoiceUi extends AppCompatActivity {
         msg.setData(bundle);
         handler.sendMessage(msg);
     }
+
     public void changePassword(View view) {
         Message msg = new Message();
         msg.arg1 = 2;
@@ -40,6 +42,7 @@ public class ChoiceUi extends AppCompatActivity {
         msg.setData(bundle);
         handler.sendMessage(msg);
     }
+
     public void Doorline(View view) {
         Message msg = new Message();
         msg.arg1 = 3;
@@ -48,6 +51,7 @@ public class ChoiceUi extends AppCompatActivity {
         msg.setData(bundle);
         handler.sendMessage(msg);
     }
+
     public void GradesChoicelist(View view) {
         Message msg = new Message();
         msg.arg1 = 4;
@@ -56,6 +60,7 @@ public class ChoiceUi extends AppCompatActivity {
         msg.setData(bundle);
         handler.sendMessage(msg);
     }
+
     public void back(View view) {
         Message msg = new Message();
         msg.arg1 = 5;
@@ -64,6 +69,7 @@ public class ChoiceUi extends AppCompatActivity {
         msg.setData(bundle);
         handler.sendMessage(msg);
     }
+
     public void test(View view) {
         Message msg = new Message();
         msg.arg1 = 5;
@@ -72,6 +78,7 @@ public class ChoiceUi extends AppCompatActivity {
         msg.setData(bundle);
         handler.sendMessage(msg);
     }
+
     public void sick(View view) {
         Message msg = new Message();
         msg.arg1 = 6;
@@ -81,16 +88,26 @@ public class ChoiceUi extends AppCompatActivity {
         handler.sendMessage(msg);
     }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     class myHandler extends Handler {
         WeakReference<Activity> reference;
-        myHandler(Activity activity){
-            reference  = new WeakReference<Activity>(activity);
+
+        myHandler(Activity activity) {
+            reference = new WeakReference<Activity>(activity);
         }
+
         @Override
         public void handleMessage(Message msg) {
             Intent intent;
-            switch (msg.arg1){
+            switch (msg.arg1) {
                 case 0:
                     break;
                 case 1:
@@ -142,9 +159,16 @@ public class ChoiceUi extends AppCompatActivity {
                     reference.get().startActivity(intent);
                     break;
                 case 5:
-                    intent = new Intent(reference.get(), MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                    intent = new Intent();
+                    intent.setClass(reference.get(), slidermain.class);
+
+                    //new一個Bundle物件，並將要傳遞的資料傳入
+
+                    //將Bundle物件assign給intent
+                    intent.putExtras(msg.getData());
+
+                    //切換Activity
+                    reference.get().startActivity(intent);
                     break;
                 case 6:
                     intent = new Intent();
@@ -169,7 +193,13 @@ public class ChoiceUi extends AppCompatActivity {
         setContentView(R.layout.activity_choice_ui);
         cookie = this.getIntent().getExtras().getString("COOKIE");
 
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        }
+
+
     }
-
-
 }
