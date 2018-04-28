@@ -44,7 +44,7 @@
         <activity android:name=".Malingering_Detail" />
         <activity android:name=".GradeListN" />
         <activity android:name=".Malingering_Application" />
-        <activity android:name=".SickApplication"></activity>
+        <activity android:name=".SickApplication" />
     </application>
 
 </manifest>
