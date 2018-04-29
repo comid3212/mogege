@@ -107,8 +107,10 @@ public class GradeListN extends AppCompatActivity {
                     Years_view = view.findViewById(R.id.Years_view);
 
             RequestInfo info = infoList.get(i);
-            if(info.Classes =="學期實得學分(及格分數加上抵免學分)"){
+            if(info.Classes.equals("學期實得學分(及格分數加上抵免學分)")){
                     view.setBackgroundColor(-1319524);
+            } else {
+                view.setBackgroundColor(Color.WHITE);
             }
 
             Class_view.setText(info.Classes);
