@@ -3,6 +3,7 @@ package com.example.user.myapplication;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,32 +32,34 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 class MySimpleAdapter extends SimpleAdapter {
     class SimplePair<T, S> {
-        public T first;
-        public S second;
+        public T first;//課程時間
+        public S second;//CHECKBOX狀態
         public SimplePair(T t, S s) {
             first = t; second = s;
         }
     }
-    List<JSONArray> classHours;
+
     List<List<SimplePair<String, Boolean>>> checkBoxState = new ArrayList<>();
-    public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to, List<JSONArray> classHours) {
+
+    public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to, List<JSONArray> classHours) { // 建構子
         super(context, data, resource, from, to);
-        this.classHours = classHours;
-        for(int i = 0; i < classHours.size(); ++i) {
+
+        for(int i = 0; i < classHours.size(); ++i) { //時段內有幾門課
             List<SimplePair<String, Boolean>> list = new ArrayList<>();
             JSONArray array = classHours.get(i);
-            for(int o = 0; o < array.length(); ++o) {
+            for(int o = 0; o < array.length(); ++o) {//該門課有幾節
                 JSONObject object = null;
                 try {
                     object = array.getJSONObject(o);
                     String hour = object.getString("hour");
-                    list.add(new SimplePair<>(hour, true));
+                    list.add(new SimplePair<>(hour, true));//CHECK預設為勾選狀態
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -149,13 +152,13 @@ public class SickApplication extends AppCompatActivity {
                     try {
                         String json = msg.getData().getString("JSON");
                         JSONObject jsonObject = new JSONObject(json);
-                        JSONArray jsonArray = jsonObject.getJSONArray("list");//宣告一個Array來接收JSON的回傳值
+                        JSONArray jsonArray = jsonObject.getJSONArray("list"); // 宣告一個Array來接收JSON的回傳值
                         List<Map<String, String>> listData = new ArrayList<>();
-                        List<JSONArray> classHours = new ArrayList<>();
+                        List<JSONArray> classHours = new ArrayList<>();//
 
                         for(int i = 0; i < jsonArray.length(); ++i) {
                             JSONObject object = jsonArray.getJSONObject(i);
-                            Map<String, String> map = new TreeMap<>();
+                            Map<String, String> map = new HashMap<>();
                             map.put("TITLE", object.getString("date").split("T")[0].substring(5) + " " + object.getString("title"));
                             map.put("SUBTITLE", object.getString("roomNm") + " " + object.getString("teacher"));
                             classHours.add(object.getJSONArray("hours"));
@@ -165,9 +168,9 @@ public class SickApplication extends AppCompatActivity {
                         activity.classInfoList.setAdapter(new MySimpleAdapter(
                                 activity,
                                 listData,
-                                android.R.layout.simple_list_item_2,
-                                new String[] { "TITLE", "SUBTITLE" },
-                                new int[] { android.R.id.text1, android.R.id.text2 },
+                                android.R.layout.simple_list_item_2,//listview版面設定為兩行
+                                new String[] { "TITLE", "SUBTITLE" },//從這兩個地方拿資料
+                                new int[] { android.R.id.text1, android.R.id.text2 },//將資料放在指定位置
                                 classHours)
                         );
                     } catch (JSONException e) {
@@ -255,7 +258,7 @@ public class SickApplication extends AppCompatActivity {
 
         new Thread(getDateData).start();
 
-        classInfoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        classInfoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {//當listview被點擊
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int o, long l) {
                 final MySimpleAdapter mySimpleAdapter = (MySimpleAdapter) classInfoList.getAdapter();
@@ -268,23 +271,23 @@ public class SickApplication extends AppCompatActivity {
                 for(int i = 0; i < statue.size(); ++i) {
                     CheckBox checkBox = new CheckBox(SickApplication.this);
                     final MySimpleAdapter.SimplePair<String, Boolean> s = statue.get(i);
-                    checkBox.setText(s.first);
-                    checkBox.setChecked(s.second);
-                    layout.addView(checkBox);
-                    checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    checkBox.setText(s.first);//設定課程時間
+                    checkBox.setChecked(s.second);//勾選狀態
+                    layout.addView(checkBox);//新增checkbox
+                    checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {//當checkbox被改變
                         @Override
                         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                            s.second = b;
+                            s.second = b;//checkbox就會等於使用者更改的結果
                         }
                     });
                 }
-                builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                builder.setOnCancelListener(new DialogInterface.OnCancelListener() {//當dialog被關閉
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
-                        mySimpleAdapter.setCheckBoxState(statue, o);
+                        mySimpleAdapter.setCheckBoxState(statue, o);//儲存checkbox的狀態
                     }
                 });
-                builder.show();
+                builder.show();//顯示結果'
             }
         });
     }

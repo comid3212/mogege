@@ -20,6 +20,14 @@ public class Calander_view extends CalendarView {
         void callback(int year, int month, int day);
     }
 
+    class AAAAA implements Callback {
+
+        @Override
+        public void callback(int year, int month, int day) {
+
+        }
+    }
+
     Callback callback;
 
     public Calander_view(@NonNull Context context, @Nullable AttributeSet attrs) {
