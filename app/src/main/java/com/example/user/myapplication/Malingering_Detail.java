@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
@@ -50,7 +51,22 @@ public class Malingering_Detail extends AppCompatActivity {
     ListView listview100;
     private myHandler handler = new myHandler(this);
     private ListAdapter listAdapter;
+    public void  Application(View view){
+        Message msg = new Message();
+        msg.arg1 = 2;
+        Bundle bundle = new Bundle();
+        msg.setData(bundle);
+        handler.sendMessage(msg);
+    }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     static class MyAdapter extends BaseAdapter {
 
         Context context;
@@ -115,16 +131,17 @@ public class Malingering_Detail extends AppCompatActivity {
         }
     }
 
-    class myHandler extends Handler {
-        private WeakReference<Activity> reference;
+    static class myHandler extends Handler {
+        private WeakReference<Malingering_Detail> reference;
 
-        myHandler(Activity activity) {
-            reference = new WeakReference<Activity>(activity);
+        myHandler(Malingering_Detail activity) {
+            reference = new WeakReference<Malingering_Detail>(activity);
         }
 
         @Override
 
         public void handleMessage(Message msg) {
+            final Malingering_Detail activity = reference.get();
             switch (msg.arg1) {
                 case 0:
                     Bundle bundle = new Bundle();
@@ -151,12 +168,12 @@ public class Malingering_Detail extends AppCompatActivity {
 
                     MyAdapter adapter;
                     adapter = new MyAdapter(reference.get() , infoList);
-                    listview100.setAdapter(adapter);
-                    listview100.setOnItemClickListener(new AdapterView.OnItemClickListener() {//點擊LISTVIEW跳出視窗顯示詳細資訊
+                    activity.listview100.setAdapter(adapter);
+                    activity.listview100.setOnItemClickListener(new AdapterView.OnItemClickListener() {//點擊LISTVIEW跳出視窗顯示詳細資訊
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            MyAdapter.RequestInfo info = ((MyAdapter.RequestInfo)listview100.getAdapter().getItem(i));
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Malingering_Detail.this);
+                            MyAdapter.RequestInfo info = ((MyAdapter.RequestInfo)activity.listview100.getAdapter().getItem(i));
+                            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                             builder.setTitle(info.punnm);
                             builder.setMessage(info.mainContent);
                             builder.show();
@@ -171,11 +188,11 @@ public class Malingering_Detail extends AppCompatActivity {
                     builder.setMessage(msg.getData().getString("MESSAGE"));
                     builder.setPositiveButton("OK", null);
                     builder.show();
-
                     break;
                 case 2:
                     Intent intent = new Intent();
-                    intent.setClass(reference.get(), Malingering_Detail.class);
+                    intent.setClass(reference.get(), SickApplication.class);
+                    intent.putExtras(activity.getIntent().getExtras());
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
 
@@ -198,9 +215,16 @@ public class Malingering_Detail extends AppCompatActivity {
         cookie = CookieManager.getInstance().getCookie("http://140.128.78.77/");
         test100 =(TextView)findViewById(R.id.textView100) ;
         final Bundle bundle = this.getIntent().getExtras();
-        final String info = bundle.getString("apple");
-        test100.setText(info);
+        final String id = bundle.getString("id");
+        final String name = bundle.getString("name");
+        test100.setText(id+" , "+name);
         listview100 =(ListView) findViewById(R.id.listview100) ;
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -223,7 +247,7 @@ public class Malingering_Detail extends AppCompatActivity {
                     Date currentTime = Calendar.getInstance().getTime();
                     CharSequence today = DateFormat.format("yyyy/MM/dd", currentTime);//取得目前時間
 
-                    connect.getOutputStream().write(("{\"leaveType\":0,\"studentID\":\"" + info.split("\"")[2] + "\",\"startDate\":\"2012-02-25T16:00:00.000Z\",\"endDate\":\"" + today.toString() + "\",\"approveType\":0}").getBytes());
+                    connect.getOutputStream().write(("{\"leaveType\":0,\"studentID\":\"" + id + "\",\"startDate\":\"2012-02-25T16:00:00.000Z\",\"endDate\":\"" + today.toString() + "\",\"approveType\":0}").getBytes());
 
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
                     byte a[] = new byte[1000];

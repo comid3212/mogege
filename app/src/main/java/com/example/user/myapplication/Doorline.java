@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.webkit.CookieManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,11 +30,20 @@ public class Doorline extends AppCompatActivity {
     private  ImageView resultView;
     private TextView english_view,copysience_view,service_view,work_view;
     private myHandler handler = new myHandler(this);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     class myHandler extends Handler{
         private WeakReference<Activity> reference;
         myHandler(Activity activity){
             reference = new WeakReference<Activity>(activity);
         }
+
 
         public void handleMessage(Message msg) {
             switch (msg.arg1) {
@@ -79,6 +89,12 @@ public class Doorline extends AppCompatActivity {
 
         resultView = (ImageView) findViewById( R.id.imageView4);
 
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        }
 
         new Thread(new Runnable() {
             @Override

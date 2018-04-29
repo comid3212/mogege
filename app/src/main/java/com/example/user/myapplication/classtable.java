@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -32,6 +33,7 @@ class ClassInformation {
     public List<String> className = new LinkedList<>();
     public List<Integer> classLength = new LinkedList<>();
 }
+
 class MyAdapter extends BaseAdapter {
     private Context context;
     private List<ClassInformation> classes;
@@ -126,6 +128,15 @@ public class classtable extends AppCompatActivity {
     private myHandler handler = new myHandler(this);
     private HorizontalListView ListView;
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     class myHandler extends Handler {
         private WeakReference<Activity> reference;
 
@@ -218,6 +229,14 @@ public class classtable extends AppCompatActivity {
         ListView = (HorizontalListView) findViewById(R.id.testlist);
         cookie = this.getIntent().getExtras().getString("COOKIE");
         super.onCreate(savedInstanceState);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        }
+
         new Thread(new Runnable() {
             @Override
             public void run() {

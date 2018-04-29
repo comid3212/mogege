@@ -162,6 +162,33 @@ public class AllDepartmentNews extends AppCompatActivity {
         msg.setData(bundle);
         handler.sendMessage(msg);
     }
+    public void News16(View view) {
+        Message msg = new Message();
+        Bundle bundle = new Bundle();
+        String X ="http://itie.web2.ncut.edu.tw/bin/home.php";
+        bundle.putString("GetWeb",X);
+        msg.arg1 = 1;
+        msg.setData(bundle);
+        handler.sendMessage(msg);
+    }
+    public void News17(View view) {
+        Message msg = new Message();
+        Bundle bundle = new Bundle();
+        String X ="http://www.gen.ncut.edu.tw/bin/home.php";
+        bundle.putString("GetWeb",X);
+        msg.arg1 = 1;
+        msg.setData(bundle);
+        handler.sendMessage(msg);
+    }
+    public void News18(View view) {
+        Message msg = new Message();
+        Bundle bundle = new Bundle();
+        String X ="http://liberal.ncut.edu.tw/bin/home.php";
+        bundle.putString("GetWeb",X);
+        msg.arg1 = 1;
+        msg.setData(bundle);
+        handler.sendMessage(msg);
+    }
 
     class myHandler extends Handler {
         private WeakReference<Activity> reference;

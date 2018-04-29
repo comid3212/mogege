@@ -10,11 +10,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.nodes.Document;
 
 import java.io.BufferedReader;
@@ -42,6 +46,14 @@ public class Malingering extends AppCompatActivity {
     private String cookie;
     private ImageView Vcodeshow;
     private myHandler handler = new myHandler(this);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     class myHandler extends Handler {
         private WeakReference<Activity> reference;
 
@@ -89,6 +101,12 @@ public class Malingering extends AppCompatActivity {
         setContentView(R.layout.activity_malingering);
         id = (EditText) findViewById(R.id.editText7);
         pwd = (EditText) findViewById(R.id.editText8);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -162,9 +180,17 @@ public class Malingering extends AppCompatActivity {
 
 
                         BufferedReader reader = Util.getReader(connect,"utf-8");
-                        String rgloijrhoijregoirejg = reader.readLine();
-                        String IDNAME = rgloijrhoijregoirejg.split("id")[1].split("type")[0];
-                        bundle.putString("apple",IDNAME);
+                        String json = reader.readLine();
+                        try {
+                            JSONArray array = new JSONArray(json);
+                            JSONObject data = (JSONObject)array.get(0);
+                            String name = data.getString("name");
+                            String id = data.getString("id");
+                            bundle.putString("name",name);
+                            bundle.putString("id",id);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         msg.arg1 = 2;
                         msg.setData(bundle);
                         handler.sendMessage(msg);

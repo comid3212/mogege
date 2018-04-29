@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
@@ -39,6 +40,14 @@ public class ChangePassword extends AppCompatActivity {
     private TextView textView1, textView2, textView3;
     private myHandler handler = new myHandler(this);
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     class myHandler extends Handler{
         private WeakReference<Activity> reference;
         myHandler(Activity activity){
@@ -78,6 +87,12 @@ public class ChangePassword extends AppCompatActivity {
         textView1 = (TextView)findViewById(R.id.editText3);
         textView2 = (TextView)findViewById(R.id.editText4);
         textView3 = (TextView)findViewById(R.id.editText5);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        }
     }
 
     public void changePassword(View view) {

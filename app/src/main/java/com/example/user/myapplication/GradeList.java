@@ -200,6 +200,7 @@ public class GradeList extends AppCompatActivity {
                     Util.setHttpUrlConnectionCookie(connect, cookie);
                     Util.getReader(connect);
                     BufferedReader reader = Util.getReader(connect, "utf-8");
+
                     StringBuilder all = new StringBuilder();
                     String line;
                     while((line = reader.readLine()) != null){

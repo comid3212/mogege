@@ -2,9 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back01"
     tools:context="com.example.user.myapplication.classtable">
+
 
     <LinearLayout
         android:id="@+id/timeLayout"
@@ -33,6 +36,7 @@
         app:layout_constraintStart_toEndOf="@+id/timeLayout"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
+
 
     </com.example.user.myapplication.HorizontalListView>
 </android.support.constraint.ConstraintLayout>

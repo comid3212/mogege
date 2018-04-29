@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.user.myapplication.Doorline"
-    android:background="@drawable/b123">
+    android:background="@drawable/back01">
 
 
     <TextView
@@ -63,7 +63,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="60dp"
         android:text="123123123"
-        android:textColor="@android:color/background_light"
+        android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -75,7 +75,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="120dp"
         android:text="123123123"
-        android:textColor="@android:color/background_light"
+        android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -87,7 +87,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="180dp"
         android:text="123123123"
-        android:textColor="@android:color/background_light"
+        android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -100,7 +100,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="244dp"
         android:text="123123123"
-        android:textColor="@android:color/background_light"
+        android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
