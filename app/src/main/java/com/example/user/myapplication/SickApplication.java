@@ -13,6 +13,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,25 +30,28 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-class MySimpleAdapter extends SimpleAdapter {
-    class SimplePair<T, S> {
-        public T first;//課程時間
-        public S second;//CHECKBOX狀態
-        public SimplePair(T t, S s) {
-            first = t; second = s;
-        }
+class SimplePair<T, S> implements Serializable{//將要存的資料實作成Serializable
+    public T first;//課程時間
+    public S second;//CHECKBOX狀態
+    public SimplePair(T t, S s) {
+        first = t; second = s;
     }
+}
 
-    List<List<SimplePair<String, Boolean>>> checkBoxState = new ArrayList<>();
+class MySimpleAdapter extends SimpleAdapter {
+
+    private List<List<SimplePair<String, Boolean>>> checkBoxState = new ArrayList<>();
 
     public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to, List<JSONArray> classHours) { // 建構子
         super(context, data, resource, from, to);
@@ -74,6 +79,27 @@ class MySimpleAdapter extends SimpleAdapter {
 
     public void setCheckBoxState(List<SimplePair<String, Boolean>> list, int i) {
         checkBoxState.set(i, list);
+    }
+
+    public List<List<SimplePair<String, Boolean>>> getCheckBoxState() {
+        return checkBoxState;
+    }
+}
+class DateData implements Serializable {
+    int year, month, day;
+    public DateData(int year, int month, int day) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+    }
+}
+class PageData implements Serializable {
+    List<List<SimplePair<String, Boolean>>> data;
+    DateData startDate, endDate;
+    public PageData(List<List<SimplePair<String, Boolean>>> data, DateData startDate, DateData endDate) {
+        this.data = data;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 }
 
@@ -148,7 +174,6 @@ public class SickApplication extends AppCompatActivity {
             SickApplication activity = reference.get();
             switch (msg.arg1) {
                 case 0:
-
                     try {
                         String json = msg.getData().getString("JSON");
                         JSONObject jsonObject = new JSONObject(json);
@@ -174,7 +199,14 @@ public class SickApplication extends AppCompatActivity {
                                 classHours)
                         );
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        activity.classInfoList.setAdapter(new MySimpleAdapter(
+                                activity,
+                                new ArrayList<Map<String, ?>>(),
+                                android.R.layout.simple_list_item_2,//listview版面設定為兩行
+                                new String[] { "TITLE", "SUBTITLE" },//從這兩個地方拿資料
+                                new int[] { android.R.id.text1, android.R.id.text2 },//將資料放在指定位置
+                                new ArrayList<JSONArray>())
+                        );
                     }
                     break;
                 case 1:
@@ -184,10 +216,21 @@ public class SickApplication extends AppCompatActivity {
                         activity.calander_view.choiseDate(activity.endYear, activity.endMonth, activity.endDay);
                     }
                     break;
-                case 2:
-
-                    break;
             }
+        }
+    }
+
+    public void onNextPageClicked(View view) {
+        List<List<SimplePair<String, Boolean>>> data = ((MySimpleAdapter) classInfoList.getAdapter()).getCheckBoxState();//呼叫假爸爸並取得請假資料
+        if(data.size() == 0) {//如果課堂為0
+            Toast.makeText(this, "請假堂數為空", Toast.LENGTH_SHORT).show();
+        } else {
+            PageData pageData = new PageData(data, new DateData(startYear, startMonth, startDay), new DateData(endYear, endMonth, endDay));
+            Intent intent = new Intent(this, SickCause.class);
+            Bundle bundle = this.getIntent().getExtras();
+            bundle.putSerializable("SickApplicationData", pageData);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 
@@ -267,10 +310,10 @@ public class SickApplication extends AppCompatActivity {
                 LinearLayout layout = new LinearLayout(SickApplication.this);
                 layout.setOrientation(LinearLayout.VERTICAL);
                 builder.setView(layout);
-                final List<MySimpleAdapter.SimplePair<String, Boolean>> statue = mySimpleAdapter.getCheckBoxStatue(o);//checkbox的回傳值
+                final List<SimplePair<String, Boolean>> statue = mySimpleAdapter.getCheckBoxStatue(o);//checkbox的回傳值
                 for(int i = 0; i < statue.size(); ++i) {
                     CheckBox checkBox = new CheckBox(SickApplication.this);
-                    final MySimpleAdapter.SimplePair<String, Boolean> s = statue.get(i);
+                    final SimplePair<String, Boolean> s = statue.get(i);
                     checkBox.setText(s.first);//設定課程時間
                     checkBox.setChecked(s.second);//勾選狀態
                     layout.addView(checkBox);//新增checkbox
