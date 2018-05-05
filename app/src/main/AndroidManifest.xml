@@ -45,7 +45,8 @@
         <activity android:name=".GradeListN" />
         <activity android:name=".Malingering_Application" />
         <activity android:name=".SickApplication" />
-        <activity android:name=".SickCause"></activity>
+        <activity android:name=".SickCause" />
+        <activity android:name=".SickUpload"></activity>
     </application>
 
 </manifest>
