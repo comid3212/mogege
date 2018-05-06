@@ -9,11 +9,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -35,13 +33,28 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
-class SimplePair<T, S> implements Serializable{//將要存的資料實作成Serializable
+class ClassInfo implements Serializable {
+    String cid, leaveDate;
+    int  courseType, sbid, sbtype;
+    List<SimplePair<String, Boolean>> period;
+    ClassInfo(String cid, int courseType, String leaveDate, int sbid, int sbtype, List<SimplePair<String, Boolean>> period){
+        this.cid = cid;
+        this.courseType = courseType;
+        this.leaveDate = leaveDate;
+        this.sbid = sbid;
+        this.sbtype = sbtype;
+        this.period = period;
+    }
+
+    ClassInfo() {}
+}
+
+class SimplePair<T, S> implements Serializable {//將要存的資料實作成Serializable
     public T first;//課程時間
     public S second;//CHECKBOX狀態
     public SimplePair(T t, S s) {
@@ -51,37 +64,46 @@ class SimplePair<T, S> implements Serializable{//將要存的資料實作成Seri
 
 class MySimpleAdapter extends SimpleAdapter {
 
-    private List<List<SimplePair<String, Boolean>>> checkBoxState = new ArrayList<>();
+    private List<ClassInfo> checkBoxState = new ArrayList<>();
 
-    public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to, List<JSONArray> classHours) { // 建構子
+    public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to, JSONArray classInfoArray) { // 建構子
         super(context, data, resource, from, to);
-
-        for(int i = 0; i < classHours.size(); ++i) { //時段內有幾門課
-            List<SimplePair<String, Boolean>> list = new ArrayList<>();
-            JSONArray array = classHours.get(i);
-            for(int o = 0; o < array.length(); ++o) {//該門課有幾節
-                JSONObject object = null;
-                try {
-                    object = array.getJSONObject(o);
-                    String hour = object.getString("hour");
-                    list.add(new SimplePair<>(hour, true));//CHECK預設為勾選狀態
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        if(classInfoArray == null)
+            return;
+        for(int index = 0; index < classInfoArray.length(); ++index) {
+            try {
+                JSONObject object = classInfoArray.getJSONObject(index);
+                String cid, leaveDate;
+                int courseType, sbid, sbtype;
+                List<SimplePair<String, Boolean>> period = new ArrayList<>();
+                cid = object.getString("id");
+                courseType = object.getInt("courseType");
+                leaveDate = object.getString("date");
+                sbid = object.getInt("sbid");
+                sbtype = object.getInt("sbType");
+                JSONArray hours = object.getJSONArray("hours");
+                for(int i = 0; i < hours.length(); ++i) {
+                    JSONObject hour = hours.getJSONObject(i);
+                    SimplePair<String, Boolean> h = new SimplePair<String, Boolean>(hour.getString("hour"), true);
+                    period.add(h);
                 }
+                checkBoxState.add(new ClassInfo(cid, courseType, leaveDate, sbid, sbtype, period));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            checkBoxState.add(list);
         }
     }
 
-    public List<SimplePair<String, Boolean>> getCheckBoxStatue(int i) {
+    public ClassInfo getCheckBoxStatue(int i) {
         return checkBoxState.get(i);
     }
 
-    public void setCheckBoxState(List<SimplePair<String, Boolean>> list, int i) {
+    public void setCheckBoxState(ClassInfo list, int i) {
         checkBoxState.set(i, list);
     }
 
-    public List<List<SimplePair<String, Boolean>>> getCheckBoxState() {
+    public List<ClassInfo> getCheckBoxState() {
         return checkBoxState;
     }
 }
@@ -92,11 +114,16 @@ class DateData implements Serializable {
         this.month = month;
         this.day = day;
     }
+
+    @Override
+    public String toString() {
+        return year + "-" + month + "-" + day;
+    }
 }
 class PageData implements Serializable {
-    List<List<SimplePair<String, Boolean>>> data;
+    List<ClassInfo> data;
     DateData startDate, endDate;
-    public PageData(List<List<SimplePair<String, Boolean>>> data, DateData startDate, DateData endDate) {
+    public PageData(List<ClassInfo> data, DateData startDate, DateData endDate) {
         this.data = data;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -179,14 +206,12 @@ public class SickApplication extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(json);
                         JSONArray jsonArray = jsonObject.getJSONArray("list"); // 宣告一個Array來接收JSON的回傳值
                         List<Map<String, String>> listData = new ArrayList<>();
-                        List<JSONArray> classHours = new ArrayList<>();//
 
                         for(int i = 0; i < jsonArray.length(); ++i) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             Map<String, String> map = new HashMap<>();
                             map.put("TITLE", object.getString("date").split("T")[0].substring(5) + " " + object.getString("title"));
                             map.put("SUBTITLE", object.getString("roomNm") + " " + object.getString("teacher"));
-                            classHours.add(object.getJSONArray("hours"));
                             listData.add(map);
                         }
 
@@ -196,7 +221,7 @@ public class SickApplication extends AppCompatActivity {
                                 android.R.layout.simple_list_item_2,//listview版面設定為兩行
                                 new String[] { "TITLE", "SUBTITLE" },//從這兩個地方拿資料
                                 new int[] { android.R.id.text1, android.R.id.text2 },//將資料放在指定位置
-                                classHours)
+                                jsonArray)
                         );
                     } catch (JSONException e) {
                         activity.classInfoList.setAdapter(new MySimpleAdapter(
@@ -205,7 +230,7 @@ public class SickApplication extends AppCompatActivity {
                                 android.R.layout.simple_list_item_2,//listview版面設定為兩行
                                 new String[] { "TITLE", "SUBTITLE" },//從這兩個地方拿資料
                                 new int[] { android.R.id.text1, android.R.id.text2 },//將資料放在指定位置
-                                new ArrayList<JSONArray>())
+                                null)
                         );
                     }
                     break;
@@ -221,7 +246,7 @@ public class SickApplication extends AppCompatActivity {
     }
 
     public void onNextPageClicked(View view) {
-        List<List<SimplePair<String, Boolean>>> data = ((MySimpleAdapter) classInfoList.getAdapter()).getCheckBoxState();//呼叫假爸爸並取得請假資料
+        List<ClassInfo> data = ((MySimpleAdapter) classInfoList.getAdapter()).getCheckBoxState();//呼叫假爸爸並取得請假資料
         if(data.size() == 0) {//如果課堂為0
             Toast.makeText(this, "請假堂數為空", Toast.LENGTH_SHORT).show();
         } else {
@@ -310,7 +335,8 @@ public class SickApplication extends AppCompatActivity {
                 LinearLayout layout = new LinearLayout(SickApplication.this);
                 layout.setOrientation(LinearLayout.VERTICAL);
                 builder.setView(layout);
-                final List<SimplePair<String, Boolean>> statue = mySimpleAdapter.getCheckBoxStatue(o);//checkbox的回傳值
+                final ClassInfo dateInfo = mySimpleAdapter.getCheckBoxStatue(o);//checkbox的回傳值
+                List<SimplePair<String, Boolean>> statue = dateInfo.period;
                 for(int i = 0; i < statue.size(); ++i) {
                     CheckBox checkBox = new CheckBox(SickApplication.this);
                     final SimplePair<String, Boolean> s = statue.get(i);
@@ -327,7 +353,7 @@ public class SickApplication extends AppCompatActivity {
                 builder.setOnCancelListener(new DialogInterface.OnCancelListener() {//當dialog被關閉
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
-                        mySimpleAdapter.setCheckBoxState(statue, o);//儲存checkbox的狀態
+                        mySimpleAdapter.setCheckBoxState(dateInfo, o);//儲存checkbox的狀態
                     }
                 });
                 builder.show();//顯示結果'

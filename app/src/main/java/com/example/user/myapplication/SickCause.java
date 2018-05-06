@@ -13,7 +13,6 @@ import android.widget.Toast;
 import java.util.List;
 
 public class SickCause extends AppCompatActivity {
-private  String cookie;
     RadioGroup isAbroad;
     TextView mainContent, comment;
     int type = -1;
@@ -22,19 +21,26 @@ private  String cookie;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sick_cause);
-        cookie = CookieManager.getInstance().getCookie("http://140.128.78.77/");
         isAbroad = findViewById(R.id.is_abroad);
         mainContent = findViewById(R.id.main_content);
         comment = findViewById(R.id.comment);
         ((RadioGroup)findViewById(R.id.leave_type)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                if(i == 1){
-                    isAbroad.setVisibility(View.VISIBLE);
-                } else {
-                    isAbroad.setVisibility(View.INVISIBLE);
+                type = 0;
+                switch (radioGroup.getCheckedRadioButtonId()) {
+                    case R.id.a:
+                        isAbroad.setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.d:
+                        type += 1;
+                    case R.id.c:
+                        type += 1;
+                    case R.id.b:
+                        type += 1;
+                        isAbroad.setVisibility(View.INVISIBLE);
+                        break;
                 }
-                type = i;
             }
         });
     }
@@ -44,7 +50,7 @@ private  String cookie;
             Toast.makeText(this, "請選假別", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(type == 1 && isAbroad.getCheckedRadioButtonId() == -1) {
+        if(type == 0 && isAbroad.getCheckedRadioButtonId() == -1) {
             Toast.makeText(this, "你他媽要不要出國拉幹", Toast.LENGTH_SHORT).show();
             return;
         }

@@ -4,13 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.telecom.Call;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -33,7 +31,7 @@ import java.util.List;
  */
 
 class AlertCountryAdapter extends CountryAdapter {
-    public AlertCountryAdapter(@NonNull Context context, int resource, @NonNull List<String> objects, List<Integer> countryCode) {
+    public AlertCountryAdapter(@NonNull Context context, int resource, @NonNull List<String> objects, List<CountryInfo> countryCode) {
         super(context, resource, objects, countryCode);
     }
 
@@ -56,7 +54,7 @@ public class SearchAlertDialog {
     CallBack callBack;
 
     interface CallBack {
-        void callback(String name, int code);
+        void callback(String name, CountryInfo info);
     }
 
     public SearchAlertDialog(final Context context) {
@@ -108,11 +106,11 @@ public class SearchAlertDialog {
                             String json = os.toString();
                             JSONArray jsonArray = new JSONArray(json);
                             final List<String> countryName = new ArrayList<String>();
-                            final List<Integer> countryCode = new ArrayList<Integer>();
+                            final List<CountryInfo> countryCode = new ArrayList<CountryInfo>();
                             for(int i = 0; i < jsonArray.length(); ++i) {
                                 JSONObject object = jsonArray.getJSONObject(i);
                                 countryName.add(object.getString("chtName"));
-                                countryCode.add(object.getInt("countryCode"));
+                                countryCode.add(new CountryInfo(object.getInt("countryCode"), false)); // TODO high risk
                             }
                             searchButton.post(new Runnable() {
                                 @Override
@@ -134,7 +132,7 @@ public class SearchAlertDialog {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if(callBack != null) {
-                    callBack.callback(((TextView)view).getText().toString(), ((CountryAdapter) listView.getAdapter()).getItemCountryCode(i));
+                    callBack.callback(((TextView)view).getText().toString(), ((CountryAdapter) listView.getAdapter()).getItemCountryInfo(i));
                 }
                 alertDialog.cancel();
             }
