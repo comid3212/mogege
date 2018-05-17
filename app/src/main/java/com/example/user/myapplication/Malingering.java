@@ -3,6 +3,7 @@ package com.example.user.myapplication;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -42,9 +44,7 @@ public class Malingering extends AppCompatActivity {
     static final String Origin = "http://140.128.78.77";
 
     private String data ="{\"userId\":\"%s\",\"password\":\"%s\",\"captcha\":\"%s\",\"schyy\":0,\"smt\":0,\"isLogin\":true}";
-    private EditText id,pwd,vcode;
-    private String cookie;
-    private ImageView Vcodeshow;
+    private EditText id,pwd;
     private myHandler handler = new myHandler(this);
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -54,24 +54,19 @@ public class Malingering extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    class myHandler extends Handler {
-        private WeakReference<Activity> reference;
+    static class myHandler extends Handler {
+        private WeakReference<Malingering> reference;
 
-        myHandler(Activity activity) {
-            reference = new WeakReference<Activity>(activity);
+        myHandler(Malingering activity) {
+            reference = new WeakReference<Malingering>(activity);
         }
 
         @Override
 
         public void handleMessage(Message msg) {
             switch (msg.arg1) {
-                case 0:
-                    Bundle bundle = msg.getData();
-                    byte gg1[]=bundle.getByteArray("ASD");
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(gg1, 0, gg1.length);
-                    Vcodeshow.setImageBitmap(decodedByte);
-                    break;
                 case 1:
+                    reference.get().loginButton.setEnabled(true);
                     AlertDialog.Builder builder = new AlertDialog.Builder(reference.get());
                     builder.setTitle(msg.getData().getString("TITLE"));
                     builder.setMessage(msg.getData().getString("MESSAGE"));
@@ -80,60 +75,38 @@ public class Malingering extends AppCompatActivity {
 
                     break;
                 case 2:
+                    reference.get().loginButton.setEnabled(true);
                     Intent intent = new Intent();
                     intent.setClass(reference.get(), Malingering_Detail.class);
-
-                    //new一個Bundle物件，並將要傳遞的資料傳入
-
-                    //將Bundle物件assign給intent
                     intent.putExtras(msg.getData());
-
-                    //切換Activity
                     reference.get().startActivity(intent);
-
-
                     break;
             }
         }
     }
+
+    Button loginButton;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_malingering);
         id = (EditText) findViewById(R.id.editText7);
         pwd = (EditText) findViewById(R.id.editText8);
+        loginButton = findViewById(R.id.btn12);
+        SharedPreferences preferences = getSharedPreferences(MainActivity.REMEMBER_TEMP_FILE_ID, MODE_PRIVATE);
+        id.setText(preferences.getString(MainActivity.USERNAME_ID, ""));
+        pwd.setText(preferences.getString(MainActivity.PASSWORD_ID, ""));
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
-
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HttpURLConnection connect = null;
-//                try {
-//                    byte b[] = new byte[3000];
-//                    connect = (HttpURLConnection) (new URL("http://140.128.78.77/stdl/WebApi/NcitnfData/GetCaptcha")).openConnection();
-//                    int length = connect.getInputStream().read(b);
-//
-//                    String a = new String(b, 23, length - 24);
-//                    byte[] decodedString = Base64.decode(a, Base64.DEFAULT);
-//                    Bundle bundle = new Bundle();
-//                    Message msg = new Message();
-//                    bundle.putByteArray("ASD", decodedString);
-//                    msg.arg1 = 0;
-//                    msg.setData(bundle);
-//                    handler.sendMessage(msg);
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-            }
-
-        }).start();
+        if(!id.getText().equals("") && !id.getText().equals("")) {
+            login(loginButton);
+        }
     }
 
     public void login(View view) {//登入流程
+        loginButton.setEnabled(false);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -155,9 +128,6 @@ public class Malingering extends AppCompatActivity {
                     connect.setRequestMethod("PUT");
                     connect.getOutputStream().write(ss.getBytes());
                     connect.getOutputStream().close();
-//                    byte a[] = new byte[1000];
-//                    int len = connect.getInputStream().read(a);
-//                    String aaaa = new String(a, 0, len);
 
                     Map<String, List<String>> headerFields = connect.getHeaderFields();
                     List<String> cookiesHeader = headerFields.get(COOKIES_HEADER);
@@ -196,11 +166,6 @@ public class Malingering extends AppCompatActivity {
                         handler.sendMessage(msg);
 
                     }
-
-
-
-
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

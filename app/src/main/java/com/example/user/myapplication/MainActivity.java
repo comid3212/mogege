@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +23,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +52,11 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 //所有chrome的title
 
+    static final String REMEMBER_FILE_ID = "remembermeeeeee.txt";
+    static final String REMEMBER_TEMP_FILE_ID = "tewfsdfrhsfsdgrhasdg.txt";
+    static final String USERNAME_ID = "USERNAME";
+    static final String PASSWORD_ID = "PASSWORD";
+
     static class myHandler extends Handler {
         //幫忙把東西塞在ui thread裡面
         private WeakReference<MainActivity> reference;
@@ -58,15 +65,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void handleMessage(Message msg) {
+            MainActivity activity = reference.get();
             reference.get().loginButton.setVisibility(View.VISIBLE);
             switch (msg.arg1){
                 case 0:
+                    if(activity.rememberMe.isChecked()){
+                        activity.getSharedPreferences(REMEMBER_FILE_ID, MODE_PRIVATE).edit()
+                                .putString(USERNAME_ID, activity.id.getText().toString())
+                                .putString(PASSWORD_ID, activity.pwd.getText().toString())
+                                .apply();
+                    } else {
+                        activity.getSharedPreferences(REMEMBER_FILE_ID, MODE_PRIVATE).edit().clear().apply();
+                    }
+                    activity.getSharedPreferences(REMEMBER_TEMP_FILE_ID, MODE_PRIVATE).edit()
+                            .putString(USERNAME_ID, activity.id.getText().toString())
+                            .putString(PASSWORD_ID, activity.pwd.getText().toString())
+                            .apply();
                     Intent intent = new Intent();
                     intent.setClass(reference.get(), slidermain.class);
-
-                    //new一個Bundle物件，並將要傳遞的資料傳入
-
-                    //將Bundle物件assign給intent
                     intent.putExtras(msg.getData());
 
                     //切換Activity
@@ -92,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView id, pwd;
     private Button loginButton;
     LoginWebView webView;
+    private CheckBox rememberMe;
 
 
     @Override
@@ -102,6 +119,16 @@ public class MainActivity extends AppCompatActivity {
         id = (TextView) findViewById(R.id.editText);
         pwd = (TextView) findViewById(R.id.editText2);
         loginButton = (Button) findViewById(R.id.button);
+        rememberMe = findViewById(R.id.remember_me);
+
+        SharedPreferences preferences = getSharedPreferences(REMEMBER_FILE_ID, MODE_PRIVATE);
+        String user_id = preferences.getString(USERNAME_ID, "");
+        String user_pwd = preferences.getString(PASSWORD_ID, "");
+        id.setText(user_id);
+        pwd.setText(user_pwd);
+        if (!user_id.equals("")) {
+            rememberMe.setChecked(true);
+        }
 
         View loginWebView = LayoutInflater.from(this).inflate(R.layout.activity_new_login, null);
         webView = loginWebView.findViewById(R.id.Webviewtest);
