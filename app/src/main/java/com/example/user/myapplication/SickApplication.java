@@ -159,10 +159,10 @@ public class SickApplication extends AppCompatActivity {
                 connect.setDoOutput(true);
                 connect.setRequestMethod("PUT");
                 Calendar calendar = Calendar.getInstance();
-                int years = calendar.get(Calendar.YEAR);
-                int months = calendar.get(Calendar.MONTH);
+                int years = calendar.get(Calendar.YEAR);//取得日歷年
+                int months = calendar.get(Calendar.MONTH);//取得日歷月
 
-                int chinayears =years-1911;
+                int chinayears =years-1911;//學年
                 if (months<9){
                     chinayears -=1 ;
                 }

@@ -66,10 +66,10 @@ public class Malingering extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.arg1) {
                 case 0:
-                    Bundle bundle = msg.getData();
+                    /*Bundle bundle = msg.getData();
                     byte gg1[]=bundle.getByteArray("ASD");
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(gg1, 0, gg1.length);
-                    Vcodeshow.setImageBitmap(decodedByte);
+                    Vcodeshow.setImageBitmap(decodedByte);*/
                     break;
                 case 1:
                     AlertDialog.Builder builder = new AlertDialog.Builder(reference.get());
@@ -111,7 +111,7 @@ public class Malingering extends AppCompatActivity {
             @Override
             public void run() {
                 HttpURLConnection connect = null;
-//                try {
+//                try {//請假驗證碼解析
 //                    byte b[] = new byte[3000];
 //                    connect = (HttpURLConnection) (new URL("http://140.128.78.77/stdl/WebApi/NcitnfData/GetCaptcha")).openConnection();
 //                    int length = connect.getInputStream().read(b);
@@ -159,9 +159,9 @@ public class Malingering extends AppCompatActivity {
 //                    int len = connect.getInputStream().read(a);
 //                    String aaaa = new String(a, 0, len);
 
-                    Map<String, List<String>> headerFields = connect.getHeaderFields();
-                    List<String> cookiesHeader = headerFields.get(COOKIES_HEADER);
-                    if(connect.getResponseCode() == 500)
+                    Map<String, List<String>> headerFields = connect.getHeaderFields();//接收http的封包標頭回傳值
+                    List<String> cookiesHeader = headerFields.get(COOKIES_HEADER);//接收cookie值
+                    if(connect.getResponseCode() == 500)//登入失敗
                     {
                         Bundle bundle = new Bundle();
                         bundle.putString("TITLE", "ID or Password ERROR");
@@ -173,8 +173,8 @@ public class Malingering extends AppCompatActivity {
                         return;
                     }
                     else
-                    {
-                        android.webkit.CookieManager.getInstance().setCookie("http://140.128.78.77/", cookiesHeader.get(0));
+                    {//登入成功
+                        android.webkit.CookieManager.getInstance().setCookie("http://140.128.78.77/", cookiesHeader.get(0));//將cookie塞進cookiemanager裡面
                         Bundle bundle = new Bundle();
                         Message msg = new Message();
 
@@ -182,10 +182,10 @@ public class Malingering extends AppCompatActivity {
                         BufferedReader reader = Util.getReader(connect,"utf-8");
                         String json = reader.readLine();
                         try {
-                            JSONArray array = new JSONArray(json);
+                            JSONArray array = new JSONArray(json);//用JSONArray拿資料
                             JSONObject data = (JSONObject)array.get(0);
-                            String name = data.getString("name");
-                            String id = data.getString("id");
+                            String name = data.getString("name");//拿JSONArray裡面的name
+                            String id = data.getString("id");//" " Id
                             bundle.putString("name",name);
                             bundle.putString("id",id);
                         } catch (JSONException e) {

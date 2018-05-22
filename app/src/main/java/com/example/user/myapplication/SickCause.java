@@ -51,15 +51,15 @@ public class SickCause extends AppCompatActivity {
             return;
         }
         if(type == 0 && isAbroad.getCheckedRadioButtonId() == -1) {
-            Toast.makeText(this, "你他媽要不要出國拉幹", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "請選擇是要出國", Toast.LENGTH_SHORT).show();
             return;
         }
         if(mainContent.getText().toString().isEmpty()) {
-            Toast.makeText(this, "連個理由都想不到喔，去上課啦幹", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "理由不能為空", Toast.LENGTH_SHORT).show();
             return;
         }
         if(comment.getText().toString().isEmpty()) {
-            Toast.makeText(this, "理由有了要寫備註拉幹", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "備註不能為空", Toast.LENGTH_SHORT).show();
             return;
         }
         Bundle bundle = getIntent().getExtras();

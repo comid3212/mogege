@@ -47,8 +47,35 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+
+
 public class MainActivity extends AppCompatActivity {
 //所有chrome的title
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+     if (keyCode == KeyEvent.KEYCODE_BACK) { // 攔截返回鍵
+         new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("確認視窗")
+                    .setMessage("確定要結束應用程式嗎?")
+                    .setPositiveButton("確定",
+                            new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog,
+                         int which) {
+                                     finish();
+                                 }
+    })
+                .setNegativeButton("取消",
+                        new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog,
+                            int which) {
+
+                                }
+         }).show();
+ }
+     return true;
+ }
 
     static class myHandler extends Handler {
         //幫忙把東西塞在ui thread裡面

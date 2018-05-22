@@ -49,7 +49,7 @@ public class Calander_view extends CalendarView {
                 if(callback != null) {
                     callback.callback(year, month + 1, dayOfMonth);//月份從0開始算,所以month+1
                 }
-                alertDialog.cancel();
+                alertDialog.cancel();//
             }
         });
     }

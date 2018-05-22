@@ -2,6 +2,7 @@ package com.example.user.myapplication;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -296,10 +297,25 @@ public class slidermain extends AppCompatActivity
         } else if (id == R.id.nav_shop) {
 
         }else if (id == R.id.nav_logout){
-            android.webkit.CookieManager.getInstance().removeAllCookies(null);
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            new AlertDialog.Builder(slidermain.this)
+            .setTitle("確認視窗")
+            .setMessage("確定要登出嗎?")
+            .setPositiveButton("確定",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            android.webkit.CookieManager.getInstance().removeAllCookies(null);
+                            Intent intent = new Intent(slidermain.this,MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    })
+            .setNegativeButton("取消",
+                    new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+
+                    }
+             }).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

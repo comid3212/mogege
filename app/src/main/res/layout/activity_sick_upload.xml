@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back01"
     tools:context="com.example.user.myapplication.SickUpload">
 
     <Button
@@ -11,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:background="@android:drawable/checkbox_off_background"
         android:onClick="uploadImage"
         android:text="上傳證明"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:background="@android:drawable/checkbox_off_background"
         android:onClick="saveAndUpload"
         android:text="存檔並上傳"
         app:layout_constraintBottom_toBottomOf="parent"

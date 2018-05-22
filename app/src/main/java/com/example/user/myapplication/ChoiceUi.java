@@ -1,6 +1,8 @@
 package com.example.user.myapplication;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -106,81 +108,93 @@ public class ChoiceUi extends AppCompatActivity {
 
         @Override
         public void handleMessage(Message msg) {
-            Intent intent;
+            final Intent[] intent = new Intent[1];
             switch (msg.arg1) {
                 case 0:
                     break;
                 case 1:
-                    intent = new Intent();
-                    intent.setClass(reference.get(), classtable.class);
+                    intent[0] = new Intent();
+                    intent[0].setClass(reference.get(), classtable.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
 
                     //將Bundle物件assign給intent
-                    intent.putExtras(msg.getData());
+                    intent[0].putExtras(msg.getData());
 
                     //切換Activity
-                    reference.get().startActivity(intent);
+                    reference.get().startActivity(intent[0]);
                     break;
                 case 2:
-                    intent = new Intent();
-                    intent.setClass(reference.get(), ChangePassword.class);
+                    intent[0] = new Intent();
+                    intent[0].setClass(reference.get(), ChangePassword.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
 
                     //將Bundle物件assign給intent
-                    intent.putExtras(msg.getData());
+                    intent[0].putExtras(msg.getData());
 
                     //切換Activity
-                    reference.get().startActivity(intent);
+                    reference.get().startActivity(intent[0]);
                     break;
                 case 3:
-                    intent = new Intent();
-                    intent.setClass(reference.get(), Doorline.class);
+                    intent[0] = new Intent();
+                    intent[0].setClass(reference.get(), Doorline.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
 
                     //將Bundle物件assign給intent
-                    intent.putExtras(msg.getData());
+                    intent[0].putExtras(msg.getData());
 
                     //切換Activity
-                    reference.get().startActivity(intent);
+                    reference.get().startActivity(intent[0]);
                     break;
                 case 4:
-                    intent = new Intent();
-                    intent.setClass(reference.get(), GradeListN.class);
+                    intent[0] = new Intent();
+                    intent[0].setClass(reference.get(), GradeListN.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
 
                     //將Bundle物件assign給intent
-                    intent.putExtras(msg.getData());
+                    intent[0].putExtras(msg.getData());
 
                     //切換Activity
-                    reference.get().startActivity(intent);
+                    reference.get().startActivity(intent[0]);
                     break;
                 case 5:
-                    intent = new Intent();
-                    intent.setClass(reference.get(), slidermain.class);
+                    new AlertDialog.Builder(ChoiceUi.this)
+                    .setTitle("確認視窗")
+                    .setMessage("確定要登出嗎?")
+                    .setPositiveButton("確定",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                   android.webkit.CookieManager.getInstance().removeAllCookies(null);
+                                   intent[0] = new Intent().setClass(reference.get(), MainActivity.class);
+                                   intent[0].setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                   startActivity(intent[0]);
+                                }
+                     })
+                     .setNegativeButton("取消",
+                             new DialogInterface.OnClickListener() {
 
-                    //new一個Bundle物件，並將要傳遞的資料傳入
+                                 public void onClick(DialogInterface dialog, int which) {
 
-                    //將Bundle物件assign給intent
-                    intent.putExtras(msg.getData());
-
-                    //切換Activity
-                    reference.get().startActivity(intent);
+                                 }
+                     }).show();
                     break;
+
+
+
                 case 6:
-                    intent = new Intent();
-                    intent.setClass(reference.get(), Malingering.class);
+                    intent[0] = new Intent();
+                    intent[0].setClass(reference.get(), Malingering.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
 
                     //將Bundle物件assign給intent
-                    intent.putExtras(msg.getData());
+                    intent[0].putExtras(msg.getData());
 
                     //切換Activity
-                    reference.get().startActivity(intent);
+                    reference.get().startActivity(intent[0]);
                     break;
 
             }

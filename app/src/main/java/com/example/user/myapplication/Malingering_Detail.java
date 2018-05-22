@@ -10,6 +10,7 @@ import android.icu.util.Calendar;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -73,8 +74,8 @@ public class Malingering_Detail extends AppCompatActivity {
         List<RequestInfo> infoList;
 
         static class RequestInfo {
-            String punnm, createTime, endDate, mainContent;
-            int tranStatus;
+            String punnm, createTime, endDate, mainContent,comment;
+            int tranStatus, infoId;
         }
 
         public MyAdapter(Context context, List<RequestInfo> infoList){
@@ -90,7 +91,7 @@ public class Malingering_Detail extends AppCompatActivity {
         @Override
         public Object getItem(int i) {
             return infoList.get(i);
-        }
+        }//拿到infolist的東西
 
         @Override
         public long getItemId(int i) {
@@ -103,9 +104,6 @@ public class Malingering_Detail extends AppCompatActivity {
                 view = LayoutInflater.from(context).inflate(R.layout.sick_table, null);//引用 sick_table的格式
             }
 
-            if(view.getTag() != null && Integer.parseInt(view.getTag().toString()) == i) {
-                return view;
-            }
 
             TextView
                 name = view.findViewById(R.id.name),
@@ -122,10 +120,11 @@ public class Malingering_Detail extends AppCompatActivity {
             } else {
                 view.setBackgroundColor(-1268002);
             }
-            name.setText(info.punnm);
+            name.setText(info.punnm); //顯示結果
             startTime.setText(info.createTime);
             endDate.setText(info.endDate);
             cause.setText(info.mainContent);
+
 
             return view;
         }
@@ -154,11 +153,13 @@ public class Malingering_Detail extends AppCompatActivity {
                         try {
                             MyAdapter.RequestInfo info = new MyAdapter.RequestInfo();
                             JSONObject object   = (JSONObject) array.get(i);
-                            info.createTime   = object.getString("createTime").split("T")[0];
-                            info.endDate      = object.getString("endDate").split("T")[0];
-                            info.mainContent  = object.getString("mainContent");
-                            info.punnm        = object.getString("punnm");
-                            info.tranStatus      = object.getInt("tranStatus");
+                            info.createTime   = object.getString("createTime").split("T")[0];//起始日期
+                            info.endDate      = object.getString("endDate").split("T")[0];//結束日期
+                            info.mainContent  = object.getString("mainContent");//原因
+                            info.punnm        = object.getString("punnm");//假別
+                            info.tranStatus   = object.getInt("tranStatus");//是否通過
+                            info.infoId       = object .getInt("documentId");//請假id
+                            info.comment       = object .getString("comment");//請假理由
                             infoList.add(info);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -175,8 +176,13 @@ public class Malingering_Detail extends AppCompatActivity {
                             MyAdapter.RequestInfo info = ((MyAdapter.RequestInfo)activity.listview100.getAdapter().getItem(i));
                             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                             builder.setTitle(info.punnm);
-                            builder.setMessage(info.mainContent);
-                            builder.show();
+                            if(info.comment==("null")){
+                                builder.setMessage(info.mainContent);
+                            }else {
+                                builder.setMessage(info.mainContent + " 原因:" + info.comment);
+                            }
+                                builder.show();
+
                         }
                     });
 
@@ -217,14 +223,9 @@ public class Malingering_Detail extends AppCompatActivity {
         final Bundle bundle = this.getIntent().getExtras();
         final String id = bundle.getString("id");
         final String name = bundle.getString("name");
-        test100.setText(id+" , "+name);
+        test100.setText("學號:"+id+"  "+"名子:"+name);
         listview100 =(ListView) findViewById(R.id.listview100) ;
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
 
-        }
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -247,12 +248,12 @@ public class Malingering_Detail extends AppCompatActivity {
                     Date currentTime = Calendar.getInstance().getTime();
                     CharSequence today = DateFormat.format("yyyy/MM/dd", currentTime);//取得目前時間
 
-                    connect.getOutputStream().write(("{\"leaveType\":0,\"studentID\":\"" + id + "\",\"startDate\":\"2012-02-25T16:00:00.000Z\",\"endDate\":\"" + today.toString() + "\",\"approveType\":0}").getBytes());
+                    connect.getOutputStream().write(("{\"leaveType\":0,\"studentID\":\"" + id + "\",\"startDate\":\"2012-02-25T16:00:00.000Z\",\"endDate\":\"" + today.toString() + "\",\"approveType\":0}").getBytes());//
 
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
                     byte a[] = new byte[1000];
                     int len;
-                    while((len = connect.getInputStream().read(a)) > 0) {
+                    while((len = connect.getInputStream().read(a)) > 0) {//將JSON拿到的資料寫進os裡面
                         os.write(a, 0, len);
                     }
                     String json = new String(os.toByteArray());

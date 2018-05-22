@@ -82,7 +82,7 @@
         android:layout_marginTop="252dp"
         android:background="@android:drawable/checkbox_off_background"
         android:onClick="back"
-        android:text="返回"
+        android:text="登出"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

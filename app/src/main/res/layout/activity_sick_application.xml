@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back01"
     tools:context=".SickApplication">
 
     <Button
@@ -13,8 +14,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@android:drawable/checkbox_off_background"
         android:onClick="datStart"
-        android:text="startDay"
+        android:text="起始日期"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/startDay"
         app:layout_constraintTop_toTopOf="parent" />
@@ -50,8 +52,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@android:drawable/checkbox_off_background"
         android:onClick="datEnd"
-        android:text="endDay"
+        android:text="結束日期"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/endDay"
         app:layout_constraintTop_toBottomOf="@+id/button15" />
@@ -75,8 +78,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:background="@android:drawable/checkbox_off_background"
         android:onClick="onNextPageClicked"
-        android:text="NEXT"
+        android:text="下一步"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
