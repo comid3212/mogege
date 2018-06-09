@@ -51,7 +51,7 @@ public class SickCause extends AppCompatActivity {
             return;
         }
         if(type == 0 && isAbroad.getCheckedRadioButtonId() == -1) {
-            Toast.makeText(this, "請選擇是要出國", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "請選擇是否要出國", Toast.LENGTH_SHORT).show();
             return;
         }
         if(mainContent.getText().toString().isEmpty()) {

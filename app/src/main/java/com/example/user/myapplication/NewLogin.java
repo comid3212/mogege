@@ -117,15 +117,6 @@ public class NewLogin extends AppCompatActivity {
                 }
                 return super.shouldOverrideUrlLoading(view, request);
             }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                if(firstGoing) {
-                    view.loadUrl("javascript:Account.value='3A417104';Password.value='asd860219';btn = document.getElementsByClassName('btn btn-primary g-recaptcha')[0]; btn.click()");
-                    firstGoing = false;
-                }
-                super.onPageFinished(view, url);
-            }
         });
 
         webView.loadUrl("http://nmsd.ncut.edu.tw/wbcmss/Auth/Login");

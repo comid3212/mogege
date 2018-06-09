@@ -247,8 +247,8 @@ public class Malingering_Detail extends AppCompatActivity {
 
                     Date currentTime = Calendar.getInstance().getTime();
                     CharSequence today = DateFormat.format("yyyy/MM/dd", currentTime);//取得目前時間
-
-                    connect.getOutputStream().write(("{\"leaveType\":0,\"studentID\":\"" + id + "\",\"startDate\":\"2012-02-25T16:00:00.000Z\",\"endDate\":\"" + today.toString() + "\",\"approveType\":0}").getBytes());//
+//"" + today.toString() + ""
+                    connect.getOutputStream().write(("{\"leaveType\":0,\"studentID\":\"" + id + "\",\"startDate\":\"2012-02-25T16:00:00.000Z\",\"endDate\":\"2020-02-25T16:00:00.000Z\",\"approveType\":0}").getBytes());//
 
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
                     byte a[] = new byte[1000];

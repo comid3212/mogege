@@ -38,6 +38,7 @@ import org.xml.sax.SAXException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -142,6 +143,29 @@ public class slidermain extends AppCompatActivity
         ((TextView)view.findViewById(R.id.user_name)).setText(bundle.getString("NAME"));
         ((TextView)view.findViewById(R.id.id_vew)).setText(bundle.getString("ID"));
         ((TextView)view.findViewById(R.id.id_vew2)).setText(bundle.getString("CLASS"));
+        final ImageView imageView = view.findViewById(R.id.imageView);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                InputStream is = null;
+                try {
+                    String str = bundle.getString("ID").split(":")[1];
+                    str = str.substring(1);
+                    String [] ddd = str.split("A");
+                    String a = "http://nmsd.ncut.edu.tw/wbcmss/Uploads/Stpic/A" + ddd[1].substring(0, 1) + "/" + ddd[0] + "/" + str + "n.jpg";
+                    is = (InputStream) new URL(a).getContent();
+                    final Drawable d = Drawable.createFromStream(is, "src name");
+                    slidermain.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            imageView.setImageDrawable(d);
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         new Thread(new Runnable() {
             @Override
@@ -150,7 +174,7 @@ public class slidermain extends AppCompatActivity
                 try {
                     connect = (HttpURLConnection)(new URL("http://opendata.cwb.gov.tw/opendataapi?dataid=F-C0032-021&authorizationkey=CWB-BC8B7AC3-2075-4464-9099-2B3F500F8910")).openConnection();
 
-                    BufferedReader reader = Util.getReader(connect, "utf-8");
+                    //BufferedReader reader = Util.getReader(connect, "utf-8");
                     DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
                     DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
                     org.w3c.dom.Document doc = dBuilder.parse(connect.getInputStream());
@@ -257,7 +281,7 @@ public class slidermain extends AppCompatActivity
             //new一個Bundle物件，並將要傳遞的資料傳入
 
             //將Bundle物件assign給intent
-            Bundle bundle = new Bundle();
+            Bundle bundle = getIntent().getExtras();
             bundle.putString("COOKIE", cookie);
             intent.putExtras(bundle);
 

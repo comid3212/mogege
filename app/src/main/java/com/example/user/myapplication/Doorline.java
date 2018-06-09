@@ -109,7 +109,7 @@ public class Doorline extends AppCompatActivity {
 
                     String pass="";
                     String pass2="";
-                    for(int i=49;i<53;i++)
+                    for(int i=61;i<65;i++)
                     {
                         Message.add(information.get(i).text());
                     }

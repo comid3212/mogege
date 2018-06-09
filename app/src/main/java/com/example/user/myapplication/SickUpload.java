@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +47,6 @@ import java.util.UUID;
 class CountryInfo{
     int country;
     boolean highRisk;
-    CountryInfo(){}
     CountryInfo(int country, boolean highRisk) {
        this.country = country;
        this.highRisk = highRisk;
@@ -84,7 +85,6 @@ public class SickUpload extends AppCompatActivity {
     SearchAlertDialog searchAlertDialog;
     TextView imageInfo;
     ImageView uploadPreview;
-    boolean first = true;
     Uri imageFile = null;
 
     @Override
@@ -150,6 +150,7 @@ public class SickUpload extends AppCompatActivity {
                         JSONArray jsonArray = new JSONArray(json);
                         final List<String> nameList = new ArrayList<>();
                         final List<CountryInfo> countryInfo = new ArrayList<>();
+                        nameList.add("請選擇國家");
                         for(int i = 1; i < jsonArray.length(); ++i) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             nameList.add(object.getString("chtName"));
@@ -164,16 +165,15 @@ public class SickUpload extends AppCompatActivity {
                                 countriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                     @Override
                                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                        if(first) {
-                                            first = false;
+                                        String data = adapterView.getSelectedItem().toString();
+                                        if(data.equals("請選擇國家")){
                                             return;
                                         }
-                                        addCountryToListView(adapterView.getSelectedItem().toString(), adapter.getItemCountryInfo(i));
+                                        addCountryToListView(data, adapter.getItemCountryInfo(i));
                                     }
 
                                     @Override
                                     public void onNothingSelected(AdapterView<?> adapterView) {
-
                                     }
                                 });
                             }
@@ -199,6 +199,7 @@ public class SickUpload extends AppCompatActivity {
     }
 
     public void searchCountry(View view) {
+
         searchAlertDialog.show();
     }
 
@@ -223,9 +224,18 @@ public class SickUpload extends AppCompatActivity {
     }
 
     public void saveAndUpload(View view) {
+        Boolean abroad = getIntent().getExtras().getBoolean("isAbroad");
         Thread uploadImage = null;
         final String imgJson = "";
         final JSONObject object = new JSONObject();
+        if(countryAdapter.countryInfoList.size() == 0 &&  abroad.equals(true)){
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+            builder.setTitle("提醒視窗");
+            builder.setMessage("請選擇一個以上的國家");
+            builder.setPositiveButton("OK", null);
+            builder.show();
+        }
+        else{
         if(imageFile != null) {
             uploadImage = new Thread(new Runnable() {
             @Override
@@ -310,13 +320,13 @@ public class SickUpload extends AppCompatActivity {
             //object.put("leaveDays", ); TODO
             object.put("leaveType", bundle.getInt("leaveType"));
             object.put("mainContent", bundle.getString("mainContent"));
-            int chinayears =years-1911;
-            if (months<9){
-                chinayears -=1 ;
+            int chinayears = years - 1911;
+            if (months < 9) {
+                chinayears -= 1;
             }
             object.put("schyy", chinayears);
             chinayears = 1;
-            if (2 < months && months < 9){
+            if (2 < months && months < 9) {
                 chinayears = 2;
             }
             object.put("smt", chinayears);
@@ -328,21 +338,21 @@ public class SickUpload extends AppCompatActivity {
             Set<String> leaveDaysCount = new TreeSet<>();
             JSONArray jsonArray = new JSONArray();
 
-            for(int i = 0; i < data.size(); ++i) {
+            for (int i = 0; i < data.size(); ++i) {
                 ClassInfo classInfo = data.get(i);
                 boolean hasClass = false;
                 StringBuilder period = new StringBuilder();
-                for(int index = 0; index < classInfo.period.size(); ++index) {
+                for (int index = 0; index < classInfo.period.size(); ++index) {
                     SimplePair<String, Boolean> hour = classInfo.period.get(index);
-                    if(hour.second) {
-                        if(period.length() != 0) {
+                    if (hour.second) {
+                        if (period.length() != 0) {
                             period.append(",");
                         }
                         period.append(hour.first);
                         hasClass = true;
                     }
                 }
-                if(hasClass) {
+                if (hasClass) {
                     JSONObject hour = new JSONObject();
                     hour.put("cid", classInfo.cid);
                     hour.put("courseType", classInfo.courseType);
@@ -357,7 +367,7 @@ public class SickUpload extends AppCompatActivity {
 
             object.put("timeInfo", jsonArray);
 
-            if(bundle.getBoolean("isAbroad")) {
+            if (bundle.getBoolean("isAbroad")) {
                 JSONArray tourHist = new JSONArray();
                 for (int i = 0; i < countryAdapter.getCount(); ++i) {
                     JSONObject tour = new JSONObject();
@@ -380,6 +390,12 @@ public class SickUpload extends AppCompatActivity {
             object.put("appInfo", JSONObject.NULL);
 
             uploadImage.join();
+
+            Toast.makeText(SickUpload.this, "請假成功!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(SickUpload.this, Malingering.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
 
             new Thread(new Runnable() {
                 @Override
@@ -412,6 +428,6 @@ public class SickUpload extends AppCompatActivity {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }}
     }
 }
