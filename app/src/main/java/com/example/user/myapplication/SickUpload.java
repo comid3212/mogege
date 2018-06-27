@@ -389,11 +389,13 @@ public class SickUpload extends AppCompatActivity {
             object.put("punnm", JSONObject.NULL);
             object.put("appInfo", JSONObject.NULL);
 
-            uploadImage.join();
+            if(uploadImage != null) {
+                uploadImage.join();
+            }
 
             Toast.makeText(SickUpload.this, "請假成功!", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(SickUpload.this, Malingering.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
 
 

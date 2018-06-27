@@ -22,6 +22,7 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Doorline extends AppCompatActivity {
     private String cookie;
@@ -104,20 +105,23 @@ public class Doorline extends AppCompatActivity {
                     connect = (HttpURLConnection) (new URL("http://nmsd.ncut.edu.tw/wbcmss/Graduate/GradPass")).openConnection();
                     Document document = Util.getDocumentFromUrlConnection(connect, cookie);
 
-                    Elements information = document.getElementsByTag("li");
-                    ArrayList<String> Message = new ArrayList<String>();
+                    Elements all = document.getElementsByClass("list-group-item");
+                    Elements danger = document.getElementsByClass("list-group-item list-group-item-danger");
 
-                    String pass="";
+                    ArrayList<String> dataset = new ArrayList<>();
+
+                    String pass ="";
                     String pass2="";
-                    for(int i=61;i<65;i++)
+                    for(int i = 0; i < all.size(); ++i)
                     {
-                        Message.add(information.get(i).text());
+                        dataset.add(all.get(i).text());
                     }
-                    if(Message.get(0).equals("【英文能力】 未通過")&&Message.get(1).equals("【資訊能力】 未通過")&&Message.get(2).equals("【服務學習】 未通過")&&Message.get(3).equals("【校外實習門檻】 未通過")){
+
+                    if((all.size() - danger.size()) == 0){
                         pass ="ao1";
                         pass2="請再加油";
                     }
-                    else if(Message.get(0).equals("【英文能力】 通過")&&Message.get(1).equals("【資訊能力】 通過")&&Message.get(2).equals("【服務學習】 通過")&&Message.get(3).equals("【校外實習門檻】 通過")){
+                    else if(danger.size() == 0){
                         pass ="ao2";
                         pass2="全部通過，太猛了吧";
                     }
@@ -129,7 +133,7 @@ public class Doorline extends AppCompatActivity {
 
                     Message msg = new Message();
                     Bundle bundle = new Bundle();
-                    bundle.putStringArrayList("Mesg", Message);
+                    bundle.putStringArrayList("Mesg", dataset);
 
                     bundle.putString("PASS", pass);
                     bundle.putString("PASS2", pass2);

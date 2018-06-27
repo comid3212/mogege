@@ -14,14 +14,16 @@ import java.util.List;
 
 public class SickCause extends AppCompatActivity {
     RadioGroup isAbroad;
-    TextView mainContent, comment;
+    TextView mainContent, comment,textabroad;
     int type = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sick_cause);
+        textabroad = (TextView) findViewById(R.id.textView30);
         isAbroad = findViewById(R.id.is_abroad);
+        textabroad.setVisibility(View.INVISIBLE);
         mainContent = findViewById(R.id.main_content);
         comment = findViewById(R.id.comment);
         ((RadioGroup)findViewById(R.id.leave_type)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -30,6 +32,7 @@ public class SickCause extends AppCompatActivity {
                 type = 0;
                 switch (radioGroup.getCheckedRadioButtonId()) {
                     case R.id.a:
+                        textabroad.setVisibility(View.VISIBLE);
                         isAbroad.setVisibility(View.VISIBLE);
                         break;
                     case R.id.d:
@@ -38,6 +41,7 @@ public class SickCause extends AppCompatActivity {
                         type += 1;
                     case R.id.b:
                         type += 1;
+                        textabroad.setVisibility(View.INVISIBLE);
                         isAbroad.setVisibility(View.INVISIBLE);
                         break;
                 }
@@ -56,10 +60,6 @@ public class SickCause extends AppCompatActivity {
         }
         if(mainContent.getText().toString().isEmpty()) {
             Toast.makeText(this, "理由不能為空", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(comment.getText().toString().isEmpty()) {
-            Toast.makeText(this, "備註不能為空", Toast.LENGTH_SHORT).show();
             return;
         }
         Bundle bundle = getIntent().getExtras();

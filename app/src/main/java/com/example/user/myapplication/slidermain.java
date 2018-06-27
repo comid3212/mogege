@@ -213,6 +213,9 @@ public class slidermain extends AppCompatActivity
                     else if (chinesetmp.equals("多雲")){
                         imagetian=R.drawable.c15;
                     }
+                    else if (chinesetmp.equals("陰天")){
+                        imagetian=R.drawable.c05;
+                    }
                     else {
                         imagetian=R.drawable.doge;
                     }

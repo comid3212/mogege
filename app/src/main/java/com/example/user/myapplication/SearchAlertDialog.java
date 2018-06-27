@@ -31,7 +31,7 @@ import java.util.List;
  * Created by USER on 2018/5/5.
  */
 
-class AlertCountryAdapter extends CountryAdapter {
+class  AlertCountryAdapter extends CountryAdapter {
     public AlertCountryAdapter(@NonNull Context context, int resource, @NonNull List<String> objects, List<CountryInfo> countryCode) {
         super(context, resource, objects, countryCode);
     }
